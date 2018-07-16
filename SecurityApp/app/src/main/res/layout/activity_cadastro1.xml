@@ -54,13 +54,13 @@
         android:inputType="textPersonName"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintBottom_toTopOf="@+id/campoEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/campoEmail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -72,13 +72,13 @@
         android:hint="E-mail"
         android:inputType="textPersonName"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/editText10"
+        app:layout_constraintBottom_toTopOf="@+id/campoTelefone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CampoNomeCompleto" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/campoRG"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="9dp"
@@ -90,13 +90,13 @@
         android:hint="RG*"
         android:inputType="textPersonName"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/editText11"
+        app:layout_constraintBottom_toTopOf="@+id/campoContatoProximo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText10" />
+        app:layout_constraintTop_toBottomOf="@+id/campoTelefone" />
 
     <EditText
-        android:id="@+id/editText9"
+        android:id="@+id/campoCidade"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
@@ -111,10 +111,10 @@
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText11" />
+        app:layout_constraintTop_toBottomOf="@+id/campoContatoProximo" />
 
     <EditText
-        android:id="@+id/editText10"
+        android:id="@+id/campoTelefone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -126,10 +126,10 @@
         android:hint="Telefone*"
         android:inputType="phone"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/editText7"
+        app:layout_constraintBottom_toTopOf="@+id/campoRG"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/campoEmail" />
 
     <Button
         android:id="@+id/button3"
@@ -142,10 +142,10 @@
         android:text="Próximo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText9" />
+        app:layout_constraintTop_toBottomOf="@+id/campoCidade" />
 
     <EditText
-        android:id="@+id/editText11"
+        android:id="@+id/campoContatoProximo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
@@ -156,9 +156,9 @@
         android:ems="10"
         android:hint="Contato próximo*"
         android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/editText9"
+        app:layout_constraintBottom_toTopOf="@+id/campoCidade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7" />
+        app:layout_constraintTop_toBottomOf="@+id/campoRG" />
 
 </android.support.constraint.ConstraintLayout>

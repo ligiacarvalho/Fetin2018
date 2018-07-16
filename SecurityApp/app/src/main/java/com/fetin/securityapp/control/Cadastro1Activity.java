@@ -30,12 +30,34 @@ public class Cadastro1Activity extends AppCompatActivity {
     public void getDadosDosCampos()
     {
 
-        EditText campoNomeComleto = findViewById(R.id.CampoNomeCompleto);
+        EditText campoNomeCompleto = findViewById(R.id.CampoNomeCompleto);
+        EditText campoEmail = findViewById(R.id.campoEmail);
+        EditText campoTelefone = findViewById(R.id.campoTelefone);
+        EditText campoRG = findViewById(R.id.campoRG);
+        EditText campoContatoProximo = findViewById(R.id.campoContatoProximo);
+        EditText campoCidade = findViewById(R.id.campoCidade);
 
+        //instanciando o usuario
         Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(campoNomeComleto.getText().toString());
+
+        novoUsuario.setNome(campoNomeCompleto.getText().toString());
+        novoUsuario.setEmail(campoEmail.getText().toString());
+        novoUsuario.setTelefone(campoTelefone.getText().toString());
+        novoUsuario.setRg(campoRG.getText().toString());
+        novoUsuario.setContatoProximo(campoContatoProximo.getText().toString());
+        novoUsuario.setCidade(campoCidade.getText().toString());
+
+
 
         Toast.makeText(this,"Nome do Usuario = "+novoUsuario.getNome(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"E-MAIL = "+novoUsuario.getEmail(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Telefone = "+novoUsuario.getTelefone(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"RG = "+novoUsuario.getRg(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Contato Proximo = "+novoUsuario.getContatoProximo(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Cidade = "+novoUsuario.getCidade(),Toast.LENGTH_LONG).show();
+
+
+
 
     }
 
