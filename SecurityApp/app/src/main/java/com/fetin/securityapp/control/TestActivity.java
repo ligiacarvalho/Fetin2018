@@ -15,7 +15,7 @@ import com.fetin.securityapp.R;
 import com.fetin.securityapp.model.MyAdmin;
 
 // Activity para travar a Tela do celular
-public class LockActivity extends AppCompatActivity implements View.OnClickListener {
+public class TestActivity extends AppCompatActivity implements View.OnClickListener {
     private Button lock, disable, enable;
     public static final int RESULT_ENABLE = 11;
     private DevicePolicyManager devicePolicyManager;
@@ -73,9 +73,9 @@ public class LockActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case RESULT_ENABLE:
                 if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(LockActivity.this, "You have enabled the Admin Device features", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TestActivity.this, "You have enabled the Admin Device features", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(LockActivity.this, "Problem to enable the Admin Device features", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TestActivity.this, "Problem to enable the Admin Device features", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
