@@ -1,10 +1,12 @@
-package com.fetin.securityapp;
+package com.fetin.securityapp.control;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 
+import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Cadastro1Activity;
 
 
 public class LoginActivity extends AppCompatActivity {

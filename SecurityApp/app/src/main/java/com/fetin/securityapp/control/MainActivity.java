@@ -1,4 +1,4 @@
-package com.fetin.securityapp;
+package com.fetin.securityapp.control;
 
 import android.Manifest;
 import android.support.v4.app.ActivityCompat;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Toast;
+
+import com.fetin.securityapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.fetin.securityapp;
+package com.fetin.securityapp.model;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;
