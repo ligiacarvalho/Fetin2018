@@ -8,8 +8,10 @@ public class GpsManager extends AppCompatActivity{
 
     private transient LocationManager locationManager;
     private transient LocationListener locationListener;
+
     /*
     public void getLocalization() {
+
         Looper.prepare();
         locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
@@ -24,6 +26,8 @@ public class GpsManager extends AppCompatActivity{
         }
         locationManager.requestLocationUpdates(provider, minTime, minDistance, locationListener);
         Looper.loop();
-        */
 
+    }
+
+    */
 }

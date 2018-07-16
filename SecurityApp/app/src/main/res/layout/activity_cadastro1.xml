@@ -35,13 +35,13 @@
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="#000000"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintBottom_toTopOf="@+id/CampoNomeCompleto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/CampoNomeCompleto"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="13dp"
@@ -75,7 +75,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editText10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/CampoNomeCompleto" />
 
     <EditText
         android:id="@+id/editText7"
