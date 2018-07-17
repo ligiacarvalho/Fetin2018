@@ -4,6 +4,10 @@ public class Usuario {
 
     private String nome,email,telefone,rg,contatoProximo,cidade;
 
+     /*
+        Getters And Setters
+    */
+
     public String getNome() {
         return nome;
     }

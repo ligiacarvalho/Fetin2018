@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "505740672224",
+    "firebase_url": "https://securityapp-578b5.firebaseio.com",
+    "project_id": "securityapp-578b5",
+    "storage_bucket": "securityapp-578b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505740672224:android:7e83e5d097d4b75e",
+        "android_client_info": {
+          "package_name": "com.fetin.securityapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505740672224-q7aq66830amm3cv9vl9eavgrba5s61pk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fetin.securityapp",
+            "certificate_hash": "771dd4ea5d94986c2d7af7d3a7e58ad8e7b3c55c"
+          }
+        },
+        {
+          "client_id": "505740672224-2bio23k4jmef19i6v32fhecj1m5n7n3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKMvVm1Ow1rdpS7Zhx3_U3jqvfzb_habY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505740672224-2bio23k4jmef19i6v32fhecj1m5n7n3g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
