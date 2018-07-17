@@ -47,15 +47,14 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setContatoProximo(campoContatoProximo.getText().toString());
         novoUsuario.setCidade(campoCidade.getText().toString());
 
-
-
+        /*
         Toast.makeText(this,"Nome do Usuario = "+novoUsuario.getNome(),Toast.LENGTH_LONG).show();
         Toast.makeText(this,"E-MAIL = "+novoUsuario.getEmail(),Toast.LENGTH_LONG).show();
         Toast.makeText(this,"Telefone = "+novoUsuario.getTelefone(),Toast.LENGTH_LONG).show();
         Toast.makeText(this,"RG = "+novoUsuario.getRg(),Toast.LENGTH_LONG).show();
         Toast.makeText(this,"Contato Proximo = "+novoUsuario.getContatoProximo(),Toast.LENGTH_LONG).show();
         Toast.makeText(this,"Cidade = "+novoUsuario.getCidade(),Toast.LENGTH_LONG).show();
-
+        */
 
 
 
