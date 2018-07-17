@@ -68,7 +68,7 @@ public class TestDAO {
     public boolean verificaSeOUsuarioEstaLogado()
     {
         /*
-
+            getCurrentUser retorna null quando não está logado
         */
 
         if( usuario.getCurrentUser() != null)
