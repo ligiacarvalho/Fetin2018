@@ -1,18 +1,14 @@
 package com.fetin.securityapp.control;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.fetin.securityapp.R;
-import com.fetin.securityapp.model.Usuario;
 import com.fetin.securityapp.model.Celular;
-
-import static com.fetin.securityapp.R.id.campoNumeroChip2;
 
 public class Cadastro2Activity extends AppCompatActivity {
 
