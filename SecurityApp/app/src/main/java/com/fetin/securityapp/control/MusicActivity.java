@@ -22,7 +22,7 @@ public class MusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music);
 
         // Referenciando o "somAlarm" com a música que está na pasta RAW
-        somAlarm = MediaPlayer.create(this, R.raw.music);
+        somAlarm = MediaPlayer.create(this, R.raw.alarme_roubo);
 
         // Referenciando os botoões da tela, para poder manipula-los
         botaoPlay = findViewById(R.id.BotaoPlayMusic);

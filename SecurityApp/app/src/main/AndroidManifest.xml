@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".control.LoginActivity">
+        <activity android:name=".control.MusicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +34,7 @@
 
         <activity android:name=".control.Cadastro1Activity" />
         <activity android:name=".control.Cadastro2Activity" />
-        <activity android:name=".control.MusicActivity"></activity>
+        <!--<activity android:name=".control.MusicActivity"></activity>-->
     </application>
 
 </manifest>
