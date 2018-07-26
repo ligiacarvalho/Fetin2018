@@ -25,7 +25,7 @@ public class Cadastro2Activity extends AppCompatActivity {
     //finalizar cadastro total
     public void finalizarCadastro(View view)
     {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         getDadosDosCampos2();
 
