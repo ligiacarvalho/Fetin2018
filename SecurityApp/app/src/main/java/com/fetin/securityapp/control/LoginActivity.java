@@ -7,18 +7,56 @@ import android.view.View;
 
 import com.fetin.securityapp.R;
 import com.fetin.securityapp.model.TestDAO;
+import com.fetin.securityapp.model.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     // objeto para fazer manipulações no banco de dados do nó usuário
     private TestDAO userDao;
+    // Objeto para gerenciar o banco de dados
+    private DatabaseReference referenciaDoBanco;
+    // Objeto para gerenciar os usuários
+    private FirebaseAuth usuario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         start();
+
+         /*
+            1 - Pegando a referencia do nó raiz da arvore gerada pelo firebase
+            obs: caso quisesse mudar a referencia, só colocar .getReference("nomeDoNóDeReferencia");
+        */
+
+
+       // referenciaDoBanco.setValue(200);
+
+        /*
+            1 - Pegando a referencia do objeto que permite manipular os usuários
+        */
+       // usuario = FirebaseAuth.getInstance();
+
+       // inserirUsuario();
+
+
+    }
+
+    public boolean inserirUsuario(Usuario novo_usuario)
+    {
+        // Pegando a referencia do nó "usuários"
+        DatabaseReference referenciaUsuario = referenciaDoBanco.child("Usuario");
+
+        // Adicionando um nó filho ao "usuários", com chave única gerada randomicamente
+        // .E nela, colocando os dados dos novos usuários.
+        referenciaUsuario.push().setValue(novo_usuario);
+
+        return true;
     }
 
     //fazer cadastro
@@ -31,6 +69,10 @@ public class LoginActivity extends AppCompatActivity {
     public void start()
     {
         // inserir aqui tudo que deve ser feito, ao iniciar a tela de login
+
+        referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
+
+
     }
 
 

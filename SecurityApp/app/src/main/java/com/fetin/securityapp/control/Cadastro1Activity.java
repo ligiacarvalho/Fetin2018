@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.model.Usuario;
+import com.fetin.securityapp.model.UsuarioDAO;
 
 
 public class Cadastro1Activity extends AppCompatActivity {
@@ -45,6 +46,9 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setRg(campoRG.getText().toString());
         novoUsuario.setContatoProximo(campoContatoProximo.getText().toString());
         novoUsuario.setCidade(campoCidade.getText().toString());
+
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.inserir(novoUsuario);
 
         /*
         Toast.makeText(this,"Nome do Usuario = "+novoUsuario.getNome(),Toast.LENGTH_LONG).show();
