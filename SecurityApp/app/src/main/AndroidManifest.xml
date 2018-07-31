@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:allowBackup="true"
@@ -36,7 +37,8 @@
         <activity android:name=".control.Cadastro2Activity" />
         <!-- <activity android:name=".control.MusicActivity"></activity> -->
         <activity android:name=".control.TutorialActivity" />
-        <activity android:name=".control.Tutorial2Activity"></activity>
+        <activity android:name=".control.Tutorial2Activity" />
+
     </application>
 
 </manifest>
