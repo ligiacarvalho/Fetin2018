@@ -75,13 +75,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
     // Autenticação do usuário por e-mail e senha, usando o FireBase(OBS: deixei comentado, pois ainda não é o obj)
     /*
     public void autenticarUsuarioPorEmailESenha(String email, String senha)
