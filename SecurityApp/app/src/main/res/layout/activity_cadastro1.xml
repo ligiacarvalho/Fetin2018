@@ -73,18 +73,19 @@
         app:layout_constraintTop_toBottomOf="@+id/CampoNomeCompleto" />
 
     <EditText
-        android:id="@+id/campoRG"
+        android:id="@+id/campoCPF"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="44dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="RG*"
+        android:hint="CPF*"
         android:inputType="textPersonName"
         android:textColor="#808080"
         app:layout_constraintBottom_toTopOf="@+id/campoContatoProximo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/campoTelefone" />
 
@@ -115,7 +116,7 @@
         android:hint="Telefone*"
         android:inputType="phone"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/campoRG"
+        app:layout_constraintBottom_toTopOf="@+id/campoCPF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/campoEmail" />
@@ -139,12 +140,13 @@
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="13dp"
         android:ems="10"
         android:hint="Contato próximo*"
         android:inputType="phone"
         app:layout_constraintBottom_toTopOf="@+id/campoCidade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/campoRG" />
+        app:layout_constraintTop_toBottomOf="@+id/campoCPF" />
 
 </android.support.constraint.ConstraintLayout>
