@@ -15,19 +15,73 @@ import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
 public class Cadastro2Activity extends AppCompatActivity {
 
+    EditText campoModeloCelular;
+    RadioButton campoNumeroChip1;
+    RadioButton campoNumeroChip2;
+    EditText numeroDoChip1;
+    EditText numeroDoChip2;
+    EditText campoIMEI1;
+    EditText campoIMEI2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro2);
-        criandoMascara();
+        referenciaComponentes();
+        MascaraChip1();
+        MascaraChip2();
+
+    }
+    public void referenciaComponentes() {
+
+        // Referenciando os componentes da interface
+        campoModeloCelular = findViewById(R.id.CampoModeloCelular);
+        campoNumeroChip1 = findViewById(R.id.radioButtonNumChip1);
+        campoNumeroChip2 = findViewById(R.id.radioButtonNumChip2);
+        numeroDoChip1 = findViewById(R.id.EditTextNumChip1);
+        numeroDoChip2 = findViewById(R.id.EditTextNumChip2);
+        campoIMEI1 = findViewById(R.id.campoIMEI1);
+        campoIMEI2 = findViewById(R.id.campoIMEI2);
+    }
+
+    public boolean verificaEntradaDeDados()
+
+    {
+        if(campoModeloCelular.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if ((campoNumeroChip1.getText().toString().equals("") || campoNumeroChip2.getText().toString().equals("")))
+        {
+            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (campoIMEI1.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (campoIMEI2.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 
     //finalizar cadastro total
     public void finalizarCadastro(View view)
     {
         Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
-        getDadosDosCampos2();
+        boolean resp = verificaEntradaDeDados();
+
+        if(resp){
+            getDadosDosCampos2();
+            startActivity(intent);
+        }
 
     }
     //voltar para cadastro pessoal
@@ -65,10 +119,28 @@ public class Cadastro2Activity extends AppCompatActivity {
         //    Toast.makeText(this,"IMEI2 = "+novoCelular.getImei2(),Toast.LENGTH_LONG).show();
 
 
+    //criando mascaras
+    }
+
+    public void MascaraChip2()
+    {
+        // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
+        EditText numeroDoChipDois = findViewById(R.id.EditTextNumChip2);
+
+        // Passando qual é o padrão de telefone que eu vou querer que o usuário digite
+        SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
+
+        // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroDoChipDois,mascaraSimplesDeTelefone);
+
+        // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
+        // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
+        numeroDoChipDois.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
+
 
     }
 
-    public void criandoMascara()
+    public void MascaraChip1()
     {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
         EditText numeroDoChipUm = findViewById(R.id.EditTextNumChip1);
@@ -85,6 +157,4 @@ public class Cadastro2Activity extends AppCompatActivity {
 
 
     }
-
-
 }

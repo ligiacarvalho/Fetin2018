@@ -38,7 +38,10 @@
         <!-- <activity android:name=".control.MusicActivity"></activity> -->
         <activity android:name=".control.TutorialActivity" />
         <activity android:name=".control.Tutorial2Activity" />
-
+        <activity
+            android:name=".control.MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
