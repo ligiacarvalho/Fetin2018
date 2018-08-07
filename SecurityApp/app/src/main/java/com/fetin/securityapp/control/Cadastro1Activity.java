@@ -91,8 +91,14 @@ public class Cadastro1Activity extends AppCompatActivity {
             getDadosDosCampos();
             startActivity(intent);
         }
-
     }
+
+    //voltar ao login
+    public void voltarLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 
     public void getDadosDosCampos()
     {

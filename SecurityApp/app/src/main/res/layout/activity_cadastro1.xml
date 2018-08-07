@@ -43,18 +43,19 @@
         android:id="@+id/CampoNomeCompleto"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="279dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="132dp"
         android:ems="10"
         android:hint="Nome completo*"
         android:inputType="textPersonName"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="#808080"
-        app:layout_constraintBottom_toTopOf="@+id/campoEmail"
+        app:layout_constraintBottom_toTopOf="@+id/button10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/campoEmail"
@@ -75,8 +76,8 @@
     <EditText
         android:id="@+id/campoCPF"
         android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="21dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
@@ -85,7 +86,6 @@
         android:textColor="#808080"
         app:layout_constraintBottom_toTopOf="@+id/campoContatoProximo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/campoTelefone" />
 
@@ -93,7 +93,7 @@
         android:id="@+id/campoCidade"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
@@ -109,7 +109,7 @@
         android:id="@+id/campoTelefone"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
@@ -123,7 +123,7 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="97dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="6dp"
         android:layout_marginEnd="8dp"
@@ -131,16 +131,16 @@
         android:text="Próximo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button10"
         app:layout_constraintTop_toBottomOf="@+id/campoCidade" />
 
     <EditText
         android:id="@+id/campoContatoProximo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
         android:ems="10"
         android:hint="Contato próximo*"
         android:inputType="phone"
@@ -148,5 +148,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/campoCPF" />
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="173dp"
+        android:layout_marginStart="9dp"
+        android:onClick="voltarLogin"
+        android:text="Anterior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CampoNomeCompleto" />
 
 </android.support.constraint.ConstraintLayout>
