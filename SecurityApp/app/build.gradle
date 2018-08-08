@@ -32,6 +32,11 @@ dependencies {
     implementation 'com.github.rtoshiro.mflibrary:mflibrary:1.0.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+
+    //Optional: see how to use the utility.
+    implementation 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
+
 
 }
 
