@@ -38,7 +38,7 @@
         <!-- <activity android:name=".control.MusicActivity"></activity> -->
         <activity android:name=".control.TutorialActivity" />
         <activity android:name=".control.Tutorial2Activity" />
-        <activity android:name=".control.MenuActivity"></activity>
+        <activity android:name=".control.Menu.MenuActivity"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
+import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.model.TestDAO;
 
 
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     {
 
-        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextEmail = findViewById(R.id.EditTextEmail);
 
         editTextSenha = findViewById(R.id.editTextSenha);
 
@@ -116,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (resp) {
-
+            finish();
             startActivity(intent);
 
         }
