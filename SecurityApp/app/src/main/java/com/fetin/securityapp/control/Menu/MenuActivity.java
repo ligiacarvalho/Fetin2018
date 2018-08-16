@@ -48,7 +48,6 @@ public class MenuActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         smartTabLayout.setViewPager(viewPager);
 
-
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
         viewPagerTab.setViewPager(viewPager);
     }
