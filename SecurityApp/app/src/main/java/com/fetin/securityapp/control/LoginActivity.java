@@ -16,9 +16,11 @@ import android.widget.Toast;
 import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.model.CelularDAO;
 import com.fetin.securityapp.model.TestDAO;
 
 
+import com.fetin.securityapp.model.UsuarioDAO;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     // objeto para fazer manipulações no banco de dados do nó usuário
 
     private TestDAO userDao;
+
+    private UsuarioDAO usuarioDAO;
+    private CelularDAO celularDAO;
 
     // Objeto para gerenciar o banco de dados
 
@@ -57,6 +62,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         referenciaComponentes();
+        usuarioDAO = new UsuarioDAO();
+        celularDAO = new CelularDAO();
+
+        findViewById(R.id.btn_del).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usuarioDAO.excluir();
+                celularDAO.excluir();
+
+            }
+        });
+
 
 
         login = editTextEmail.getText().toString();
