@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 import com.fetin.securityapp.model.Celular;
+import com.fetin.securityapp.model.CelularDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
@@ -111,6 +112,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         novoCelular.setImei1(campoIMEI1.getText().toString());
         novoCelular.setImei2(campoIMEI2.getText().toString());
 
+        CelularDAO daoC = new CelularDAO();
+        daoC.inserir(novoCelular);
 
         //    Toast.makeText(this,"Modelo cel = "+novoCelular.getModelo(),Toast.LENGTH_LONG).show();
         //    Toast.makeText(this,"Chip 1 = "+novoCelular.getChip1(),Toast.LENGTH_LONG).show();
