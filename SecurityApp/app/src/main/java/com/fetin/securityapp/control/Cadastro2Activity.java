@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
@@ -119,9 +120,10 @@ public class Cadastro2Activity extends AppCompatActivity {
         //    Toast.makeText(this,"IMEI2 = "+novoCelular.getImei2(),Toast.LENGTH_LONG).show();
 
 
-    //criando mascaras
+
     }
 
+    //criando mascaras
     public void MascaraChip2()
     {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá

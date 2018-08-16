@@ -117,8 +117,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (resp) {
-            finish();
+
             startActivity(intent);
+            finish();
 
         }
 

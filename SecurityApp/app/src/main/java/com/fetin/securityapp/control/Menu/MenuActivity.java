@@ -1,5 +1,6 @@
 package com.fetin.securityapp.control.Menu;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Cadastro1Activity;
+import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
 import com.fetin.securityapp.model.Celular;
@@ -66,7 +69,6 @@ public class MenuActivity extends AppCompatActivity {
         {
             case R.id.menuSair:
                 deslogarUsuario();
-                finish();
                 break;
         }
 
@@ -76,7 +78,9 @@ public class MenuActivity extends AppCompatActivity {
     public void deslogarUsuario(){
         try
         {
-            autenticacao.signOut();
+            //autenticacao.signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
         catch (Exception e)
         {

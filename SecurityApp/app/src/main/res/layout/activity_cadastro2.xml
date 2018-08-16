@@ -141,6 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal"
+        android:checkedButton="@id/radioButtonNumChip1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2">
