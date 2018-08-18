@@ -1,4 +1,4 @@
-package com.fetin.securityapp.control;
+package com.fetin.securityapp.control.Cadastro;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
-import com.fetin.securityapp.model.CelularDAO;
+import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 

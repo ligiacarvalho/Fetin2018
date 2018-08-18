@@ -15,12 +15,13 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
+import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
-import com.fetin.securityapp.model.CelularDAO;
-import com.fetin.securityapp.model.TestDAO;
+import com.fetin.securityapp.model.Dao.CelularDAO;
+import com.fetin.securityapp.model.Dao.TestDAO;
 
 
-import com.fetin.securityapp.model.UsuarioDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DatabaseReference;
@@ -135,8 +136,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if (resp) {
 
-            startActivity(intent);
             finish();
+            startActivity(intent);
+
 
         }
 

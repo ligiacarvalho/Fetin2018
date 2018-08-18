@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="@string/google_maps_key" />
 
     <application
         android:allowBackup="true"
@@ -33,12 +38,24 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".control.Cadastro1Activity" />
-        <activity android:name=".control.Cadastro2Activity" />
+        <activity android:name=".control.Cadastro.Cadastro1Activity" />
+        <activity android:name=".control.Cadastro.Cadastro2Activity" />
         <!-- <activity android:name=".control.MusicActivity"></activity> -->
-        <activity android:name=".control.TutorialActivity" />
-        <activity android:name=".control.Tutorial2Activity" />
-        <activity android:name=".control.Menu.MenuActivity"></activity>
+        <activity android:name=".control.Tutorial.TutorialActivity" />
+        <activity android:name=".control.Tutorial.Tutorial2Activity" />
+        <activity android:name=".control.Menu.MenuActivity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
     </application>
 
 </manifest>

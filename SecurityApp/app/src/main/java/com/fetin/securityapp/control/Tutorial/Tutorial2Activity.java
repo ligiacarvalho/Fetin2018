@@ -1,4 +1,4 @@
-package com.fetin.securityapp.control;
+package com.fetin.securityapp.control.Tutorial;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

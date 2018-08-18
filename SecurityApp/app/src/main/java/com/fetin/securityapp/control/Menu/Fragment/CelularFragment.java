@@ -12,7 +12,7 @@ import com.fetin.securityapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CelularFragment extends android.app.Fragment {
+public class CelularFragment extends Fragment {
 
 
     public CelularFragment() {

@@ -1,4 +1,4 @@
-package com.fetin.securityapp.control;
+package com.fetin.securityapp.control.Cadastro;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
+import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.model.Usuario;
-import com.fetin.securityapp.model.UsuarioDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
