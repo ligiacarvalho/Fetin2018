@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -15,12 +16,17 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
+import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
+import com.fetin.securityapp.control.Cadastro.Cadastro2Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
-import com.fetin.securityapp.model.CelularDAO;
-import com.fetin.securityapp.model.TestDAO;
+import com.fetin.securityapp.model.Dao.CelularDAO;
+import com.fetin.securityapp.model.Dao.TestDAO;
 
 
-import com.fetin.securityapp.model.UsuarioDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +54,9 @@ public class LoginActivity extends AppCompatActivity {
     // Objeto para gerenciar os usuários
 
     private FirebaseAuth usuario;
+    private boolean sucessoAuth = false;
+
+    private FirebaseAuth usuarioAuth;
 
 
     private String login, senha;
@@ -74,11 +83,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-        login = editTextEmail.getText().toString();
-
-        senha = editTextSenha.getText().toString();
 
     }
 
@@ -122,7 +126,29 @@ public class LoginActivity extends AppCompatActivity {
         return true;
 
     }
+    //
+    public  void Autenticacao(String email,String senha){
 
+        final Intent intent = new Intent(this, MenuActivity.class);
+        usuarioAuth = FirebaseAuth.getInstance();
+
+        usuarioAuth.signInWithEmailAndPassword(email,senha)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            sucessoAuth = true;
+                            startActivity(intent);
+
+                        }
+                        else{
+                            msg("Usuário não autenticado");
+
+                        }
+                    }
+                });
+
+    }
 
     public void logar(View view)
 
@@ -133,9 +159,22 @@ public class LoginActivity extends AppCompatActivity {
         boolean resp = verificaEntradaDeDados();
 
 
+
         if (resp) {
-            finish();
-            startActivity(intent);
+
+
+            login = editTextEmail.getText().toString();
+
+            senha = editTextSenha.getText().toString();
+
+            Autenticacao(login, senha);
+
+            if(sucessoAuth == true) {
+                msg("Usuario autenticado com sucesso");
+                //   startActivity(intent);
+            }
+
+
 
         }
 
@@ -155,51 +194,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    // Autenticação do usuário por e-mail e senha, usando o FireBase(OBS: deixei comentado, pois ainda não é o obj)
 
-    /*
-
-    public void autenticarUsuarioPorEmailESenha(String email, String senha)
-
+    public void msg(String s)
     {
-
-        // Autenticando um usuário com email e senha
-
-        userDao.getUsuario().createUserWithEmailAndPassword(email,senha).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
-            @Override
-
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-
-
-                // a autenticação deu certo
-
-                if(task.isSuccessful())
-
-                {
-
-                    Toast.makeText(LoginActivity.this,"Usuário autenticado com sucesso!",Toast.LENGTH_LONG).show();
-
-                }
-
-                else
-
-                {
-
-                    Toast.makeText(LoginActivity.this,"Erro na autenticação!",Toast.LENGTH_LONG).show();
-
-                }
-
-
-
-            }
-
-        });
-
+        Toast.makeText(this,"Senha = "+s,Toast.LENGTH_LONG).show();
     }
-
-    */
-
-
 }

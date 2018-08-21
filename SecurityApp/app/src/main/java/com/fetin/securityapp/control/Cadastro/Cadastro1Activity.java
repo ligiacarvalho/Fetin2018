@@ -1,4 +1,4 @@
-package com.fetin.securityapp.control;
+package com.fetin.securityapp.control.Cadastro;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,9 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
+import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.model.Usuario;
-import com.fetin.securityapp.model.UsuarioDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     private EditText campoContatoProximo;
     private EditText campoCidade;
     private EditText campoSenha;
+    private boolean sucessoAuth = false;
 
     private FirebaseAuth usuarioAuth;
 
@@ -39,7 +41,7 @@ public class Cadastro1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro1);
         referenciaComponentes();
 
-        usuarioAuth = FirebaseAuth.getInstance();
+
 
         MascaraTelefone();
         MascaraCPF();
@@ -99,13 +101,24 @@ public class Cadastro1Activity extends AppCompatActivity {
     //finalizar cadastro pessoal
     public void finalizarCadastroPessoal(View view)
     {
-        Intent intent = new Intent(this, Cadastro2Activity.class);
+       // Intent intent = new Intent(this, Cadastro2Activity.class);
 
         boolean resp = verificaEntradaDeDados();
 
-        if(resp){
-            getDadosDosCampos();
-            startActivity(intent);
+        if(resp == true){
+
+            Usuario novoUsuario = getDadosDosCampos();
+
+            Autenticacao(novoUsuario.getEmail(),novoUsuario.getSenha());
+
+            if(sucessoAuth == true) {
+                msg("Usuario autenticado com sucesso");
+             //   startActivity(intent);
+            }
+          //  else{
+          //      msg("Usuario não autenticado");
+          //  }
+
         }
     }
 
@@ -116,7 +129,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     }
 
 
-    public void getDadosDosCampos()
+    public Usuario getDadosDosCampos()
     {
         //instanciando o usuario
         Usuario novoUsuario = new Usuario();
@@ -129,41 +142,38 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setCidade(campoCidade.getText().toString());
         novoUsuario.setSenha(campoSenha.getText().toString());
 
-        msg(campoSenha.getText().toString());
-
-        usuarioAuth.createUserWithEmailAndPassword(novoUsuario.getEmail(),novoUsuario.getSenha())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if(task.isSuccessful()){
-                    msg("Usuario criado com sucesso");
-                }
-                else{
-                    msg("Erro ao cadastrar o usuário");
-                }
-
-            }
-        });
-
         UsuarioDAO dao = new UsuarioDAO();
         dao.inserir(novoUsuario);
 
-        //cadastro para autenticação
-       // firebaseAuth.createUserWithEmailAndPassword(novoUsuario.getEmail());
+        return novoUsuario;
 
-        /*
-        Toast.makeText(this,"Nome do Usuario = "+novoUsuario.getNome(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"E-MAIL = "+novoUsuario.getEmail(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"Telefone = "+novoUsuario.getTelefone(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"RG = "+novoUsuario.getRg(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"Contato Proximo = "+novoUsuario.getContatoProximo(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"Cidade = "+novoUsuario.getCidade(),Toast.LENGTH_LONG).show();
-        */
+
 
     }
 
     //
+    public  void Autenticacao(String email,String senha){
+
+        final Intent intent = new Intent(this, Cadastro2Activity.class);
+        usuarioAuth = FirebaseAuth.getInstance();
+
+        usuarioAuth.createUserWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(Cadastro1Activity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()){
+                            sucessoAuth = true;
+                            startActivity(intent);
+
+                        }
+                        else{
+                            sucessoAuth = false;
+                        }
+
+                    }});
+
+    }
 
     //criando mascaras
     public void MascaraTelefone()

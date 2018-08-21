@@ -1,5 +1,6 @@
-package com.fetin.securityapp.model;
+package com.fetin.securityapp.model.Dao;
 
+import com.fetin.securityapp.model.Usuario;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

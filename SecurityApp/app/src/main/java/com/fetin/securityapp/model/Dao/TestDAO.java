@@ -1,7 +1,8 @@
-package com.fetin.securityapp.model;
+package com.fetin.securityapp.model.Dao;
 
 import android.util.Log;
 
+import com.fetin.securityapp.model.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -7,41 +7,35 @@
     android:orientation="vertical"
     tools:context=".control.Menu.MenuActivity">
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/viewPagerTab"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:stl_clickable="true"
-        app:stl_defaultTabBackground="@color/colorPrimary"
-        app:stl_defaultTabTextAllCaps="true"
-        app:stl_defaultTabTextColor="@android:color/white"
-        app:stl_defaultTabTextHorizontalPadding="16dp"
-        app:stl_defaultTabTextMinWidth="0dp"
-        app:stl_defaultTabTextSize="12sp"
-        app:stl_distributeEvenly="true"
-        app:stl_dividerColor="#40C4FF"
-        app:stl_dividerThickness="5dp"
-        app:stl_drawDecorationAfterTab="false"
-        app:stl_indicatorAlwaysInCenter="false"
-        app:stl_indicatorColor="#40C4FF"
-        app:stl_indicatorCornerRadius="2dp"
-        app:stl_indicatorGravity="bottom"
-        app:stl_indicatorInFront="false"
-        app:stl_indicatorInterpolation="smart"
-        app:stl_indicatorThickness="4dp"
-        app:stl_indicatorWidth="auto"
-        app:stl_indicatorWithoutPadding="false"
-        app:stl_overlineColor="#4D000000"
-        app:stl_overlineThickness="0dp"
-        app:stl_titleOffset="24dp"
-        app:stl_underlineColor="#4D000000"
-        app:stl_underlineThickness="1dp" >
+        android:layout_height="40dp"
+        android:orientation="horizontal">
 
-    </com.ogaclejapan.smarttablayout.SmartTabLayout>
+        <Button
+            android:id="@+id/abaMapa"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Mapa"
+            android:textColor="@android:color/white" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/abaCelular"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Celular"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragmentMenu"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="385dp"
         android:layout_height="match_parent"
-        android:layout_below="@id/viewPagerTab" />
+        tools:context=".control.Menu.MenuActivity" />
+
 </LinearLayout>

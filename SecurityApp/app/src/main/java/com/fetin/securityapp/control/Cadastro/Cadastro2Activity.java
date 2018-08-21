@@ -1,4 +1,4 @@
-package com.fetin.securityapp.control;
+package com.fetin.securityapp.control.Cadastro;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
-import com.fetin.securityapp.model.CelularDAO;
+import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
@@ -122,9 +123,10 @@ public class Cadastro2Activity extends AppCompatActivity {
         //    Toast.makeText(this,"IMEI2 = "+novoCelular.getImei2(),Toast.LENGTH_LONG).show();
 
 
-    //criando mascaras
+
     }
 
+    //criando mascaras
     public void MascaraChip2()
     {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá

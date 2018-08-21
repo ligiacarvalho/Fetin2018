@@ -6,13 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapaFragment extends android.app.Fragment {
+public class MapaFragment extends Fragment {
 
 
     public MapaFragment() {
@@ -24,7 +25,14 @@ public class MapaFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_mapa, container, false);
+
+    }
+
+    public void msg(String s)
+    {
+        Toast.makeText(getActivity(),s,Toast.LENGTH_LONG).show();
     }
 
 }
