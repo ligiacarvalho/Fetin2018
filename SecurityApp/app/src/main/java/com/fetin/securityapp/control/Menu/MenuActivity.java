@@ -130,6 +130,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Sua função é se conectar com serviços da Google, sua execução é assíncrona e o resultado desse método é
         // entregue ao método "onMapR
         // eady"
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragmentMenu);
+
         mapFragment.getMapAsync(this);
 
         //Conexao com o Google Services
@@ -146,6 +149,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // conecta a API
         mGoogleApiClient.connect();
+
 
         // pega os serviços para uso da localização na API da Google
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -213,7 +217,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         transaction.replace(R.id.fragmentMenu, mapFragment);
         transaction.commit();
 
-
     }
 
     @Override
@@ -263,7 +266,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        mMap = googleMap;
     }
 
     @Override
