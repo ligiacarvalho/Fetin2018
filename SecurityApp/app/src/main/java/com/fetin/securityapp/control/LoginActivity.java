@@ -138,8 +138,6 @@ public class LoginActivity extends AppCompatActivity {
 
             finish();
             startActivity(intent);
-
-
         }
 
     }
@@ -148,13 +146,9 @@ public class LoginActivity extends AppCompatActivity {
     //fazer cadastro
 
     public void cadastrar(View view)
-
     {
-
         Intent intent = new Intent(this, Cadastro1Activity.class);
-
         startActivity(intent);
-
     }
 
 
