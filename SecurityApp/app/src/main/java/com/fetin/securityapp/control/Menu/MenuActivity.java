@@ -25,6 +25,9 @@ import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
+import com.fetin.securityapp.control.Tutorial.TutorialActivity;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,6 +56,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SmartTabLayout smartTabLayout;
     private CelularFragment celFragment;
     private MapaFragment mapaFragment;
+    private FirebaseAuth usuarioAuth;
 
     // Variáveis do Google Maps
     private GoogleMap mMap;
@@ -61,6 +65,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected Location mLastLocation;
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
+
 
     // Abas
     private Button abaCelular, abaMapa;
@@ -92,11 +97,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         viewPager.setAdapter(adapter);
         smartTabLayout.setViewPager(viewPager);*/
 
-        aplicaGoogleMaps();
 
+        aplicaGoogleMaps();
 
         // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
         // viewPagerTab.setViewPager(viewPager);
+
+
     }
 
     public void referenciaComponentes() {
@@ -224,14 +231,25 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Funções do menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioAuth = FirebaseAuth.getInstance();
+
         switch (item.getItemId()) {
             case R.id.menuSair:
                 deslogarUsuario();
                 break;
             case R.id.menuConfig:
                 //chamar as telas de cadastro
-                Intent intent = new Intent(this, Cadastro1Activity.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(this, Cadastro1Activity.class);
+                startActivity(intent1);
+                break;
+            case R.id.menuExcluirConta:
+                 //usuarioDAO.excluir();
+                break;
+            case R.id.menuTutorial:
+                //chamar as telas de tutorial
+                Intent intent2 = new Intent(this, TutorialActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);

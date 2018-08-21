@@ -74,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
         usuarioDAO = new UsuarioDAO();
         celularDAO = new CelularDAO();
 
-        findViewById(R.id.btn_del).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.btn_del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 usuarioDAO.excluir();
                 celularDAO.excluir();
 
             }
-        });
+        }); */
 
 
     }
@@ -132,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, MenuActivity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
+
         usuarioAuth.signInWithEmailAndPassword(email,senha)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -162,10 +163,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if (resp) {
 
-<<<<<<< HEAD
+
             finish();
             startActivity(intent);
-=======
 
             login = editTextEmail.getText().toString();
 
@@ -177,10 +177,6 @@ public class LoginActivity extends AppCompatActivity {
                 msg("Usuario autenticado com sucesso");
                 //   startActivity(intent);
             }
-
-
-
->>>>>>> 555d29003de31c9818fa7f231b643919a731f0b6
         }
 
     }
