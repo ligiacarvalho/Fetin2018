@@ -2,6 +2,7 @@ package com.fetin.securityapp.control;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,10 @@ import com.fetin.securityapp.model.Usuario;
 import com.fetin.securityapp.model.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class Cadastro1Activity extends AppCompatActivity {
@@ -24,12 +29,17 @@ public class Cadastro1Activity extends AppCompatActivity {
     private EditText campoCPF;
     private EditText campoContatoProximo;
     private EditText campoCidade;
+    private EditText campoSenha;
+
+    private FirebaseAuth usuarioAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro1);
         referenciaComponentes();
+
+        usuarioAuth = FirebaseAuth.getInstance();
 
         MascaraTelefone();
         MascaraCPF();
@@ -45,6 +55,7 @@ public class Cadastro1Activity extends AppCompatActivity {
         campoCPF = findViewById(R.id.campoCPF);
         campoContatoProximo = findViewById(R.id.campoContatoProximo);
         campoCidade = findViewById(R.id.campoCidade);
+        campoSenha = findViewById(R.id.campoSenha);
     }
 
     public boolean verificaEntradaDeDados()
@@ -72,6 +83,11 @@ public class Cadastro1Activity extends AppCompatActivity {
             return false;
         }
         if (campoContatoProximo.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(campoSenha.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
             return false;
@@ -108,12 +124,33 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setNome(campoNomeCompleto.getText().toString());
         novoUsuario.setEmail(campoEmail.getText().toString());
         novoUsuario.setTelefone(campoTelefone.getText().toString());
-        novoUsuario.setRg(campoCPF.getText().toString());
+        novoUsuario.setCPF(campoCPF.getText().toString());
         novoUsuario.setContatoProximo(campoContatoProximo.getText().toString());
         novoUsuario.setCidade(campoCidade.getText().toString());
+        novoUsuario.setSenha(campoSenha.getText().toString());
+
+        msg(campoSenha.getText().toString());
+
+        usuarioAuth.createUserWithEmailAndPassword(novoUsuario.getEmail(),novoUsuario.getSenha())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+                    msg("Usuario criado com sucesso");
+                }
+                else{
+                    msg("Erro ao cadastrar o usuário");
+                }
+
+            }
+        });
 
         UsuarioDAO dao = new UsuarioDAO();
         dao.inserir(novoUsuario);
+
+        //cadastro para autenticação
+       // firebaseAuth.createUserWithEmailAndPassword(novoUsuario.getEmail());
 
         /*
         Toast.makeText(this,"Nome do Usuario = "+novoUsuario.getNome(),Toast.LENGTH_LONG).show();
@@ -125,6 +162,8 @@ public class Cadastro1Activity extends AppCompatActivity {
         */
 
     }
+
+    //
 
     //criando mascaras
     public void MascaraTelefone()
@@ -179,5 +218,10 @@ public class Cadastro1Activity extends AppCompatActivity {
 
     }
 
+
+    public void msg(String s)
+    {
+        Toast.makeText(this,"Senha = "+s,Toast.LENGTH_LONG).show();
+    }
 
 }

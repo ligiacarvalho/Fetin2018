@@ -20,7 +20,7 @@ public class UsuarioDAO {
 
         // Adicionando um nó filho ao "usuários", com chave única gerada randomicamente
         // .E nela, colocando os dados dos novos usuários.
-        referenciaUsuario.child(novo_usuario.getRg()).setValue(novo_usuario);
+        referenciaUsuario.child(novo_usuario.getCPF()).setValue(novo_usuario);
     }
 
     public void buscar()

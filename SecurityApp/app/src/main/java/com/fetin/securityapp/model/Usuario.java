@@ -2,11 +2,19 @@ package com.fetin.securityapp.model;
 
 public class Usuario {
 
-    private String nome,email,telefone,CPF,contatoProximo,cidade;
+    private String nome,email,telefone,CPF,contatoProximo,cidade,senha;
 
      /*
         Getters And Setters
     */
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     public String getNome() {
         return nome;
@@ -32,12 +40,12 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-    public String getRg() {
+    public String getCPF() {
         return CPF;
     }
 
-    public void setRg(String rg) {
-        this.CPF = rg;
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
     }
 
     public String getContatoProximo() {
