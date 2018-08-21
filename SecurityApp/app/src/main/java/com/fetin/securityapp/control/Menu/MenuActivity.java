@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
@@ -170,8 +171,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
-
-
                         if (task.isSuccessful() && task.getResult() != null) {
 
                             //obtém a última localização conhecida
@@ -187,7 +186,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //A excepção pode ser obtida com task.getException()
 
                             msg("errro");
-
                         }
                     }
                 });
@@ -204,8 +202,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Onde vou exibir, qual fragment será mostrado
         transaction.replace(R.id.fragmentMenu, celFragment);
         transaction.commit();
-
-
     }
 
     public void changeToMapaFragment() {
@@ -216,7 +212,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Onde vou exibir, qual fragment será mostrado
         transaction.replace(R.id.fragmentMenu, mapFragment);
         transaction.commit();
-
     }
 
     @Override
@@ -226,12 +221,17 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onCreateOptionsMenu(menu);
     }
 
-    //funçao do menu sair
+    //Funções do menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuSair:
                 deslogarUsuario();
+                break;
+            case R.id.menuConfig:
+                //chamar as telas de cadastro
+                Intent intent = new Intent(this, Cadastro1Activity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

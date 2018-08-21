@@ -162,6 +162,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (resp) {
 
+<<<<<<< HEAD
+            finish();
+            startActivity(intent);
+=======
 
             login = editTextEmail.getText().toString();
 
@@ -176,6 +180,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+>>>>>>> 555d29003de31c9818fa7f231b643919a731f0b6
         }
 
     }
@@ -184,13 +189,9 @@ public class LoginActivity extends AppCompatActivity {
     //fazer cadastro
 
     public void cadastrar(View view)
-
     {
-
         Intent intent = new Intent(this, Cadastro1Activity.class);
-
         startActivity(intent);
-
     }
 
 
