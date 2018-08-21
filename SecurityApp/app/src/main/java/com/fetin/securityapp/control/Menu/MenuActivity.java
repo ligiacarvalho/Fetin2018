@@ -234,7 +234,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 deslogarUsuario();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

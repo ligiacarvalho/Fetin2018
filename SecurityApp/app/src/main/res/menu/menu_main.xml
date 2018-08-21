@@ -12,6 +12,16 @@
         app:showAsAction="never"
         android:icon="@drawable/ic_white_24dp"
         />
+    <item android:id="@+id/menuTutorial"
+        android:title= "Tutorial"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_white_24dp"
+        />
+    <item android:id="@+id/menuExcluirConta"
+        android:title= "Excluir Conta"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_white_24dp"
+        />
 
 
 

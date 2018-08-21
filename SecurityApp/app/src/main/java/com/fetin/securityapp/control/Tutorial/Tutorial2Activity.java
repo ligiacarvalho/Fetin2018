@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
 
 public class Tutorial2Activity extends AppCompatActivity {
@@ -40,7 +41,7 @@ public class Tutorial2Activity extends AppCompatActivity {
         {
             if(termoUso2.isChecked())
             {
-                Intent intent = new Intent(this, MenuActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
 
             }

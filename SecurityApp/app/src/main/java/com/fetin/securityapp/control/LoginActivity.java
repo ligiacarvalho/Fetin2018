@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         }
                         else{
-                            msg("Usuário não autenticado");
+                            msg("Usuario ao autenticado");
 
                         }
                     }

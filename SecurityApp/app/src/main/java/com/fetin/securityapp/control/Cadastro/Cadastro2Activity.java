@@ -116,14 +116,6 @@ public class Cadastro2Activity extends AppCompatActivity {
         CelularDAO daoC = new CelularDAO();
         daoC.inserir(novoCelular);
 
-        //    Toast.makeText(this,"Modelo cel = "+novoCelular.getModelo(),Toast.LENGTH_LONG).show();
-        //    Toast.makeText(this,"Chip 1 = "+novoCelular.getChip1(),Toast.LENGTH_LONG).show();
-        //    Toast.makeText(this,"Chip 2 = "+novoCelular.getChip2(),Toast.LENGTH_LONG).show();
-        //    Toast.makeText(this,"IMEI1 "+novoCelular.getImei1(),Toast.LENGTH_LONG).show();
-        //    Toast.makeText(this,"IMEI2 = "+novoCelular.getImei2(),Toast.LENGTH_LONG).show();
-
-
-
     }
 
     //criando mascaras
