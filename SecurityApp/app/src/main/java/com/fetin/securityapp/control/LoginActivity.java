@@ -19,6 +19,7 @@ import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Cadastro.Cadastro2Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.TestDAO;
 
@@ -132,50 +133,37 @@ public class LoginActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, MenuActivity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
-
         usuarioAuth.signInWithEmailAndPassword(email,senha)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             sucessoAuth = true;
-                            startActivity(intent);
 
+                                startActivity(intent);
                         }
                         else{
-                            msg("Usuario ao autenticado");
+                            msg("Usuario não autenticado");
 
                         }
                     }
                 });
-
     }
 
     public void logar(View view)
 
     {
-
-        Intent intent = new Intent(this, MenuActivity.class);
-
         boolean resp = verificaEntradaDeDados();
-
-
 
         if (resp) {
 
-
-            finish();
-            startActivity(intent);
-
             login = editTextEmail.getText().toString();
-
             senha = editTextSenha.getText().toString();
 
             Autenticacao(login, senha);
 
             if(sucessoAuth == true) {
                 msg("Usuario autenticado com sucesso");
-                //   startActivity(intent);
             }
         }
 
@@ -183,7 +171,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     //fazer cadastro
-
     public void cadastrar(View view)
     {
         Intent intent = new Intent(this, Cadastro1Activity.class);

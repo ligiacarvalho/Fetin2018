@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Menu.MenuActivity;
 
 public class TutorialActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class TutorialActivity extends AppCompatActivity {
     //pular tutorial
     public void pularTutorial(View view)
     {
-        Intent intent = new Intent(this,Tutorial2Activity.class);
+        Intent intent = new Intent(this,MenuActivity.class);
         startActivity(intent);
     }
 

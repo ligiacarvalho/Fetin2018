@@ -101,7 +101,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     //finalizar cadastro pessoal
     public void finalizarCadastroPessoal(View view)
     {
-       // Intent intent = new Intent(this, Cadastro2Activity.class);
+        Intent intent = new Intent(this, Cadastro2Activity.class);
 
         boolean resp = verificaEntradaDeDados();
 
@@ -110,14 +110,14 @@ public class Cadastro1Activity extends AppCompatActivity {
             Usuario novoUsuario = getDadosDosCampos();
 
             Autenticacao(novoUsuario.getEmail(),novoUsuario.getSenha());
-
+/*
             if(sucessoAuth == true) {
                 msg("Usuario autenticado com sucesso");
-             //   startActivity(intent);
+                startActivity(intent);
             }
-          //  else{
-          //      msg("Usuario não autenticado");
-          //  }
+            else{
+                msg("Usuario não autenticado");
+            }*/
 
         }
     }
@@ -146,8 +146,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         dao.inserir(novoUsuario);
 
         return novoUsuario;
-
-
 
     }
 
@@ -224,7 +222,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
         contatoProximo.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
-
 
     }
 

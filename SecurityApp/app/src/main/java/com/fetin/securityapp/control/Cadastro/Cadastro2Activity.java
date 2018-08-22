@@ -9,6 +9,8 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.LoginActivity;
+import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
@@ -77,7 +79,7 @@ public class Cadastro2Activity extends AppCompatActivity {
     //finalizar cadastro total
     public void finalizarCadastro(View view)
     {
-        Intent intent = new Intent(this, TutorialActivity.class);
+        Intent intent = new Intent(this, Tutorial2Activity.class);
         boolean resp = verificaEntradaDeDados();
 
         if(resp){
