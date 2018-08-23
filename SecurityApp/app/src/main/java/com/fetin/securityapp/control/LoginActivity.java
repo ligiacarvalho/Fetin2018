@@ -75,15 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         usuarioDAO = new UsuarioDAO();
         celularDAO = new CelularDAO();
 
-        /*findViewById(R.id.btn_del).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                usuarioDAO.excluir();
-                celularDAO.excluir();
-
-            }
-        }); */
-
+        metodoParaTeste();
 
     }
 
@@ -97,6 +89,14 @@ public class LoginActivity extends AppCompatActivity {
         editTextSenha = findViewById(R.id.editTextSenha);
 
     }
+
+
+    public void metodoParaTeste()
+    {
+        editTextEmail.setText("ni@inatel.br");
+        editTextSenha.setText("1231231231");
+    }
+
 
     public boolean verificaEntradaDeDados()
 
@@ -127,23 +127,25 @@ public class LoginActivity extends AppCompatActivity {
         return true;
 
     }
+
     //
-    public  void Autenticacao(String email,String senha){
+    public void Autenticacao(String email, String senha) {
 
         final Intent intent = new Intent(this, MenuActivity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
-        usuarioAuth.signInWithEmailAndPassword(email,senha)
+        usuarioAuth.signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             sucessoAuth = true;
+                            finish();
+                            startActivity(intent);
+                            msg("Login efeutado com sucesso!!");
 
-                                startActivity(intent);
-                        }
-                        else{
-                            msg("Usuario não autenticado");
+                        } else {
+                            msg("Erro ao efetuar o login!");
 
                         }
                     }
@@ -162,25 +164,19 @@ public class LoginActivity extends AppCompatActivity {
 
             Autenticacao(login, senha);
 
-            if(sucessoAuth == true) {
-                msg("Usuario autenticado com sucesso");
-            }
         }
 
     }
 
 
     //fazer cadastro
-    public void cadastrar(View view)
-    {
+    public void cadastrar(View view) {
         Intent intent = new Intent(this, Cadastro1Activity.class);
         startActivity(intent);
     }
 
 
-
-    public void msg(String s)
-    {
-        Toast.makeText(this,"Senha = "+s,Toast.LENGTH_LONG).show();
+    public void msg(String s) {
+        Toast.makeText(this, "Senha = " + s, Toast.LENGTH_LONG).show();
     }
 }

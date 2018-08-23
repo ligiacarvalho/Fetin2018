@@ -15,6 +15,7 @@ import com.fetin.securityapp.model.Usuario;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -41,13 +42,25 @@ public class Cadastro1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro1);
         referenciaComponentes();
 
-
-
         MascaraTelefone();
         MascaraCPF();
         MascaraContatoProximo();
+
+        metodoParaTeste();
+
     }
 
+
+    public void metodoParaTeste()
+    {
+        campoNomeCompleto.setText("Nome Teste");
+        //campoEmail.setText("email@teste");
+        campoTelefone.setText("35999999999");
+        campoCPF.setText("11111111125");
+        campoContatoProximo.setText("123");
+        campoCidade.setText("123");
+        campoSenha.setText("0123456789");
+    }
 
     public void referenciaComponentes() {
 
@@ -66,32 +79,38 @@ public class Cadastro1Activity extends AppCompatActivity {
         if(campoNomeCompleto.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoNomeCompleto.requestFocus();
             return false;
         }
 
         if (campoEmail.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoEmail.requestFocus();
             return false;
         }
         if (campoTelefone.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoTelefone.requestFocus();
             return false;
         }
         if (campoCPF.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoCPF.requestFocus();
             return false;
         }
         if (campoContatoProximo.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoContatoProximo.requestFocus();
             return false;
         }
         if(campoSenha.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+            campoSenha.requestFocus();
             return false;
         }
 
@@ -101,8 +120,6 @@ public class Cadastro1Activity extends AppCompatActivity {
     //finalizar cadastro pessoal
     public void finalizarCadastroPessoal(View view)
     {
-        Intent intent = new Intent(this, Cadastro2Activity.class);
-
         boolean resp = verificaEntradaDeDados();
 
         if(resp == true){
@@ -110,14 +127,6 @@ public class Cadastro1Activity extends AppCompatActivity {
             Usuario novoUsuario = getDadosDosCampos();
 
             Autenticacao(novoUsuario.getEmail(),novoUsuario.getSenha());
-/*
-            if(sucessoAuth == true) {
-                msg("Usuario autenticado com sucesso");
-                startActivity(intent);
-            }
-            else{
-                msg("Usuario não autenticado");
-            }*/
 
         }
     }
@@ -155,7 +164,9 @@ public class Cadastro1Activity extends AppCompatActivity {
         final Intent intent = new Intent(this, Cadastro2Activity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
-        usuarioAuth.createUserWithEmailAndPassword(email, senha)
+        String emailParaTeste = "teste@teste.br";
+
+        usuarioAuth.createUserWithEmailAndPassword(emailParaTeste, senha)
                 .addOnCompleteListener(Cadastro1Activity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -163,10 +174,12 @@ public class Cadastro1Activity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             sucessoAuth = true;
                             startActivity(intent);
+                            msg("Usuário criado com sucesso!");
 
                         }
                         else{
                             sucessoAuth = false;
+                            msg("Erro ao criar o novo usuário!");
                         }
 
                     }});
