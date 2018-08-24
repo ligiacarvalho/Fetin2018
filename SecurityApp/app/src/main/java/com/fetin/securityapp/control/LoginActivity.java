@@ -1,12 +1,10 @@
 package com.fetin.securityapp.control;
 
-import android.Manifest;
 import android.content.Intent;
 
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -19,11 +17,8 @@ import android.widget.Toast;
 import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
-import com.fetin.securityapp.control.Cadastro.Cadastro2Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
-import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
-import com.fetin.securityapp.model.Dao.TestDAO;
 
 
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
@@ -45,9 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // objeto para fazer manipulações no banco de dados do nó usuário
 
-    private TestDAO userDao;
-
-    private UsuarioDAO usuarioDAO;
     private CelularDAO celularDAO;
 
     // Objeto para gerenciar o banco de dados
@@ -74,11 +66,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         referenciaComponentes();
-        usuarioDAO = new UsuarioDAO();
         celularDAO = new CelularDAO();
 
-        UsuarioDAO dao = new UsuarioDAO();
-       // dao.buscarUsuarios();
+        // verificando se a variável "dao" já foi criada
+        UsuarioDAO.getInstance();
+
+        // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
+        UsuarioDAO.dao.buscarUsuarios();
 
         metodoParaTeste();
 

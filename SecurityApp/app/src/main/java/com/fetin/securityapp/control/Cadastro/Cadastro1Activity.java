@@ -76,33 +76,33 @@ public class Cadastro1Activity extends AppCompatActivity {
 
     {
         if (campoNomeCompleto.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo de nome vazio ou inválido!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo do nome está vazio ou inválido!", Toast.LENGTH_LONG).show();
             campoNomeCompleto.requestFocus();
             return false;
         }
 
         if (campoEmail.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo do e-mail está vazio  ou inválido!", Toast.LENGTH_LONG).show();
             campoEmail.requestFocus();
             return false;
         }
         if (campoTelefone.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo do telefone está vazio ou inválido!", Toast.LENGTH_LONG).show();
             campoTelefone.requestFocus();
             return false;
         }
         if (campoCPF.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo do cpf está vazio ou inválido!", Toast.LENGTH_LONG).show();
             campoCPF.requestFocus();
             return false;
         }
         if (campoContatoProximo.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo do contato próximo, vazio ou inválido!", Toast.LENGTH_LONG).show();
             campoContatoProximo.requestFocus();
             return false;
         }
         if (campoSenha.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Campo da senha está vazia ou inválido!", Toast.LENGTH_LONG).show();
             campoSenha.requestFocus();
             return false;
         }
@@ -142,8 +142,8 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setCidade(campoCidade.getText().toString());
         novoUsuario.setSenha(campoSenha.getText().toString());
 
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.inserir(novoUsuario);
+        UsuarioDAO.getInstance();
+        UsuarioDAO.dao.inserir(novoUsuario);
 
         return novoUsuario;
 
@@ -163,7 +163,6 @@ public class Cadastro1Activity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             sucessoAuth = true;
                             startActivity(intent);
-                            msg("Usuário criado com sucesso!");
 
                         } else {
                             sucessoAuth = false;

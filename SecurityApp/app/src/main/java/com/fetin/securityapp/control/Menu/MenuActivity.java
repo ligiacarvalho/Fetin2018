@@ -230,8 +230,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Funções do menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioAuth = FirebaseAuth.getInstance();
+
+        boolean sucesso = false;
+
+        // pegando o acesso a variável DAO para fazer operações com o banco
+        UsuarioDAO.getInstance();
 
         switch (item.getItemId()) {
             case R.id.menuSair:
@@ -243,7 +246,19 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent1);
                 break;
             case R.id.menuExcluirConta:
-                 //usuarioDAO.excluir();
+                 sucesso = UsuarioDAO.dao.excluirUsuarioAutenticado();
+                 if(sucesso == true)
+                 {
+                     Intent intent = new Intent(this, LoginActivity.class);
+
+                     msg("Usuário deletado com sucesso!");
+
+                     startActivity(intent);
+                 }
+                 else
+                 {
+                     msg("Erro ao deletar o usuário! :(");
+                 }
                 break;
             case R.id.menuTutorial:
                 //chamar as telas de tutorial
@@ -255,10 +270,27 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void deslogarUsuario() {
+
+        boolean sucesso = false;
+
         try {
-            //autenticacao.signOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            UsuarioDAO.getInstance();
+
+            sucesso = UsuarioDAO.dao.deslogarUsuario();
+
+            if(sucesso)
+            {
+                Intent intent = new Intent(this, LoginActivity.class);
+                msg("Logout feito com sucesso!");
+                startActivity(intent);
+
+            }
+            else
+            {
+                msg("Erro ao fazer logout!");
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

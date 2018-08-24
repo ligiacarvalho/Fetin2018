@@ -13,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.fetin.securityapp.model.Usuario;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,11 +50,7 @@ public class CelularFragment extends Fragment {
                 "CPF do dono: 000000\n"+
                 "Contato adiciondo: 000000\n"+
                 "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n");
-        //builder.setMessage("Modelo do celular: Modelo1");
-        //builder.setMessage("CPF do dono: 000000");
-        //builder.setMessage("Contato adiciondo: 000000");
-        //define um botão como positivo
-        //builder.setMessage("Descartar informações? (ou seja, o celular foi encontrado e devolvido)");
+
         builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 //Toast.makeText(MainActivity.this, "positivo=" + arg1, Toast.LENGTH_SHORT).show();
@@ -79,7 +79,8 @@ public class CelularFragment extends Fragment {
 
         listaItens = view.findViewById(R.id.listViewId);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+
+        ArrayAdapter adapter = new ArrayAdapter(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,

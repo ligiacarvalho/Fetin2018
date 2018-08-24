@@ -2,11 +2,19 @@ package com.fetin.securityapp.model;
 
 public class Usuario {
 
-    private String nome,email,telefone,CPF,contatoProximo,cidade,senha;
+    private String chave, nome, email, telefone, CPF, contatoProximo, cidade, senha;
 
      /*
         Getters And Setters
     */
+
+    public String getChave() {
+        return chave;
+    }
+
+    public void setChave(String chave) {
+        this.chave = chave;
+    }
 
     public String getSenha() {
         return senha;
