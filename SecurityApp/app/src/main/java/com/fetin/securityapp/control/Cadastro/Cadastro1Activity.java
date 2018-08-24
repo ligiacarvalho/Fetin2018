@@ -51,8 +51,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     }
 
 
-    public void metodoParaTeste()
-    {
+    public void metodoParaTeste() {
         campoNomeCompleto.setText("Nome Teste");
         //campoEmail.setText("email@teste");
         campoTelefone.setText("35999999999");
@@ -76,40 +75,34 @@ public class Cadastro1Activity extends AppCompatActivity {
     public boolean verificaEntradaDeDados()
 
     {
-        if(campoNomeCompleto.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoNomeCompleto.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo de nome vazio ou inválido!", Toast.LENGTH_LONG).show();
             campoNomeCompleto.requestFocus();
             return false;
         }
 
-        if (campoEmail.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoEmail.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             campoEmail.requestFocus();
             return false;
         }
-        if (campoTelefone.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoTelefone.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             campoTelefone.requestFocus();
             return false;
         }
-        if (campoCPF.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoCPF.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             campoCPF.requestFocus();
             return false;
         }
-        if (campoContatoProximo.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoContatoProximo.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             campoContatoProximo.requestFocus();
             return false;
         }
-        if(campoSenha.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoSenha.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             campoSenha.requestFocus();
             return false;
         }
@@ -118,15 +111,14 @@ public class Cadastro1Activity extends AppCompatActivity {
     }
 
     //finalizar cadastro pessoal
-    public void finalizarCadastroPessoal(View view)
-    {
+    public void finalizarCadastroPessoal(View view) {
         boolean resp = verificaEntradaDeDados();
 
-        if(resp == true){
+        if (resp == true) {
 
             Usuario novoUsuario = getDadosDosCampos();
 
-            Autenticacao(novoUsuario.getEmail(),novoUsuario.getSenha());
+            Autenticacao(novoUsuario.getEmail(), novoUsuario.getSenha());
 
         }
     }
@@ -138,8 +130,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     }
 
 
-    public Usuario getDadosDosCampos()
-    {
+    public Usuario getDadosDosCampos() {
         //instanciando o usuario
         Usuario novoUsuario = new Usuario();
 
@@ -159,36 +150,33 @@ public class Cadastro1Activity extends AppCompatActivity {
     }
 
     //
-    public  void Autenticacao(String email,String senha){
+    public void Autenticacao(String email, String senha) {
 
         final Intent intent = new Intent(this, Cadastro2Activity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
-        String emailParaTeste = "teste@teste.br";
-
-        usuarioAuth.createUserWithEmailAndPassword(emailParaTeste, senha)
+        usuarioAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(Cadastro1Activity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             sucessoAuth = true;
                             startActivity(intent);
                             msg("Usuário criado com sucesso!");
 
-                        }
-                        else{
+                        } else {
                             sucessoAuth = false;
-                            msg("Erro ao criar o novo usuário!");
+                            msg("E-mail inválido! Digite novamente.");
                         }
 
-                    }});
+                    }
+                });
 
     }
 
     //criando mascaras
-    public void MascaraTelefone()
-    {
+    public void MascaraTelefone() {
         // Referenciando o número o campo do número do Telefone, para pode manipular os dados de lá
         EditText numeroTelefone = findViewById(R.id.campoTelefone);
 
@@ -196,17 +184,16 @@ public class Cadastro1Activity extends AppCompatActivity {
         SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
 
         // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
-        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroTelefone,mascaraSimplesDeTelefone);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroTelefone, mascaraSimplesDeTelefone);
 
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
-        numeroTelefone.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
+        numeroTelefone.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
 
 
     }
 
-    public void MascaraCPF()
-    {
+    public void MascaraCPF() {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
         EditText numeroCPF = findViewById(R.id.campoCPF);
 
@@ -214,15 +201,14 @@ public class Cadastro1Activity extends AppCompatActivity {
         SimpleMaskFormatter mascaraSimplesDeCPF = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
 
         // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
-        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoCPF = new MaskTextWatcher(numeroCPF,mascaraSimplesDeCPF);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoCPF = new MaskTextWatcher(numeroCPF, mascaraSimplesDeCPF);
 
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
-        numeroCPF.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoCPF );
+        numeroCPF.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoCPF);
     }
 
-    public void MascaraContatoProximo()
-    {
+    public void MascaraContatoProximo() {
         // Referenciando o número o campo do número do Telefone, para pode manipular os dados de lá
         EditText contatoProximo = findViewById(R.id.campoContatoProximo);
 
@@ -230,18 +216,17 @@ public class Cadastro1Activity extends AppCompatActivity {
         SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
 
         // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
-        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(contatoProximo,mascaraSimplesDeTelefone);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(contatoProximo, mascaraSimplesDeTelefone);
 
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
-        contatoProximo.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
+        contatoProximo.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
 
     }
 
 
-    public void msg(String s)
-    {
-        Toast.makeText(this,"Senha = "+s,Toast.LENGTH_LONG).show();
+    public void msg(String s) {
+        Toast.makeText(this, "Senha = " + s, Toast.LENGTH_LONG).show();
     }
 
 }

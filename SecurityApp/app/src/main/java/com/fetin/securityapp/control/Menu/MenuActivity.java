@@ -150,11 +150,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addApi(LocationServices.API)
                 .build();
 
-        // requisitando ao usuário que permita o aplicativo enviar SMS
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
-
         // conecta a API
         mGoogleApiClient.connect();
 

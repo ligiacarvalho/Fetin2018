@@ -14,7 +14,7 @@
 
         <Button
             android:id="@+id/abaMapa"
-            android:layout_width="152dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
@@ -23,7 +23,7 @@
 
         <Button
             android:id="@+id/abaCelular"
-            android:layout_width="152dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/fragmentMenu"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="385dp"
+        android:layout_width="397dp"
         android:layout_height="match_parent"
         tools:context=".control.Menu.MenuActivity" />
 

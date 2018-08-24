@@ -14,6 +14,7 @@ import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
@@ -35,6 +36,9 @@ public class Cadastro2Activity extends AppCompatActivity {
         MascaraChip1();
         MascaraChip2();
 
+
+        metodoParaTeste();
+
     }
     public void referenciaComponentes() {
 
@@ -46,6 +50,18 @@ public class Cadastro2Activity extends AppCompatActivity {
         numeroDoChip2 = findViewById(R.id.EditTextNumChip2);
         campoIMEI1 = findViewById(R.id.campoIMEI1);
         campoIMEI2 = findViewById(R.id.campoIMEI2);
+    }
+
+    public void metodoParaTeste()
+    {
+        campoModeloCelular.setText("123");
+        campoNumeroChip1.setText("123");
+        campoNumeroChip2.setText("123");
+        numeroDoChip1.setText("123");
+        numeroDoChip2.setText("123");
+        campoIMEI1.setText("123123");
+        campoIMEI2.setText("123123");
+
     }
 
     public boolean verificaEntradaDeDados()
