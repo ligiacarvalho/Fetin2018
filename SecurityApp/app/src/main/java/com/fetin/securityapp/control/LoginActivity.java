@@ -1,10 +1,12 @@
 package com.fetin.securityapp.control;
 
+import android.Manifest;
 import android.content.Intent;
 
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -74,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         referenciaComponentes();
         usuarioDAO = new UsuarioDAO();
         celularDAO = new CelularDAO();
+
+        UsuarioDAO dao = new UsuarioDAO();
+       // dao.buscarUsuarios();
 
         metodoParaTeste();
 

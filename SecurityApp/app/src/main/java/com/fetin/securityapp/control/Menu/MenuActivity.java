@@ -73,7 +73,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("SecurityApp");
+
         setContentView(R.layout.activity_menu);
 
         referenciaComponentes();
@@ -84,8 +89,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         //smartTabLayout = findViewById(R.id.viewPagerTab);
 
         //Aplica configurações na Action Bar, para remover a sombra
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("SecurityApp");
+
 
      /*   FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getFragmentManager(),

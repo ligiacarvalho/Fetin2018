@@ -1,14 +1,20 @@
 package com.fetin.securityapp.model.Dao;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class UsuarioDAO {
 
@@ -40,8 +46,42 @@ public class UsuarioDAO {
        // referenciaUsuario.child(novo_usuario.getEmail()).setValue(novo_usuario);
     }
 
-    public void buscar()
+    public void buscarUsuarios()
     {
+        // Pegando a referencia do nó "usuários"
+        DatabaseReference referenciaUsuario = referenciaDoBanco.child("Usuario");
+
+        final ArrayList<String> lista_de_chaves = new ArrayList<>();
+
+        referenciaUsuario.addValueEventListener(new ValueEventListener() {
+
+            // método é sempre chamando quando um dado é alterado no nó "usuários"
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.i("Teste", String.valueOf(dataSnapshot.getChildrenCount()));
+
+
+                for(DataSnapshot d : dataSnapshot.getChildren())
+                {
+                    //Usuario user = d.getValue(Usuario.class);
+                    Log.i("Teste", d.getValue(Usuario.class).getNome());
+                    lista_de_chaves.add(d.getRef().getKey());
+
+                }
+            }
+            // caso alguma alteração seja cancelada, o método abaixo é executado
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        for(String chave : lista_de_chaves)
+        {
+          // Usuario user = referenciaUsuario.child(chave).getValue(Usuario.class);
+
+        }
 
     }
 
