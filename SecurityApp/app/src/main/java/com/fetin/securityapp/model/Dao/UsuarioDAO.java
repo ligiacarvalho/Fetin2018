@@ -21,6 +21,7 @@ public class UsuarioDAO {
     public static DatabaseReference referenciaDoBanco, referenciaDoUsuario;
     public static UsuarioDAO dao;
     public static ArrayList<Usuario> lista_de_usuarios;
+    public static Usuario user_cadastrado;
 
     private UsuarioDAO() {
 
@@ -34,6 +35,7 @@ public class UsuarioDAO {
             referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
             // Pegando a referencia do nó "Usuário" do FireBase
             referenciaDoUsuario = referenciaDoBanco.child("Usuario");
+            user_cadastrado = new Usuario();
 
         }
 

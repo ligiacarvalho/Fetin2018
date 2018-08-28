@@ -34,6 +34,7 @@ public class Cadastro1Activity extends AppCompatActivity {
     private EditText campoSenha;
     private boolean sucessoAuth = false;
 
+
     private FirebaseAuth usuarioAuth;
 
     @Override
@@ -144,6 +145,7 @@ public class Cadastro1Activity extends AppCompatActivity {
 
         UsuarioDAO.getInstance();
         UsuarioDAO.dao.inserir(novoUsuario);
+        UsuarioDAO.user_cadastrado = novoUsuario;
 
         return novoUsuario;
 

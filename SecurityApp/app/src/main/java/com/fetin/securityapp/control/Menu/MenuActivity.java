@@ -26,6 +26,7 @@ import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
+import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.common.ConnectionResult;
@@ -236,6 +237,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // pegando o acesso a variável DAO para fazer operações com o banco
         UsuarioDAO.getInstance();
 
+
         switch (item.getItemId()) {
             case R.id.menuSair:
                 deslogarUsuario();
@@ -264,6 +266,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //chamar as telas de tutorial
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
+                break;
+
+            case R.id.menuCelRoubado:
+                CelularDAO daoC = new CelularDAO();
+                daoC.inserirRoubado();
                 break;
         }
         return super.onOptionsItemSelected(item);

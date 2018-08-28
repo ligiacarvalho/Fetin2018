@@ -3,6 +3,7 @@ package com.fetin.securityapp.control.Cadastro;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -15,6 +16,7 @@ import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.fetin.securityapp.model.Usuario;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
@@ -27,6 +29,8 @@ public class Cadastro2Activity extends AppCompatActivity {
     EditText numeroDoChip2;
     EditText campoIMEI1;
     EditText campoIMEI2;
+
+    public static Celular cel_cadastrado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +115,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getDadosDosCampos2()
-    {
+    public void getDadosDosCampos2() {
         // Referenciando os componentes da interface
         EditText campoModeloCelular = findViewById(R.id.CampoModeloCelular);
         RadioButton campoNumeroChip1 = findViewById(R.id.radioButtonNumChip1);
@@ -133,7 +136,9 @@ public class Cadastro2Activity extends AppCompatActivity {
 
         CelularDAO daoC = new CelularDAO();
         daoC.inserir(novoCelular);
+        CelularDAO.Cel_cadastrado = novoCelular;
 
+       // Log.i("Teste", "Modelo =" + novoCelular.getModelo().toString());
     }
 
     //criando mascaras
