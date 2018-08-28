@@ -49,6 +49,16 @@ import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItems;
 
+//search
+import android.app.SearchManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+
+
 public class MenuActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private FirebaseAuth autenticacao;
@@ -65,14 +75,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected Location mLastLocation;
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
-
+    private SearchView.OnQueryTextListener searchQueryListener;
 
     // Abas
     private Button abaCelular, abaMapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
 
@@ -101,13 +110,34 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         viewPager.setAdapter(adapter);
         smartTabLayout.setViewPager(viewPager);*/
 
+        handleIntent(getIntent());
+
+       searchQueryListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("Teste","Query = "+query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.i("Teste","Query = "+newText);
+
+
+
+                return true;
+            }
+
+            public void search(String query) {
+                // reset loader, swap cursor, etc.
+            }
+
+        };
 
         aplicaGoogleMaps();
 
         // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
         // viewPagerTab.setViewPager(viewPager);
-
-
     }
 
     public void referenciaComponentes() {
@@ -222,10 +252,45 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(searchQueryListener);
+        searchView.setIconifiedByDefault(true);
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
+
+    //funçao search
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        handleIntent(intent);
+    }
+
+    //funcao search
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //use the query to search
+            Toast.makeText(getApplicationContext(), "Texto = " + query, Toast.LENGTH_LONG).show();
+            //doMySearch(query);
+
+        }
+    }
+
 
     //Funções do menu
     @Override
@@ -246,25 +311,23 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent1);
                 break;
             case R.id.menuExcluirConta:
-                 sucesso = UsuarioDAO.dao.excluirUsuarioAutenticado();
-                 if(sucesso == true)
-                 {
-                     Intent intent = new Intent(this, LoginActivity.class);
+                sucesso = UsuarioDAO.dao.excluirUsuarioAutenticado();
+                if (sucesso == true) {
+                    Intent intent = new Intent(this, LoginActivity.class);
 
-                     msg("Usuário deletado com sucesso!");
+                    msg("Usuário deletado com sucesso!");
 
-                     startActivity(intent);
-                 }
-                 else
-                 {
-                     msg("Erro ao deletar o usuário! :(");
-                 }
+                    startActivity(intent);
+                } else {
+                    msg("Erro ao deletar o usuário! :(");
+                }
                 break;
             case R.id.menuTutorial:
                 //chamar as telas de tutorial
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -278,15 +341,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             sucesso = UsuarioDAO.dao.deslogarUsuario();
 
-            if(sucesso)
-            {
+            if (sucesso) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 msg("Logout feito com sucesso!");
                 startActivity(intent);
 
-            }
-            else
-            {
+            } else {
                 msg("Erro ao fazer logout!");
             }
 
@@ -295,7 +355,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -321,7 +380,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-
 
     public void setMyLocation(Location location) {
         if (location != null) {
