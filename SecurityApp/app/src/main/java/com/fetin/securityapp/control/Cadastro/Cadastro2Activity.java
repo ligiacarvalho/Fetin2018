@@ -99,11 +99,12 @@ public class Cadastro2Activity extends AppCompatActivity {
     //finalizar cadastro total
     public void finalizarCadastro(View view)
     {
-        Intent intent = new Intent(this, Tutorial2Activity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         boolean resp = verificaEntradaDeDados();
 
         if(resp){
             getDadosDosCampos2();
+            finish();
             startActivity(intent);
         }
 
@@ -112,6 +113,7 @@ public class Cadastro2Activity extends AppCompatActivity {
     public void voltarCadastro(View view)
     {
         Intent intent = new Intent(this, Cadastro1Activity.class);
+        finish();
         startActivity(intent);
     }
 

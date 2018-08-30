@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
 
@@ -28,7 +29,8 @@ public class Tutorial2Activity extends AppCompatActivity {
     //anterior tutorial
     public void anteriorTutorial(View view)
     {
-        Intent intent = new Intent(this,TutorialActivity.class);
+        Intent intent = new Intent(this,LoginActivity.class);
+        finish();
         startActivity(intent);
     }
     public void referenciaCheckBox()
@@ -43,14 +45,10 @@ public class Tutorial2Activity extends AppCompatActivity {
         {
             if(termoUso2.isChecked())
             {
-
                 solicitandoPermissoes();
-
-                Intent intent = new Intent(this, LoginActivity.class);
-
-
+                Intent intent = new Intent(this, Cadastro1Activity.class);
+                finish();
                 startActivity(intent);
-
                 Toast.makeText(getApplicationContext(),"Cadastro feito com sucesso!",Toast.LENGTH_LONG).show();
 
             }

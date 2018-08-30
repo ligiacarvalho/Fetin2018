@@ -87,7 +87,7 @@ public class CelularFragment extends Fragment {
                 //Toast.makeText(MainActivity.this, "positivo=" + arg1, Toast.LENGTH_SHORT).show();
             }
         });
-      
+
         //cria o AlertDialog
         alerta = builder.create();
         //Exibe
