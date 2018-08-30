@@ -84,6 +84,10 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         referenciaComponentes();
 
+
+        CelularDAO daoC = new CelularDAO();
+        daoC.buscarCelularesRoubado();
+
         //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         //viewPager = findViewById(R.id.viewPager);

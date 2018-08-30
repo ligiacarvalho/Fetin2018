@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +14,32 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.model.Celular;
+import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.fetin.securityapp.model.Usuario;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CelularFragment extends Fragment {
 
-
+    private DatabaseReference referenciaDoBanco;
+    public static Usuario user_cadastrado;
+    public static Celular Cel_cadastrado;
     private ListView listaItens;
+
+
     private String[] itens = {
+
             "IMEI_1", "IMEI_2", "IMEI_3",
             "IMEI_4", "IMEI_5", "IMEI_6"
     };
@@ -44,24 +58,36 @@ public class CelularFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //define o titulo
         builder.setTitle(Algoquevaiserescritodentro[codigoPosicao]);
-        //define a mensagem
-        builder.setMessage("Dono: Fulano\n" +
-                "Modelo do celular: Modelo1\n"+
-                "CPF do dono: 000000\n"+
-                "Contato adiciondo: 000000\n"+
-                "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n");
 
-        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+
+        // saber quem ele clicou, pegar uma variavel comum lá, para fazer uma busca na lista abaixo
+        // CelularDAO.lista_de_roubo
+        // E retornar 1 celular pra vc a cessar os dados dele abaixo
+
+        for(int i = 0; i < CelularDAO.lista_de_roubo.size();i++)
+        {
+
+            //Log.i("LISTA", String.valueOf(i));
+            if( i == codigoPosicao){
+
+               builder.setMessage(
+                        //define a mensagem
+
+                        "Modelo do celular: "+ CelularDAO.lista_de_roubo.get(i).getCelularP().getModelo()+"\n"+
+                                "CPF do usuário: "+CelularDAO.lista_de_roubo.get(i).getCPF()+"\n"+
+                                "Contato adicionado: "+CelularDAO.lista_de_roubo.get(i).getContatoProximo()+"\n"+
+                                "email: "+CelularDAO.lista_de_roubo.get(i).getEmail()+"\n"
+                              // "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n"
+               );
+           }
+        }
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 //Toast.makeText(MainActivity.this, "positivo=" + arg1, Toast.LENGTH_SHORT).show();
             }
         });
-        //define um botão como negativo.
-        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                //Toast.makeText(MainActivity.this, "negativo=" + arg1, Toast.LENGTH_SHORT).show();
-            }
-        });
+      
         //cria o AlertDialog
         alerta = builder.create();
         //Exibe
@@ -74,6 +100,7 @@ public class CelularFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
         // CÓDIGO AQUI REBECA
         View view = inflater.inflate(R.layout.fragment_celular, container, false);
 
@@ -84,7 +111,7 @@ public class CelularFragment extends Fragment {
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
-                itens
+                CelularDAO.lista_de_imei
         );
 
         listaItens.setAdapter(adapter);

@@ -3,10 +3,19 @@ package com.fetin.securityapp.model;
 public class Usuario {
 
     private String chave, nome, email, telefone, CPF, contatoProximo, cidade, senha;
+    private Celular celularP;
 
      /*
         Getters And Setters
     */
+
+    public Celular getCelularP() {
+        return celularP;
+    }
+
+    public void setCelularP(Celular celularP) {
+        this.celularP = celularP;
+    }
 
     public String getChave() {
         return chave;
