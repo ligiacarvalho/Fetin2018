@@ -110,6 +110,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         viewPager.setAdapter(adapter);
         smartTabLayout.setViewPager(viewPager);*/
 
+        //funcoes search
         handleIntent(getIntent());
 
        searchQueryListener = new SearchView.OnQueryTextListener() {
@@ -266,8 +267,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         searchView.setOnQueryTextListener(searchQueryListener);
         searchView.setIconifiedByDefault(true);
-
-
 
         return super.onCreateOptionsMenu(menu);
     }

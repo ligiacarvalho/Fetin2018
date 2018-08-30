@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.LoginActivity;
+import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Usuario;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
@@ -49,7 +50,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         metodoParaTeste();
 
     }
-
 
     public void metodoParaTeste() {
         campoNomeCompleto.setText("Nome Teste");
@@ -113,19 +113,16 @@ public class Cadastro1Activity extends AppCompatActivity {
     //finalizar cadastro pessoal
     public void finalizarCadastroPessoal(View view) {
         boolean resp = verificaEntradaDeDados();
-
         if (resp == true) {
 
             Usuario novoUsuario = getDadosDosCampos();
-
             Autenticacao(novoUsuario.getEmail(), novoUsuario.getSenha());
-
         }
     }
 
     //voltar ao login
     public void voltarLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, Tutorial2Activity.class);
         startActivity(intent);
     }
 
@@ -151,7 +148,6 @@ public class Cadastro1Activity extends AppCompatActivity {
 
     //
     public void Autenticacao(String email, String senha) {
-
         final Intent intent = new Intent(this, Cadastro2Activity.class);
         usuarioAuth = FirebaseAuth.getInstance();
 
@@ -162,16 +158,14 @@ public class Cadastro1Activity extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
                             sucessoAuth = true;
+                            finish();
                             startActivity(intent);
-
                         } else {
                             sucessoAuth = false;
                             msg("E-mail inválido! Digite novamente.");
                         }
-
                     }
                 });
-
     }
 
     //criando mascaras
@@ -188,8 +182,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
         numeroTelefone.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
-
-
     }
 
     public void MascaraCPF() {
@@ -222,7 +214,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         contatoProximo.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
 
     }
-
 
     public void msg(String s) {
         Toast.makeText(this, "Senha = " + s, Toast.LENGTH_LONG).show();

@@ -18,6 +18,7 @@ import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 
 
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     public void metodoParaTeste()
     {
         editTextEmail.setText("ni@inatel.br");
-        editTextSenha.setText("1231231231");
+        editTextSenha.setText("0123456789");
     }
 
 
@@ -121,10 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
 
         }
-
-
         return true;
-
     }
 
     //
@@ -162,15 +160,13 @@ public class LoginActivity extends AppCompatActivity {
             senha = editTextSenha.getText().toString();
 
             Autenticacao(login, senha);
-
         }
-
     }
-
 
     //fazer cadastro
     public void cadastrar(View view) {
-        Intent intent = new Intent(this, Cadastro1Activity.class);
+        Intent intent = new Intent(this, Tutorial2Activity.class);
+        finish();
         startActivity(intent);
     }
 
