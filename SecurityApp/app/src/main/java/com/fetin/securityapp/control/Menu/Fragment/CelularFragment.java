@@ -38,7 +38,7 @@ public class CelularFragment extends Fragment {
     private ListView listaItens;
 
 
-    private String[] itens = {
+   /* private String[] itens = {
 
             "IMEI_1", "IMEI_2", "IMEI_3",
             "IMEI_4", "IMEI_5", "IMEI_6"
@@ -46,7 +46,7 @@ public class CelularFragment extends Fragment {
     private String[] Algoquevaiserescritodentro = {
             "IMEI_1", "IMEI_2", "IMEI_3",
             "IMEI_4", "IMEI_5", "IMEI_6"
-    };
+    };*/
 
     public CelularFragment() {
         // Required empty public constructor
@@ -57,7 +57,7 @@ public class CelularFragment extends Fragment {
         //Cria o gerador do AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //define o titulo
-        builder.setTitle(Algoquevaiserescritodentro[codigoPosicao]);
+        //builder.setTitle(Algoquevaiserescritodentro[codigoPosicao]);
 
 
         // saber quem ele clicou, pegar uma variavel comum lá, para fazer uma busca na lista abaixo

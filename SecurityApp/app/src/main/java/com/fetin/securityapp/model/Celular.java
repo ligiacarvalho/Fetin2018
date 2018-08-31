@@ -4,10 +4,23 @@ public class Celular {
 
     private String modelo, chip1, chip2, imei1, imei2;
     private int check1, check2;
+    private double coordenadaLong, coordenadaLat;
 
 
     //code->generate->getandset ou command+n
     // get and set
+    public double getCoordenadaLong() {
+        return coordenadaLong;
+    }
+    public void setCoordenadaLong(double coordenadaLong) {
+        this.coordenadaLong = coordenadaLong;
+    }
+    public double getCoordenadaLat() {
+        return coordenadaLat;
+    }
+    public void setCoordenadaLat(double coordenadaLat) {
+        this.coordenadaLat = coordenadaLat;
+    }
 
     public String getModelo() {
         return modelo;

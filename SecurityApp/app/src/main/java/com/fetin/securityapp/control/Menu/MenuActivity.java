@@ -26,6 +26,7 @@ import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
+import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.fetin.securityapp.model.Usuario;
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItemAdapter;
@@ -77,6 +79,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
+    public static Celular Cel_cadastrado;
 
     // Abas
     private Button abaCelular, abaMapa;
@@ -91,11 +94,19 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_menu);
 
-        referenciaComponentes();
-
+        // verificando se a variável "dao" já foi criada
+        UsuarioDAO.getInstance();
 
         CelularDAO daoC = new CelularDAO();
         daoC.buscarCelularesRoubado();
+
+        UsuarioDAO.lista_de_usuarios.clear();
+
+        // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
+        UsuarioDAO.dao.buscarUsuarios();
+
+        referenciaComponentes();
+
 
         //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
@@ -129,8 +140,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             public boolean onQueryTextChange(String newText) {
                 Log.i("Teste","Query = "+newText);
 
-
-
                 return true;
             }
 
@@ -144,6 +153,37 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
         // viewPagerTab.setViewPager(viewPager);
+    }
+
+    public Usuario buscarUsuarioLogado()
+    {
+        FirebaseUser usuario_logado = FirebaseAuth.getInstance().getCurrentUser();
+
+        String email_user_logado = usuario_logado.getEmail();
+
+        // uma busca na lista, querendo o usuario que está logado
+
+        Usuario usuario_encontrado = null;
+
+        for(int i=0; i<UsuarioDAO.lista_de_usuarios.size(); i++)
+        {
+
+            if(UsuarioDAO.lista_de_usuarios.get(i).getEmail().equals(email_user_logado))
+            {
+
+                usuario_encontrado = UsuarioDAO.lista_de_usuarios.get(i);
+
+                usuario_encontrado.setCelularP(UsuarioDAO.lista_de_usuarios.get(i).getCelularP());
+
+                return usuario_encontrado;
+
+            }
+        }
+
+        return usuario_encontrado;
+
+
+
     }
 
     public void referenciaComponentes() {
@@ -231,6 +271,30 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 });
+    }
+    @SuppressLint("MissingPermission")
+    private Location getUltimoLocal() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            //obtém a última localização conhecida
+                            mLastLocation = task.getResult();
+                            // mostrando a latitude e longitude do celular atual na telinha do APP
+                            msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
+
+                        } else {
+
+                            //Não há localização conhecida ou houve uma excepção
+                            //A excepção pode ser obtida com task.getException()
+
+                            msg("errro");
+                        }
+                    }
+                });
+        return mLastLocation;
     }
     //feedback se a conexao com o google play foi realizada ou nao
 
@@ -336,7 +400,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             case R.id.menuCelRoubado:
                 CelularDAO daoC = new CelularDAO();
-                daoC.inserirRoubado();
+                UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+                daoC.inserirRoubado(getUltimoLocal().getLatitude(),getUltimoLocal().getLongitude());
                 break;
         }
         return super.onOptionsItemSelected(item);

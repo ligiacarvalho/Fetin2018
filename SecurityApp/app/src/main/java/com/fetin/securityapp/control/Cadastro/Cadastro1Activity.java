@@ -54,7 +54,7 @@ public class Cadastro1Activity extends AppCompatActivity {
 
     public void metodoParaTeste() {
         campoNomeCompleto.setText("Nome Teste");
-        //campoEmail.setText("email@teste");
+        campoEmail.setText("@inatel.br");
         campoTelefone.setText("35999999999");
         campoCPF.setText("11111111125");
         campoContatoProximo.setText("123");

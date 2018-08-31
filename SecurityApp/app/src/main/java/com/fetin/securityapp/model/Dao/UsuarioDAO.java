@@ -3,6 +3,7 @@ package com.fetin.securityapp.model.Dao;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +62,10 @@ public class UsuarioDAO {
                     // pegando cada usuário nos nós da árvore, filhos do nó "Usuário", e armazenando 1 por 1
                     // na variável novo_usuario em cada iteração do for
                     Usuario novo_usuario = (Usuario) d.getValue(Usuario.class);
+
+                    Celular celular = (Celular) d.child("celularP").getValue(Celular.class);
+
+                    novo_usuario.setCelularP(celular);
 
                     // pegando a chave única do FireBase
                     novo_usuario.setChave(d.getKey());
@@ -149,7 +154,7 @@ public class UsuarioDAO {
 
     }
 
-    public void atualizar() {
+    public void atualizar(String email) {
 
     }
 

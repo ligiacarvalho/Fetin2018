@@ -1,5 +1,7 @@
 package com.fetin.securityapp.model.Dao;
 
+import android.util.Log;
+
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
@@ -19,8 +21,7 @@ public class CelularDAO {
     public static ArrayList<String> lista_de_imei;
 
 
-    public CelularDAO()
-    {
+    public CelularDAO() {
         referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
         lista_de_imei = new ArrayList<>();
         lista_de_roubo = new ArrayList<>();
@@ -40,7 +41,7 @@ public class CelularDAO {
 
                     Usuario busca_usuario = (Usuario) d.getValue(Usuario.class);
 
-                    Celular celular_roubado = d.child("001").getValue(Celular.class);
+                    Celular celular_roubado = d.child("celularP").getValue(Celular.class);
 
                     busca_usuario.setCelularP(celular_roubado);
 
@@ -49,7 +50,8 @@ public class CelularDAO {
 
                     // Armazenando os usuários encontrados no banco em uma lista
                     lista_de_roubo.add(busca_usuario);
-                    lista_de_imei.add(busca_usuario.getCelularP().getImei1());
+                    if (celular_roubado != null && busca_usuario != null)
+                        lista_de_imei.add(busca_usuario.getCelularP().getImei1());
 
 
                 }
@@ -63,8 +65,7 @@ public class CelularDAO {
 
     }
 
-    public void inserir(Celular novo_celular)
-    {
+    public void inserir(Celular novo_celular) {
 
         UsuarioDAO.user_cadastrado.setChave(UsuarioDAO.dao.buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(UsuarioDAO.user_cadastrado.getEmail()));
         // Pegando a referencia do nó "usuários"
@@ -72,28 +73,30 @@ public class CelularDAO {
 
         // Adicionando um nó filho ao "usuários", com chave única gerada randomicamente
         // .E nela, colocando os dados dos novos usuários.
-        referenciaUsuario.child("001").setValue(novo_celular);
+        referenciaUsuario.child("celularP").setValue(novo_celular);
     }
 
-    public void buscarCelular() {
 
-    }
-
-    public void inserirRoubado(){
+    public void inserirRoubado(double latitude, double longitude) {
 
         //Cel_cadastrado = new Celular();
 
+
         DatabaseReference referenciaCelular = referenciaDoBanco.child("Celulares Roubados");
 
+
+
+        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
+        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
+
+
+
+        // Log.i("user_cadastrado",Cel_cadastrado.getImei1());
+
         referenciaCelular.child(UsuarioDAO.user_cadastrado.getChave()).setValue(UsuarioDAO.user_cadastrado);
-
-
-        referenciaCelular.child(UsuarioDAO.user_cadastrado.getChave()).child("001").setValue(Cel_cadastrado);
-
     }
 
-    public void excluir()
-    {
+    public void excluir() {
 
 
     }

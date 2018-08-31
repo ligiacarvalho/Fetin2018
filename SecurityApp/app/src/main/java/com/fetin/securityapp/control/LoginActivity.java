@@ -70,10 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         celularDAO = new CelularDAO();
 
         // verificando se a variável "dao" já foi criada
-        UsuarioDAO.getInstance();
+        //UsuarioDAO.getInstance();
 
         // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
-        UsuarioDAO.dao.buscarUsuarios();
+        //UsuarioDAO.dao.buscarUsuarios();
 
         metodoParaTeste();
 
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void metodoParaTeste()
     {
-        editTextEmail.setText("ni@inatel.br");
+        editTextEmail.setText("@inatel.br");
         editTextSenha.setText("0123456789");
     }
 
