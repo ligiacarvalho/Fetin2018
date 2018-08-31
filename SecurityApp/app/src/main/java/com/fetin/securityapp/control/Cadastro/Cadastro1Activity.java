@@ -49,7 +49,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         MascaraContatoProximo();
 
         metodoParaTeste();
-
     }
 
     public void metodoParaTeste() {

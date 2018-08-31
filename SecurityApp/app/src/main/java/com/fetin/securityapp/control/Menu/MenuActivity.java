@@ -2,7 +2,9 @@ package com.fetin.securityapp.control.Menu;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -61,6 +63,9 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import java.util.ArrayList;
+import java.util.logging.LogRecord;
+
 
 public class MenuActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -79,26 +84,33 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
+
     public static Celular Cel_cadastrado;
+
+    public static ArrayList<String> lista_temporaria;
 
     // Abas
     private Button abaCelular, abaMapa;
+    public int aba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        celFragment = new CelularFragment();
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("SecurityApp");
-
         setContentView(R.layout.activity_menu);
 
         // verificando se a variável "dao" já foi criada
         UsuarioDAO.getInstance();
+        referenciaComponentes();
+
 
         CelularDAO daoC = new CelularDAO();
         daoC.buscarCelularesRoubado();
+
 
         UsuarioDAO.lista_de_usuarios.clear();
 
@@ -109,12 +121,14 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        lista_temporaria = new ArrayList<>();
 
+
+        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         //viewPager = findViewById(R.id.viewPager);
         //smartTabLayout = findViewById(R.id.viewPagerTab);
 
         //Aplica configurações na Action Bar, para remover a sombra
-
 
      /*   FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getFragmentManager(),
@@ -126,25 +140,24 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         viewPager.setAdapter(adapter);
         smartTabLayout.setViewPager(viewPager);*/
 
-        //funcoes search
-        handleIntent(getIntent());
-
-       searchQueryListener = new SearchView.OnQueryTextListener() {
+        searchQueryListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.i("Teste","Query = "+query);
+                funcao(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.i("Teste","Query = "+newText);
+
+
+                if (newText.equals("")) {
+                    lista_temporaria.clear();
+                    celFragment.atualizaLista();
+
+                }
 
                 return true;
-            }
-
-            public void search(String query) {
-                // reset loader, swap cursor, etc.
             }
 
         };
@@ -155,8 +168,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // viewPagerTab.setViewPager(viewPager);
     }
 
-    public Usuario buscarUsuarioLogado()
-    {
+    public Usuario buscarUsuarioLogado() {
         FirebaseUser usuario_logado = FirebaseAuth.getInstance().getCurrentUser();
 
         String email_user_logado = usuario_logado.getEmail();
@@ -165,11 +177,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Usuario usuario_encontrado = null;
 
-        for(int i=0; i<UsuarioDAO.lista_de_usuarios.size(); i++)
-        {
+        for (int i = 0; i < UsuarioDAO.lista_de_usuarios.size(); i++) {
 
-            if(UsuarioDAO.lista_de_usuarios.get(i).getEmail().equals(email_user_logado))
-            {
+            if (UsuarioDAO.lista_de_usuarios.get(i).getEmail().equals(email_user_logado)) {
 
                 usuario_encontrado = UsuarioDAO.lista_de_usuarios.get(i);
 
@@ -181,7 +191,44 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         return usuario_encontrado;
+    }
 
+    //se está na aba mapa
+    public void estaNoMapa() {
+        aba = 0;
+    }
+
+    //se está na aba celular
+    public void estaNoCel() {
+        aba = 1;
+    }
+
+    //lógica de search no mapa ou cel
+    public void funcao(String textoDePesquisa) {
+        // lógica do if
+        estaNoMapa();
+        estaNoCel();
+        boolean achou = false;
+
+        if (aba == 1) {
+            // na aba celular buscar pelo IMEI
+            for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
+
+                if (CelularDAO.lista_de_roubo.get(i).getCelularP().getImei1().equals(textoDePesquisa)) {
+                    lista_temporaria.add(CelularDAO.lista_de_roubo.get(i).getCelularP().getImei1());
+                    achou = true;
+                    celFragment.atualizaLista();
+
+                    break;
+                }
+            }
+            if (achou == false) {
+                msg("IMEI não encontrado");
+            }
+        } else {
+            //na aba mapa buscar pela localizacao do codigo
+
+        }
 
 
     }
@@ -191,9 +238,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         abaMapa = findViewById(R.id.abaMapa);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentMenu);
-
         ativandoAsAbas();
-
     }
 
     public void ativandoAsAbas() {
@@ -203,7 +248,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 changeToCelularFragment();
             }
         });
-
         abaMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,7 +276,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // conecta a API
         mGoogleApiClient.connect();
-
 
         // pega os serviços para uso da localização na API da Google
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -272,6 +315,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
     }
+
+    // cópia do getLastLocation para o banco de dadosit
     @SuppressLint("MissingPermission")
     private Location getUltimoLocal() {
         mFusedLocationClient.getLastLocation()
@@ -298,6 +343,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     //feedback se a conexao com o google play foi realizada ou nao
 
+
+    //feedback se a conexao com o google play foi realizada ou nao
     public void changeToCelularFragment() {
 
         // instanciando o fragment
@@ -327,15 +374,14 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
+        //  searchView.setIconifiedByDefault(false);
 
         searchView.setOnQueryTextListener(searchQueryListener);
-        searchView.setIconifiedByDefault(true);
+        searchView.setIconifiedByDefault(false);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -343,7 +389,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     //funçao search
     @Override
     protected void onNewIntent(Intent intent) {
-
         handleIntent(intent);
     }
 
@@ -355,10 +400,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             //use the query to search
             Toast.makeText(getApplicationContext(), "Texto = " + query, Toast.LENGTH_LONG).show();
             //doMySearch(query);
-
         }
     }
-
 
     //Funções do menu
     @Override
@@ -383,9 +426,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sucesso = UsuarioDAO.dao.excluirUsuarioAutenticado();
                 if (sucesso == true) {
                     Intent intent = new Intent(this, LoginActivity.class);
-
                     msg("Usuário deletado com sucesso!");
-
                     startActivity(intent);
                 } else {
                     msg("Erro ao deletar o usuário! :(");
@@ -396,12 +437,10 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
-
-
             case R.id.menuCelRoubado:
                 CelularDAO daoC = new CelularDAO();
                 UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
-                daoC.inserirRoubado(getUltimoLocal().getLatitude(),getUltimoLocal().getLongitude());
+                daoC.inserirRoubado(getUltimoLocal().getLatitude(), getUltimoLocal().getLongitude());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -488,3 +527,5 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 }
+
+

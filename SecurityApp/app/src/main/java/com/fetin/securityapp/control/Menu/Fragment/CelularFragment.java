@@ -4,6 +4,7 @@ package com.fetin.securityapp.control.Menu.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
@@ -51,6 +53,7 @@ public class CelularFragment extends Fragment {
     public CelularFragment() {
         // Required empty public constructor
     }
+
     private AlertDialog alerta;
 
     private void exemplo_simples(int codigoPosicao) {
@@ -64,22 +67,21 @@ public class CelularFragment extends Fragment {
         // CelularDAO.lista_de_roubo
         // E retornar 1 celular pra vc a cessar os dados dele abaixo
 
-        for(int i = 0; i < CelularDAO.lista_de_roubo.size();i++)
-        {
+        for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
 
             //Log.i("LISTA", String.valueOf(i));
-            if( i == codigoPosicao){
+            if (i == codigoPosicao) {
 
-               builder.setMessage(
+                builder.setMessage(
                         //define a mensagem
 
-                        "Modelo do celular: "+ CelularDAO.lista_de_roubo.get(i).getCelularP().getModelo()+"\n"+
-                                "CPF do usuário: "+CelularDAO.lista_de_roubo.get(i).getCPF()+"\n"+
-                                "Contato adicionado: "+CelularDAO.lista_de_roubo.get(i).getContatoProximo()+"\n"+
-                                "email: "+CelularDAO.lista_de_roubo.get(i).getEmail()+"\n"
-                              // "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n"
-               );
-           }
+                        "Modelo do celular: " + CelularDAO.lista_de_roubo.get(i).getCelularP().getModelo() + "\n" +
+                                "CPF do usuário: " + CelularDAO.lista_de_roubo.get(i).getCPF() + "\n" +
+                                "Contato adicionado: " + CelularDAO.lista_de_roubo.get(i).getContatoProximo() + "\n" +
+                                "email: " + CelularDAO.lista_de_roubo.get(i).getEmail() + "\n"
+                        // "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n"
+                );
+            }
         }
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -106,15 +108,8 @@ public class CelularFragment extends Fragment {
 
         listaItens = view.findViewById(R.id.listViewId);
 
+        atualizaLista();
 
-        ArrayAdapter adapter = new ArrayAdapter(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                CelularDAO.lista_de_imei
-        );
-
-        listaItens.setAdapter(adapter);
         listaItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                               @Override
                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,15 +121,40 @@ public class CelularFragment extends Fragment {
                                                   exemplo_simples(codigoPosicao);
                                               }
                                           }
-
         );
 
 
         return view;
     }
 
-    // MÉTODO AQUI REBECA
+    public void atualizaLista()
+    {
 
+        if (MenuActivity.lista_temporaria.size() != 0) {
+            ArrayAdapter adapter = new ArrayAdapter(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1,
+                    MenuActivity.lista_temporaria
+            );
+            listaItens.setAdapter(adapter);
+
+            //MenuActivity.lista_temporaria.clear();
+        }
+        else
+        {
+            ArrayAdapter adapter2 = new ArrayAdapter(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1,
+                    CelularDAO.lista_de_imei
+
+            );
+            listaItens.setAdapter(adapter2);
+        }
+    }
+
+    // MÉTODO AQUI REBECA
 
 
 }
