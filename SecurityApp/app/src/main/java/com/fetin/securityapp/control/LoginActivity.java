@@ -62,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        CelularDAO daoC = new CelularDAO();
+        daoC.buscarCelularesRoubado();
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
@@ -70,10 +73,10 @@ public class LoginActivity extends AppCompatActivity {
         celularDAO = new CelularDAO();
 
         // verificando se a variável "dao" já foi criada
-        //UsuarioDAO.getInstance();
+        UsuarioDAO.getInstance();
 
         // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
-        //UsuarioDAO.dao.buscarUsuarios();
+        UsuarioDAO.dao.buscarUsuarios();
 
         metodoParaTeste();
 

@@ -20,6 +20,8 @@ import com.fetin.securityapp.model.Usuario;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
+import java.util.ArrayList;
+
 public class Cadastro2Activity extends AppCompatActivity {
 
     EditText campoModeloCelular;
@@ -71,6 +73,15 @@ public class Cadastro2Activity extends AppCompatActivity {
     public boolean verificaEntradaDeDados()
 
     {
+
+        for(int i = 0; i < CelularDAO.lista_de_imei.size(); i++){
+            if(campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i))||campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i)))
+            {
+                Toast.makeText(getApplicationContext(),"Este IMEI já esta cadastrado",Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+
         if(campoModeloCelular.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
@@ -92,6 +103,7 @@ public class Cadastro2Activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
             return false;
         }
+
 
         return true;
     }
@@ -138,9 +150,9 @@ public class Cadastro2Activity extends AppCompatActivity {
 
         CelularDAO daoC = new CelularDAO();
         daoC.inserir(novoCelular);
+
         CelularDAO.Cel_cadastrado = novoCelular;
 
-       // Log.i("Teste", "Modelo =" + novoCelular.getModelo().toString());
     }
 
     //criando mascaras

@@ -67,7 +67,11 @@ public class CelularDAO {
 
     public void inserir(Celular novo_celular) {
 
+
         UsuarioDAO.user_cadastrado.setChave(UsuarioDAO.dao.buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(UsuarioDAO.user_cadastrado.getEmail()));
+
+
+
         // Pegando a referencia do nó "usuários"
         DatabaseReference referenciaUsuario = referenciaDoBanco.child("Usuario").child(UsuarioDAO.user_cadastrado.getChave());
 
