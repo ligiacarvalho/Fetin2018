@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CelularDAO {
 
@@ -24,6 +26,7 @@ public class CelularDAO {
     public CelularDAO() {
         referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
         lista_de_imei = new ArrayList<>();
+        //lista todos os celulare roubados
         lista_de_roubo = new ArrayList<>();
     }
 
@@ -81,13 +84,22 @@ public class CelularDAO {
 
         //Cel_cadastrado = new Celular();
 
-
         DatabaseReference referenciaCelular = referenciaDoBanco.child("Celulares Roubados");
-
-
 
         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
+
+        Date data = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH); //ATUALIZAR
+        int year = cal.get(Calendar.YEAR);
+        //dia = Calendar.getInstance().getTime().getDay();
+        Log.i("dia", "dia = "+ day);
+
+        UsuarioDAO.user_cadastrado.getCelularP().setDia(day);
+        UsuarioDAO.user_cadastrado.getCelularP().setMes(month);
+        UsuarioDAO.user_cadastrado.getCelularP().setAno(year);
 
 
 

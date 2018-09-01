@@ -35,13 +35,16 @@ import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -64,6 +67,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.LogRecord;
 
 
@@ -440,7 +445,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.menuCelRoubado:
                 CelularDAO daoC = new CelularDAO();
                 UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
-                daoC.inserirRoubado(getUltimoLocal().getLatitude(), getUltimoLocal().getLongitude());
+                daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                //getUltimoLocal().getLatitude(), getUltimoLocal().getLongitude()
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -472,6 +478,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+            //Iniciando o monitoramento do GPS
+            startLocationUpdates(); // Inicia o GPS
 
     }
 
@@ -495,6 +503,35 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    // Método responsável por ativar o monitoramento do GPS
+    @SuppressLint("MissingPermission")
+    protected void startLocationUpdates() {
+        LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(locationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        for (Location location : locationResult.getLocations()) {
+
+                            mLastLocation = location;
+
+                            msg("Longitude: "+location.getLongitude() + "Latitude: "+ location.getLatitude());
+                            setMyLocation(location);
+                        }
+                    }
+                }
+                ,null);
+    }
+
+    // Método responsável por desativar o monitoramento do GPS
+    protected void stopLocationUpdates() {
+        LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(new LocationCallback());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationUpdates(); // Para o GPS
+    }
+
     public void setMyLocation(Location location) {
         if (location != null) {
             // Recupera latitude e longitude da
@@ -514,10 +551,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Configurando as propriedades do marker
             markerOptions.position(ultimaLocalizacao)    // Localização
                     .title("Minha Localização")       // Título
-                    .snippet("Latitude: , Longitude:"); // Descrição
+                    .snippet("Latitude: , Longitude:") // Descrição
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
 
             mMap.clear();
             mMap.addMarker(markerOptions);
+
         }
 
     }
