@@ -175,6 +175,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void msg(String s) {
-        Toast.makeText(this, "Senha = " + s, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "" + s, Toast.LENGTH_LONG).show();
     }
 }

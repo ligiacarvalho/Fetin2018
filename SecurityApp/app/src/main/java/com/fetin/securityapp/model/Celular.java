@@ -11,6 +11,8 @@ public class Celular {
     private int dia;
     private int ano;
     private double coordenadaLong, coordenadaLat;
+    private int codigo;
+
 
 
     //code->generate->getandset ou command+n
@@ -96,4 +98,14 @@ public class Celular {
     }
     public void setAno(int ano) {
         this.ano = ano;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+    public void setCodigo(int codigo) {
+            this.codigo = codigo;
     }};
+
+
+
