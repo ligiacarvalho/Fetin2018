@@ -27,6 +27,7 @@ import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
+import com.fetin.securityapp.control.Menu.Fragment.GraphicFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
@@ -81,6 +82,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private CelularFragment celFragment;
     private MapaFragment mapaFragment;
     private FirebaseAuth usuarioAuth;
+    private GraphicFragment graphicFragment;
 
     // Variáveis do Google Maps
     private GoogleMap mMap;
@@ -99,13 +101,17 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static ArrayList<String> lista_temporaria;
 
     // Abas
-    private Button abaCelular, abaMapa;
+    private Button abaCelular, abaMapa, abaGrafico;
     public int aba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
+        celFragment = new CelularFragment();
+
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("SecurityApp");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -152,8 +158,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     //lógica de search no mapa ou cel
     public void funcao(String textoDePesquisa) {
         // lógica do if
-        estaNoMapa();
-        estaNoCel();
+        //estaNoMapa();
+        //estaNoCel();
         boolean achou = false;
 
         if (aba == 1) {
@@ -173,7 +179,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         } else {
             //na aba mapa buscar pela localizacao do codigo
-
         }
 
 
@@ -182,6 +187,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void referenciaComponentes() {
         abaCelular = findViewById(R.id.abaCelular);
         abaMapa = findViewById(R.id.abaMapa);
+        abaGrafico = findViewById(R.id.abaGrafico);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentMenu);
         ativandoAsAbas();
@@ -191,12 +197,14 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         abaCelular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aba = 1;
                 changeToCelularFragment();
             }
         });
         abaMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aba = 0;
 
                 changeToMapaFragment();
 
@@ -204,7 +212,17 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+        abaGrafico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aba = 2;
+                changeToGraficoFragment();
+            }
+        });
+
     }
+
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -237,6 +255,18 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         return mLastLocation;
     }
 
+    public void changeToGraficoFragment()
+    {
+        graphicFragment = new GraphicFragment();
+
+        // Configurar objeto para o fragment
+        transaction = getSupportFragmentManager().beginTransaction();
+        // Onde vou exibir, qual fragment será mostrado
+        transaction.replace(R.id.fragmentMenu, graphicFragment);
+        transaction.commit();
+
+    }
+
     public void changeToCelularFragment() {
 
         // instanciando o fragment
@@ -247,14 +277,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Onde vou exibir, qual fragment será mostrado
         transaction.replace(R.id.fragmentMenu, celFragment);
         transaction.commit();
-
-
     }
 
     public void changeToMapaFragment() {
 
         // Configurar objeto para o fragment
-       transaction = getSupportFragmentManager().beginTransaction();
+        transaction = getSupportFragmentManager().beginTransaction();
 
         // Onde vou exibir, qual fragment será mostrado
         transaction.replace(R.id.fragmentMenu, mapFragment);
@@ -365,21 +393,18 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-
-
-
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public  void playMusic()
-    {
+    public void playMusic() {
         // Referenciando o "somAlarm" com a música que está na pasta RAW
         somAlarm = MediaPlayer.create(this, R.raw.alarme_roubo);
         somAlarm.start();
 
- }
+    }
+
     public void deslogarUsuario() {
 
         boolean sucesso = false;
@@ -405,11 +430,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
-//========== *GOOGLE MAPS* ===================================== *GOOGLE MAPS* ===========================================//
+    //========== *GOOGLE MAPS* ===================================== *GOOGLE MAPS* ===========================================//
     //Insere marcadores entre 1 dia, 1 semana e 1 mês
-    public void inserindoMarcadores()
-    {
+    public void inserindoMarcadores() {
         /*
            MARCADOR AZUL - dentro de 30 dias
            MARCADOR ROXO - dentro de 7 dias
@@ -417,96 +440,72 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
 
-        int dia, mes, ano, dia_atual=0, mes_atual =0, ano_atual=0;
-        Location localizacao_cel_roubado =new Location("123123");
+        int dia, mes, ano, dia_atual = 0, mes_atual = 0, ano_atual = 0;
+        Location localizacao_cel_roubado = new Location("123123");
 
         Calendar calendario = Calendar.getInstance();
         dia_atual = calendario.get(Calendar.DATE);
         mes_atual = calendario.get(Calendar.MONTH);
         ano_atual = calendario.get(Calendar.YEAR);
 
-        for(int i=0; i< CelularDAO.lista_de_roubo.size(); i++)
-        {
+        for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
             dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
             mes = CelularDAO.lista_de_roubo.get(i).getCelularP().getMes();
             ano = CelularDAO.lista_de_roubo.get(i).getCelularP().getAno();
             localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
             localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
-            if(ano == ano_atual)
-            {
-                if(mes == mes_atual)
-                {
-                    if(dia == dia_atual)
-                    {
-                        setMyLocationWithColor(localizacao_cel_roubado,"vermelho");
+            if (ano == ano_atual) {
+                if (mes == mes_atual) {
+                    if (dia == dia_atual) {
+                        setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
 
-                    }
-                    else if(dia_atual - dia <=7)
-                    {
+                    } else if (dia_atual - dia <= 7) {
                         setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                    }
-                    else
+                    } else
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                }
-                else if(mes_atual - mes == 1)
-                {
-                    if(dia_atual == dia)
-                    {
+                } else if (mes_atual - mes == 1) {
+                    if (dia_atual == dia) {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                    }
-                    else if (dia == 31)
-                    {
+                    } else if (dia == 31) {
                         dia = dia_atual;
-                        if(dia <=7)
+                        if (dia <= 7)
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         else
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                    }
-                    else if(mes == 4 || mes == 6 || mes == 9 || mes == 11)
-                    {
+                    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
 
-                        if(dia == 30)
+                        if (dia == 30)
                             dia = dia_atual;
                         else
                             dia = 30 - dia + dia_atual;
 
-                        if(dia <= 7)
+                        if (dia <= 7)
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         else
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                    }
-                    else if(mes == 2)
-                    {
-                        if(dia == 28 || dia == 29)
-                        {
+                    } else if (mes == 2) {
+                        if (dia == 28 || dia == 29) {
                             dia = dia_atual;
-                        }
-                        else
+                        } else
                             dia = 28 - dia + dia_atual;
 
-                        if(dia <= 7)
+                        if (dia <= 7)
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         else
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                    }
-                    else if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12 )
-                    {
+                    } else if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) {
                         dia = dia_atual + 1;
-                        if(dia <= 7)
+                        if (dia <= 7)
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         else
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
                     }
 
 
-
+                } else {
+                    Log.i("Mes", "Diferença de mês do roubo maior que 1");
                 }
-                else
-                {
-                    Log.i("Mes","Diferença de mês do roubo maior que 1");
-                }
-            }
-            else
+            } else
                 Log.i("Ano", "Ano Diferente!");
         }
     }
@@ -580,6 +579,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         startLocationUpdates(); // Inicia o GPS
 
     }
+
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -611,7 +611,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 }
-                ,null);
+                , null);
     }
 
     // Método responsável por desativar o monitoramento do GPS
@@ -663,7 +663,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //Inserindo marcadores coloridos com a localização do celular roubado
-    public void setMyLocationWithColor(Location location,String cor) {
+    public void setMyLocationWithColor(Location location, String cor) {
         if (location != null) {
             // Recupera latitude e longitude da
             // ultima localização do usuário
@@ -680,23 +680,21 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Criando um objeto do tipo MarkerOptions
             final MarkerOptions markerOptions = new MarkerOptions();
 
-            if(cor.equalsIgnoreCase("azul")) {
+            if (cor.equalsIgnoreCase("azul")) {
                 // Configurando as propriedades do marker
                 markerOptions.position(ultimaLocalizacao)    // Localização
                         .title("Minha Localização")       // Título
                         .snippet("Latitude: , Longitude:") // Descrição
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-            }
-            else if(cor.equalsIgnoreCase("roxo")) {
+            } else if (cor.equalsIgnoreCase("roxo")) {
                 // Configurando as propriedades do marker
                 markerOptions.position(ultimaLocalizacao)    // Localização
                         .title("Minha Localização")       // Título
                         .snippet("Latitude: , Longitude:") // Descrição
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
 
-            }
-            else if(cor.equalsIgnoreCase("vermelho")) {
+            } else if (cor.equalsIgnoreCase("vermelho")) {
                 // Configurando as propriedades do marker
                 markerOptions.position(ultimaLocalizacao)    // Localização
                         .title("Minha Localização")       // Título
@@ -712,8 +710,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //cópia do onCreate para recarregar os marcadores coloridos
-    public void inicio()
-    {
+    public void inicio() {
 
 
         celFragment = new CelularFragment();
@@ -741,7 +738,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         lista_temporaria = new ArrayList<>();
-
 
 
         searchQueryListener = new SearchView.OnQueryTextListener() {

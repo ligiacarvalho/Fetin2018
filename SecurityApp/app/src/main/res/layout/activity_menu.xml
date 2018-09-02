@@ -31,6 +31,16 @@
             android:onClick="estaNoCel"
             android:text="Celular"
             android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/abaGrafico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="estaNoCel"
+            android:text="Gráfico"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <fragment
