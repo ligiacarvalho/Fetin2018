@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/fragmentMenu"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="397dp"
+        android:layout_width="390sp"
         android:layout_height="match_parent"
         tools:context=".control.Menu.MenuActivity" />
 

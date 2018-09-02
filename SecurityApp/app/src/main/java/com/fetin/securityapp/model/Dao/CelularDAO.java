@@ -60,8 +60,6 @@ public class CelularDAO {
                     lista_de_roubo.add(busca_usuario);
                     if (celular_roubado != null && busca_usuario != null)
                         lista_de_imei.add(busca_usuario.getCelularP().getImei1());
-
-
                 }
             }
 
@@ -94,10 +92,15 @@ public class CelularDAO {
 
         DatabaseReference referenciaCelular = referenciaDoBanco.child("Celulares Roubados");
 
-        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
-        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
+        if(UsuarioDAO.user_cadastrado.getCelularP() == null)
+        {
+            Log.i("oi","usuario sem celular cadastrado" +UsuarioDAO.user_cadastrado.getCelularP() );
+            return;
+        }
+         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
+         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
 
-        Date data = Calendar.getInstance().getTime();
+         Date data = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH); //ATUALIZAR
@@ -130,9 +133,6 @@ public class CelularDAO {
         Log.i("oi", "Contato Proximo"+contato_proximo);
         FunctionalityManager sms = new FunctionalityManager();
         sms.sendSms(contato_proximo,UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-
-
-
 
     }
 

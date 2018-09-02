@@ -16,7 +16,7 @@
         android:text="Como utilizar o App Security?"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#4682B4"
+        android:textColor="#f26621"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +71,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="11dp"
         android:text="Permitir o acesso do App à sua localização, à seu bluetooth e internet."
+        android:textColorLink="#f2a023"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -83,6 +84,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="11dp"
         android:text="Permitir que o App Security compartilhe suas informções com policiais."
+        android:textColorLink="#f19f22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxTermos1" />
@@ -93,8 +95,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="12dp"
+        android:background="#00ffffff"
         android:onClick="depoisTutorial"
         android:text="Entendi "
+        android:textColor="#f19f22"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -104,8 +109,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="12dp"
+        android:background="#00ffffff"
         android:onClick="anteriorTutorial"
         android:text="Anterior"
+        android:textColor="#f2a023"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

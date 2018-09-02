@@ -106,11 +106,10 @@ public class GraphicFragment extends Fragment {
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
-        int dia =  UsuarioDAO.user_cadastrado.getCelularP().getDia();
+        //int dia =  UsuarioDAO.user_cadastrado.getCelularP().getDia();
 
-        //yValues.add(dia, "Hoje");
-        yValues.add(new PieEntry(UsuarioDAO.user_cadastrado.getCelularP().getAno(), "Neste Ano"));
-        yValues.add(new PieEntry(UsuarioDAO.user_cadastrado.getCelularP().getMes(), "Neste Mês"));
+        yValues.add(new PieEntry(75, "Neste Ano"));
+        yValues.add(new PieEntry(25, "Neste Mês"));
 
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic);
 
