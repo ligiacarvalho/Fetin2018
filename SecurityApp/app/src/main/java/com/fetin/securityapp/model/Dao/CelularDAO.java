@@ -116,7 +116,7 @@ public class CelularDAO {
         UsuarioDAO.user_cadastrado.getCelularP().setCodigo(valor);
 
         //Passando número do contato próximo para ativar a função de segurança
-        ativarFuncionalidadesDeSeguranca(UsuarioDAO.user_cadastrado.getContatoProximo());
+        //ativarFuncionalidadesDeSeguranca(UsuarioDAO.user_cadastrado.getContatoProximo());
 
 
         //comando para inserir no banco

@@ -40,16 +40,6 @@ public class CelularFragment extends Fragment {
     private ListView listaItens;
 
 
-   /* private String[] itens = {
-
-            "IMEI_1", "IMEI_2", "IMEI_3",
-            "IMEI_4", "IMEI_5", "IMEI_6"
-    };
-    private String[] Algoquevaiserescritodentro = {
-            "IMEI_1", "IMEI_2", "IMEI_3",
-            "IMEI_4", "IMEI_5", "IMEI_6"
-    };*/
-
     public CelularFragment() {
         // Required empty public constructor
     }
@@ -69,11 +59,8 @@ public class CelularFragment extends Fragment {
 
         int dia, ano, mes;
 
-
-
         for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
 
-            //Log.i("LISTA", String.valueOf(i));
             if (i == codigoPosicao) {
 
                 dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
@@ -81,16 +68,13 @@ public class CelularFragment extends Fragment {
                 ano = CelularDAO.lista_de_roubo.get(i).getCelularP().getAno();
 
                 builder.setMessage(
+
                         //define a mensagem
-
-
-
                         "Modelo do celular: " + CelularDAO.lista_de_roubo.get(i).getCelularP().getModelo() + "\n" +
                                 "CPF do usuário: " + CelularDAO.lista_de_roubo.get(i).getCPF() + "\n" +
                                 "Contato adicionado: " + CelularDAO.lista_de_roubo.get(i).getContatoProximo() + "\n" +
                                 "email: " + CelularDAO.lista_de_roubo.get(i).getEmail() + "\n"+
                                 "Data: "+dia+"/"+mes+"/"+ano+"\n"
-                        // "Descartar informações? (ou seja, o celular foi encontrado e devolvido)\n"
                 );
             }
         }
@@ -149,8 +133,7 @@ public class CelularFragment extends Fragment {
                     MenuActivity.lista_temporaria
             );
             listaItens.setAdapter(adapter);
-
-            //MenuActivity.lista_temporaria.clear();
+            MenuActivity.lista_temporaria.clear();
         }
         else
         {
@@ -164,8 +147,4 @@ public class CelularFragment extends Fragment {
             listaItens.setAdapter(adapter2);
         }
     }
-
-    // MÉTODO AQUI REBECA
-
-
 }

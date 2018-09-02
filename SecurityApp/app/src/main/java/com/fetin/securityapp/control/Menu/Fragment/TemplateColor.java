@@ -24,7 +24,21 @@ public class TemplateColor {
      * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT
      */
     public static final int[] NIC_COLORS = {
-            Color.rgb(238, 55, 68), Color.rgb(238, 128, 55), Color.rgb(71, 106, 202),
+
+            Color.rgb(135, 54, 0),
+            Color.rgb(160, 64, 0),
+            Color.rgb(186, 74, 0),
+            Color.rgb(211, 84, 0),
+            Color.rgb(220, 118, 51),
+            Color.rgb(229, 152, 102),
+
+            Color.rgb(120, 66, 18 ),
+            Color.rgb(147, 81, 22),
+            Color.rgb(175, 96, 26),
+            Color.rgb(202, 111, 30  ),
+            Color.rgb(230, 126, 34  ),
+            Color.rgb(235, 152, 78  ),
+
     };
 
     public static final int[] LIBERTY_COLORS = {

@@ -98,11 +98,34 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button botaoPlay;
     private Button botaoStop;
 
+
     public static ArrayList<String> lista_temporaria;
 
     // Abas
     private Button abaCelular, abaMapa, abaGrafico;
     public int aba;
+
+    //contadores para criar o grafico
+    public static int contDia;
+    public static int contSemana;
+    public static int contMes ;
+    public static int contAno ;
+
+    //contadores dos meses grafico
+    public static int contJaneiro;
+    public static int contFevereiro;
+    public static int contMarco;
+    public static int contAbril;
+    public static int contMaio;
+    public static int contJunho;
+    public static int contJulho;
+    public static int contAgosto;
+    public static int contSetembro;
+    public static int contOutubro;
+    public static int contNovembro;
+    public static int contDezembro;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +138,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+
         inicio();
+
+        contAno = contMes = contSemana = contDia = 0;
 
     }
 
@@ -223,7 +250,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
@@ -255,8 +281,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         return mLastLocation;
     }
 
-    public void changeToGraficoFragment()
-    {
+    public void changeToGraficoFragment() {
         graphicFragment = new GraphicFragment();
 
         // Configurar objeto para o fragment
@@ -388,9 +413,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                playMusic();
+                //playMusic();
                 CelularDAO daoC = new CelularDAO();
-                UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+                // UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
                 break;
@@ -440,6 +465,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
 
+
         int dia, mes, ano, dia_atual = 0, mes_atual = 0, ano_atual = 0;
         Location localizacao_cel_roubado = new Location("123123");
 
@@ -454,24 +480,35 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             ano = CelularDAO.lista_de_roubo.get(i).getCelularP().getAno();
             localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
             localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
+
+            verificaMes(mes,ano, ano_atual);
+
             if (ano == ano_atual) {
                 if (mes == mes_atual) {
                     if (dia == dia_atual) {
                         setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
+                        contDia++;
 
                     } else if (dia_atual - dia <= 7) {
                         setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                    } else
+                        contSemana++;
+                    } else {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                        contMes++;
+                    }
                 } else if (mes_atual - mes == 1) {
                     if (dia_atual == dia) {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                        contMes++;
                     } else if (dia == 31) {
                         dia = dia_atual;
-                        if (dia <= 7)
+                        if (dia <= 7) {
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                        else
+                            contSemana++;
+                        } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
+                            contDia++;
+                        }
                     } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
 
                         if (dia == 30)
@@ -479,26 +516,34 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                         else
                             dia = 30 - dia + dia_atual;
 
-                        if (dia <= 7)
+                        if (dia <= 7) {
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                        else
+                            contSemana++;
+                        } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
+                            contDia++;
+                        }
                     } else if (mes == 2) {
                         if (dia == 28 || dia == 29) {
                             dia = dia_atual;
                         } else
                             dia = 28 - dia + dia_atual;
 
-                        if (dia <= 7)
+                        if (dia <= 7) {
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                        else
+                            contSemana++;
+                        } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                            contMes++;
+                        }
                     } else if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) {
                         dia = dia_atual + 1;
-                        if (dia <= 7)
+                        if (dia <= 7) {
                             setMyLocationWithColor(localizacao_cel_roubado, "roxo");
-                        else
+                            contSemana++;
+                        } else
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                        contMes++;
                     }
 
 
@@ -507,6 +552,50 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             } else
                 Log.i("Ano", "Ano Diferente!");
+        }
+    }
+
+    public void verificaMes(int mes, int ano, int anoatual)
+    {
+        if(ano == anoatual) {
+            switch (mes) {
+                case 1:
+                    contJaneiro++;
+                    break;
+                case 2:
+                    contFevereiro++;
+                    break;
+                case 3:
+                    contMarco++;
+                    break;
+                case 4:
+                    contAbril++;
+                    break;
+                case 5:
+                    contMaio++;
+                    break;
+                case 6:
+                    contJunho++;
+                    break;
+                case 7:
+                    contJulho++;
+                    break;
+                case 8:
+                    contAgosto++;
+                    break;
+                case 9:
+                    contSetembro++;
+                    break;
+                case 10:
+                    contOutubro++;
+                    break;
+                case 11:
+                    contNovembro++;
+                    break;
+                case 12:
+                    contDezembro++;
+                    break;
+            }
         }
     }
 

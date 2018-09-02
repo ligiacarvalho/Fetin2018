@@ -1,15 +1,19 @@
 package com.fetin.securityapp.control.Menu.Fragment;
 
 import android.content.Context;
+import android.content.MutableContextWrapper;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -84,7 +88,13 @@ public class GraphicFragment extends Fragment {
 
 
         pieChart = (PieChart) v.findViewById(R.id.graficoID);
+        TextView textoHoje = v.findViewById(R.id.textView_ValorHoje);
+        TextView textoSemana = v.findViewById(R.id.textView_ValorSemana);
+        TextView textoMes = v.findViewById(R.id.textView_ValorMes);
 
+        textoHoje.setText(Integer.toString(MenuActivity.contDia));
+        textoSemana.setText(Integer.toString(MenuActivity.contSemana));
+        textoMes.setText(Integer.toString(MenuActivity.contMes));
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10,5,5);
@@ -100,24 +110,43 @@ public class GraphicFragment extends Fragment {
 
         pieChart.setHoleColor(android.graphics.Color.WHITE);
         //preenche a roda = false/roda vazada = true
-        pieChart.setDrawHoleEnabled(true);
+        pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleRadius(70f);
         pieChart.setTransparentCircleRadius(60f);
 
+
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
-        int dia =  UsuarioDAO.user_cadastrado.getCelularP().getDia();
+/*
+       yValues.add(new PieEntry(MenuActivity.contDia,"Neste dia"));
 
-        //yValues.add(dia, "Hoje");
-        yValues.add(new PieEntry(UsuarioDAO.user_cadastrado.getCelularP().getAno(), "Neste Ano"));
-        yValues.add(new PieEntry(UsuarioDAO.user_cadastrado.getCelularP().getMes(), "Neste Mês"));
+        MenuActivity.contSemana = MenuActivity.contDia + MenuActivity.contSemana;
+        yValues.add(new PieEntry(MenuActivity.contSemana, "Nesta Semana"));
+
+        MenuActivity.contMes = MenuActivity.contSemana + MenuActivity.contMes;
+        yValues.add(new PieEntry(MenuActivity.contMes, "Neste Mês"));
+*/
+
+
+        if(MenuActivity.contJaneiro!=0){ yValues.add(new PieEntry(MenuActivity.contJaneiro, "Janeiro"));}
+        if(MenuActivity.contFevereiro!=0){ yValues.add(new PieEntry(MenuActivity.contFevereiro, "Fevereiro"));}
+        if(MenuActivity.contMarco!=0){  yValues.add(new PieEntry(MenuActivity.contMarco, "Março"));}
+        if(MenuActivity.contAbril!=0){yValues.add(new PieEntry(MenuActivity.contAbril, "Abril"));}
+        if(MenuActivity.contMaio!=0){yValues.add(new PieEntry(MenuActivity.contMaio, "Maio"));}
+        if(MenuActivity.contJunho!=0){ yValues.add(new PieEntry(MenuActivity.contJunho, "Julho"));}
+        if(MenuActivity.contJulho!=0){ yValues.add(new PieEntry(MenuActivity.contJulho, "Julho")); }
+        if(MenuActivity.contAgosto!=0){ yValues.add(new PieEntry(MenuActivity.contAgosto, "Agosto"));}
+        if(MenuActivity.contSetembro!=0){ yValues.add(new PieEntry(MenuActivity.contSetembro, "Setembro"));}
+        if(MenuActivity.contOutubro!=0){yValues.add(new PieEntry(MenuActivity.contOutubro, "Outubro"));}
+        if(MenuActivity.contNovembro!=0){yValues.add(new PieEntry(MenuActivity.contNovembro, "Novembro"));}
+        if(MenuActivity.contDezembro!=0){yValues.add(new PieEntry(MenuActivity.contDezembro, "Dezembro"));}
 
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic);
 
-        PieDataSet dataSet = new PieDataSet(yValues, "Celulares Roubados");
+        PieDataSet dataSet = new PieDataSet(yValues, "");
 
         //espaço entre os pedaços
-        dataSet.setSliceSpace(5f);
+        dataSet.setSliceSpace(1f);
         dataSet.setSelectionShift(5f);
         dataSet.setColors(TemplateColor.NIC_COLORS);
 
