@@ -3,6 +3,7 @@ package com.fetin.securityapp.model.Dao;
 import android.util.Log;
 
 import com.fetin.securityapp.model.Celular;
+import com.fetin.securityapp.model.FunctionalityManager;
 import com.fetin.securityapp.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class CelularDAO {
 
@@ -21,7 +23,7 @@ public class CelularDAO {
 
     public static ArrayList<Usuario> lista_de_roubo;
     public static ArrayList<String> lista_de_imei;
-
+    private Random random;
 
     public CelularDAO() {
         referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
@@ -86,7 +88,6 @@ public class CelularDAO {
 
     public void inserirRoubado(double latitude, double longitude) {
 
-        //Cel_cadastrado = new Celular();
 
         DatabaseReference referenciaCelular = referenciaDoBanco.child("Celulares Roubados");
 
@@ -105,11 +106,32 @@ public class CelularDAO {
         UsuarioDAO.user_cadastrado.getCelularP().setMes(month);
         UsuarioDAO.user_cadastrado.getCelularP().setAno(year);
 
+        //Criando código para o contato pré-dfinido e incluido no banco de dados
+        random = new Random();
+        int valor = random.nextInt(60000);
+        Log.i("senha", "Código: "+valor);
+        UsuarioDAO.user_cadastrado.getCelularP().setCodigo(valor);
+
+        //Passando número do contato próximo para ativar a função de segurança
+        ativarFuncionalidadesDeSeguranca(UsuarioDAO.user_cadastrado.getContatoProximo());
 
 
-        // Log.i("user_cadastrado",Cel_cadastrado.getImei1());
-
+        //comando para inserir no banco
         referenciaCelular.child(UsuarioDAO.user_cadastrado.getChave()).setValue(UsuarioDAO.user_cadastrado);
+        // Log.i("user_cadastrado",Cel_cadastrado.getImei1());
+    }
+
+    public void ativarFuncionalidadesDeSeguranca(String contato_proximo)
+    {
+
+        Log.i("oi", "Contato Proximo"+contato_proximo);
+        FunctionalityManager sms = new FunctionalityManager();
+        sms.sendSms(contato_proximo,UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+        // mandar sms (com um corpo certinho, contendo os dados)
+        // sendSms();
+
+        // ativarMusica();
+
     }
 
     public void excluir() {

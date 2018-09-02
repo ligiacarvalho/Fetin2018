@@ -8,23 +8,24 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
+
 public class FunctionalityManager extends AppCompatActivity {
 
     // método para enviar SMS
-    public void sendSms(View view) {
-
+    public void sendSms(String contato, int cod) {
+        String usuario = UsuarioDAO.user_cadastrado.getNome();
+        String senha = Integer.toString(cod);
         Intent intenet = new Intent();
+        //String msg = usuario;
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha  ;
 
-        String number = "035998852374";
-        String msg = "Teste";
-
-        // requisitando ao usuário que permita o aplicativo enviar SMS
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(number, null, msg, null, null);
-            Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
+            smsManager.sendTextMessage(contato, null, msg, null, null);
+          //  Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: "+e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();

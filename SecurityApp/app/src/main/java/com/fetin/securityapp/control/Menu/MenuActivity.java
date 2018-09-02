@@ -91,6 +91,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
+    private FragmentTransaction transaction;
 
     public static Celular Cel_cadastrado;
 
@@ -103,78 +104,19 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+
 
         celFragment = new CelularFragment();
 
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("SecurityApp");
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        // verificando se a variável "dao" já foi criada
-        UsuarioDAO.getInstance();
-        referenciaComponentes();
+        inicio();
 
-
-        CelularDAO daoC = new CelularDAO();
-        daoC.buscarCelularesRoubado();
-
-
-        UsuarioDAO.lista_de_usuarios.clear();
-
-        // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
-        UsuarioDAO.dao.buscarUsuarios();
-
-        referenciaComponentes();
-
-
-        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        lista_temporaria = new ArrayList<>();
-
-
-        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        //viewPager = findViewById(R.id.viewPager);
-        //smartTabLayout = findViewById(R.id.viewPagerTab);
-
-        //Aplica configurações na Action Bar, para remover a sombra
-
-     /*   FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getFragmentManager(),
-                FragmentPagerItems.with(this)
-                        .add("Mapa", MapaFragment.class)
-                        .add("Celulares")
-                        .create()
-        );
-        viewPager.setAdapter(adapter);
-        smartTabLayout.setViewPager(viewPager);*/
-
-        searchQueryListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                funcao(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-
-                if (newText.equals("")) {
-                    lista_temporaria.clear();
-                    celFragment.atualizaLista();
-
-                }
-
-                return true;
-            }
-
-        };
-
-        aplicaGoogleMaps();
-
-        // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
-        // viewPagerTab.setViewPager(viewPager);
     }
+
 
     public Usuario buscarUsuarioLogado() {
         FirebaseUser usuario_logado = FirebaseAuth.getInstance().getCurrentUser();
@@ -259,19 +201,69 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         abaMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 changeToMapaFragment();
+
+                inserindoMarcadores();
+
             }
         });
     }
 
-    @SuppressLint("RestrictedApi")
-    public void aplicaGoogleMaps() {
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
-        // Sua função é se conectar com serviços da Google, sua execução é assíncrona e o resultado desse método é
-        // entregue ao método "onMapR
-        // eady"
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragmentMenu);
+    }
+
+    // cópia do getLastLocation para o banco de dadosit
+    @SuppressLint("MissingPermission")
+    private Location getUltimoLocal() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            //obtém a última localização conhecida
+                            mLastLocation = task.getResult();
+                            // mostrando a latitude e longitude do celular atual na telinha do APP
+                            //msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
+
+                        } else {
+
+                            //Não há localização conhecida ou houve uma excepção
+                            //A excepção pode ser obtida com task.getException()
+
+                            //msg("Erro");
+                        }
+                    }
+                });
+        return mLastLocation;
+    }
+
+    public void changeToCelularFragment() {
+
+        // instanciando o fragment
+        celFragment = new CelularFragment();
+        graphicFragment = new GraphicFragment();
+
+        // Configurar objeto para o fragment
+        transaction = getSupportFragmentManager().beginTransaction();
+        // Onde vou exibir, qual fragment será mostrado
+        transaction.replace(R.id.fragmentMenu, celFragment);
+        transaction.commit();
+    }
+
+    public void changeToMapaFragment() {
+
+        // Configurar objeto para o fragment
+       transaction = getSupportFragmentManager().beginTransaction();
+
+        // Onde vou exibir, qual fragment será mostrado
+        transaction.replace(R.id.fragmentMenu, mapFragment);
+
+
+        transaction.commit();
 
         mapFragment.getMapAsync(this);
 
@@ -288,95 +280,10 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // pega os serviços para uso da localização na API da Google
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // método ou função para obter a localização do celular atual
-        getLastLocation();
 
-        //configurando recurso para avisar quando o usuario mudou de posicao
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    @SuppressWarnings("MissingPermission")
-    private void getLastLocation() {
-        mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-
-                            //obtém a última localização conhecida
-                            mLastLocation = task.getResult();
-                            // mostrando a latitude e longitude do celular atual na telinha do APP
-                            msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
-                            // setando a localização atual do celular no MAPA, com o marcador
-                            setMyLocation(mLastLocation);
-
-                        } else {
-
-                            //Não há localização conhecida ou houve uma excepção
-                            //A excepção pode ser obtida com task.getException()
-
-                            msg("errro");
-                        }
-                    }
-                });
-    }
-
-    // cópia do getLastLocation para o banco de dadosit
-    @SuppressLint("MissingPermission")
-    private Location getUltimoLocal() {
-        mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-
-                            //obtém a última localização conhecida
-                            mLastLocation = task.getResult();
-                            // mostrando a latitude e longitude do celular atual na telinha do APP
-                            msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
-
-                        } else {
-
-                            //Não há localização conhecida ou houve uma excepção
-                            //A excepção pode ser obtida com task.getException()
-
-                            msg("errro");
-                        }
-                    }
-                });
-        return mLastLocation;
-    }
-    //feedback se a conexao com o google play foi realizada ou nao
+        //transaction.detach(celFragment);
 
 
-    //feedback se a conexao com o google play foi realizada ou nao
-    public void changeToCelularFragment() {
-
-        // instanciando o fragment
-        celFragment = new CelularFragment();
-        graphicFragment = new GraphicFragment();
-
-        // Configurar objeto para o fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // Onde vou exibir, qual fragment será mostrado
-        transaction.replace(R.id.fragmentMenu, celFragment);
-        transaction.commit();
-
-
-
-    }
-
-    public void changeToMapaFragment() {
-
-        // Configurar objeto para o fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        // Onde vou exibir, qual fragment será mostrado
-        transaction.replace(R.id.fragmentMenu, mapFragment);
-        transaction.commit();
     }
 
     @Override
@@ -482,18 +389,188 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-            //Iniciando o monitoramento do GPS
-            startLocationUpdates(); // Inicia o GPS
 
+
+//========== *GOOGLE MAPS* ===================================== *GOOGLE MAPS* ===========================================//
+    //Insere marcadores entre 1 dia, 1 semana e 1 mês
+    public void inserindoMarcadores()
+    {
+        /*
+           MARCADOR AZUL - dentro de 30 dias
+           MARCADOR ROXO - dentro de 7 dias
+           MARCADOR VERMELHO - mesmo dia
+
+         */
+
+        int dia, mes, ano, dia_atual=0, mes_atual =0, ano_atual=0;
+        Location localizacao_cel_roubado =new Location("123123");
+
+        Calendar calendario = Calendar.getInstance();
+        dia_atual = calendario.get(Calendar.DATE);
+        mes_atual = calendario.get(Calendar.MONTH);
+        ano_atual = calendario.get(Calendar.YEAR);
+
+        for(int i=0; i< CelularDAO.lista_de_roubo.size(); i++)
+        {
+            dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
+            mes = CelularDAO.lista_de_roubo.get(i).getCelularP().getMes();
+            ano = CelularDAO.lista_de_roubo.get(i).getCelularP().getAno();
+            localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
+            localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
+            if(ano == ano_atual)
+            {
+                if(mes == mes_atual)
+                {
+                    if(dia == dia_atual)
+                    {
+                        setMyLocationWithColor(localizacao_cel_roubado,"vermelho");
+
+                    }
+                    else if(dia_atual - dia <=7)
+                    {
+                        setMyLocationWithColor(localizacao_cel_roubado, "roxo");
+                    }
+                    else
+                        setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                }
+                else if(mes_atual - mes == 1)
+                {
+                    if(dia_atual == dia)
+                    {
+                        setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                    }
+                    else if (dia == 31)
+                    {
+                        dia = dia_atual;
+                        if(dia <=7)
+                            setMyLocationWithColor(localizacao_cel_roubado, "roxo");
+                        else
+                            setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
+                    }
+                    else if(mes == 4 || mes == 6 || mes == 9 || mes == 11)
+                    {
+
+                        if(dia == 30)
+                            dia = dia_atual;
+                        else
+                            dia = 30 - dia + dia_atual;
+
+                        if(dia <= 7)
+                            setMyLocationWithColor(localizacao_cel_roubado, "roxo");
+                        else
+                            setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
+                    }
+                    else if(mes == 2)
+                    {
+                        if(dia == 28 || dia == 29)
+                        {
+                            dia = dia_atual;
+                        }
+                        else
+                            dia = 28 - dia + dia_atual;
+
+                        if(dia <= 7)
+                            setMyLocationWithColor(localizacao_cel_roubado, "roxo");
+                        else
+                            setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                    }
+                    else if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12 )
+                    {
+                        dia = dia_atual + 1;
+                        if(dia <= 7)
+                            setMyLocationWithColor(localizacao_cel_roubado, "roxo");
+                        else
+                            setMyLocationWithColor(localizacao_cel_roubado, "azul");
+                    }
+
+
+
+                }
+                else
+                {
+                    Log.i("Mes","Diferença de mês do roubo maior que 1");
+                }
+            }
+            else
+                Log.i("Ano", "Ano Diferente!");
+        }
     }
 
+    //Coloca a tela do mapa
+    @SuppressLint("RestrictedApi")
+    public void aplicaGoogleMaps() {
+
+        // Sua função é se conectar com serviços da Google, sua execução é assíncrona e o resultado desse método é
+        // entregue ao método "onMapR
+        // eady"
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragmentMenu);
+
+        mapFragment.getMapAsync(this);
+
+        //Conexao com o Google Services
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        // conecta a API
+        mGoogleApiClient.connect();
+
+        // pega os serviços para uso da localização na API da Google
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // método ou função para obter a localização do celular atual
+        getLastLocation();
+
+        //configurando recurso para avisar quando o usuario mudou de posicao
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    //Pega a ultima localização
+    @SuppressWarnings("MissingPermission")
+    private void getLastLocation() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            //obtém a última localização conhecida
+                            mLastLocation = task.getResult();
+                            // mostrando a latitude e longitude do celular atual na telinha do APP
+                            //msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
+                            // setando a localização atual do celular no MAPA, com o marcador
+                            //setMyLocation(mLastLocation);
+
+                        } else {
+
+                            //Não há localização conhecida ou houve uma excepção
+                            //A excepção pode ser obtida com task.getException()
+
+                            //msg("Erro");
+                        }
+                    }
+                });
+    }
+
+    //Conecta e desconecta com o Google Play Services
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        //Iniciando o monitoramento do GPS
+        startLocationUpdates(); // Inicia o GPS
+
+    }
     @Override
     public void onConnectionSuspended(int i) {
 
     }
 
+    //Verifica se a conexão com o Google Play services
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -502,11 +579,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     // Método responsável por ativar o monitoramento do GPS
@@ -519,8 +591,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             mLastLocation = location;
 
-                            msg("Longitude: "+location.getLongitude() + "Latitude: "+ location.getLatitude());
-                            setMyLocation(location);
+                            //msg("Longitude: "+location.getLongitude() + "Latitude: "+ location.getLatitude());
+                            //setMyLocation(location);
                         }
                     }
                 }
@@ -532,12 +604,14 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(new LocationCallback());
     }
 
+    //Paralisa a localização em tempo real
     @Override
     public void onPause() {
         super.onPause();
         stopLocationUpdates(); // Para o GPS
     }
 
+    //Pega a última localização e coloca marcador
     public void setMyLocation(Location location) {
         if (location != null) {
             // Recupera latitude e longitude da
@@ -558,7 +632,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             markerOptions.position(ultimaLocalizacao)    // Localização
                     .title("Minha Localização")       // Título
                     .snippet("Latitude: , Longitude:") // Descrição
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
 
             mMap.clear();
@@ -568,10 +642,118 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
+    //Mostra uma mensagem na tela com a latitude e longitude
     public void msg(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
+
+    //Inserindo marcadores coloridos com a localização do celular roubado
+    public void setMyLocationWithColor(Location location,String cor) {
+        if (location != null) {
+            // Recupera latitude e longitude da
+            // ultima localização do usuário
+            LatLng ultimaLocalizacao = new LatLng(location.getLatitude(), location.getLongitude());
+            // Configuração da câmera
+            final CameraPosition position = new CameraPosition.Builder()
+                    .target(ultimaLocalizacao)     //  Localização
+                    .bearing(45)        //  Rotação da câmera
+                    .tilt(90)            //   ngulo em graus
+                    .zoom(17)           //  Zoom
+                    .build();
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
+            mMap.animateCamera(update);
+            // Criando um objeto do tipo MarkerOptions
+            final MarkerOptions markerOptions = new MarkerOptions();
+
+            if(cor.equalsIgnoreCase("azul")) {
+                // Configurando as propriedades do marker
+                markerOptions.position(ultimaLocalizacao)    // Localização
+                        .title("Minha Localização")       // Título
+                        .snippet("Latitude: , Longitude:") // Descrição
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+            }
+            else if(cor.equalsIgnoreCase("roxo")) {
+                // Configurando as propriedades do marker
+                markerOptions.position(ultimaLocalizacao)    // Localização
+                        .title("Minha Localização")       // Título
+                        .snippet("Latitude: , Longitude:") // Descrição
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
+            }
+            else if(cor.equalsIgnoreCase("vermelho")) {
+                // Configurando as propriedades do marker
+                markerOptions.position(ultimaLocalizacao)    // Localização
+                        .title("Minha Localização")       // Título
+                        .snippet("Latitude: , Longitude:") // Descrição
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+            }
+            //mMap.clear();
+            mMap.addMarker(markerOptions);
+
+        }
+
+    }
+
+    //cópia do onCreate para recarregar os marcadores coloridos
+    public void inicio()
+    {
+
+
+        celFragment = new CelularFragment();
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("SecurityApp");
+
+
+        // verificando se a variável "dao" já foi criada
+        UsuarioDAO.getInstance();
+        referenciaComponentes();
+
+
+        CelularDAO.lista_de_roubo.clear();
+        CelularDAO daoC = new CelularDAO();
+        daoC.buscarCelularesRoubado();
+
+
+        UsuarioDAO.lista_de_usuarios.clear();
+
+        // fazendo a busca dos usuários no FireBase, e armazenando em uma lista chamada: "lista_de_usuarios"
+        UsuarioDAO.dao.buscarUsuarios();
+
+        referenciaComponentes();
+
+
+        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        lista_temporaria = new ArrayList<>();
+
+
+
+        searchQueryListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                funcao(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+
+                if (newText.equals("")) {
+                    lista_temporaria.clear();
+                    celFragment.atualizaLista();
+
+                }
+
+                return true;
+            }
+
+        };
+
+        aplicaGoogleMaps();
+
+        // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
+        // viewPagerTab.setViewPager(viewPager);
+    }
 }
-
-
