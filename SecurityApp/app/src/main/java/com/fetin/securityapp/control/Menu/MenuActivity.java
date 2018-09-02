@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -90,8 +91,10 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
     private FragmentTransaction transaction;
-
+    private MediaPlayer somAlarm;
     public static Celular Cel_cadastrado;
+    private Button botaoPlay;
+    private Button botaoStop;
 
     public static ArrayList<String> lista_temporaria;
 
@@ -351,15 +354,32 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent2);
                 break;
             case R.id.menuCelRoubado:
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                playMusic();
                 CelularDAO daoC = new CelularDAO();
                 UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                //getUltimoLocal().getLatitude(), getUltimoLocal().getLongitude()
+
+
+
+
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    public  void playMusic()
+    {
+        // Referenciando o "somAlarm" com a música que está na pasta RAW
+        somAlarm = MediaPlayer.create(this, R.raw.alarme_roubo);
+        somAlarm.start();
+
+ }
     public void deslogarUsuario() {
 
         boolean sucesso = false;

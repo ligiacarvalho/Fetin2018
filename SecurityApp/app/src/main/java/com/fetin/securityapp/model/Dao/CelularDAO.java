@@ -1,7 +1,9 @@
 package com.fetin.securityapp.model.Dao;
 
+import android.media.MediaPlayer;
 import android.util.Log;
 
+import com.fetin.securityapp.R;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.FunctionalityManager;
 import com.fetin.securityapp.model.Usuario;
@@ -24,6 +26,7 @@ public class CelularDAO {
     public static ArrayList<Usuario> lista_de_roubo;
     public static ArrayList<String> lista_de_imei;
     private Random random;
+
 
     public CelularDAO() {
         referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
@@ -127,17 +130,13 @@ public class CelularDAO {
         Log.i("oi", "Contato Proximo"+contato_proximo);
         FunctionalityManager sms = new FunctionalityManager();
         sms.sendSms(contato_proximo,UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-        // mandar sms (com um corpo certinho, contendo os dados)
-        // sendSms();
 
-        // ativarMusica();
 
-    }
-
-    public void excluir() {
 
 
     }
+
+
 
 }
 
