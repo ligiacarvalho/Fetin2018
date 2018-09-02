@@ -36,6 +36,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 
+    //grafico
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
     //Optional: see how to use the utility.
     implementation 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
 
@@ -44,12 +47,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:12.0.1'
 
     //dependencia do Search View
+
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
     //search
     //implementation fileTree(dir: 'libs', include: ['*.jar'])
-   // implementation 'com.android.support:appcompat-v7:26.0.3'
-
+    // implementation 'com.android.support:appcompat-v7:26.0.3'
 
 
 }

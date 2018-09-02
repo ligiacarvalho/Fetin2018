@@ -26,6 +26,7 @@ import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
+import com.fetin.securityapp.control.Menu.Fragment.GraphicFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
@@ -80,6 +81,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private CelularFragment celFragment;
     private MapaFragment mapaFragment;
     private FirebaseAuth usuarioAuth;
+    private GraphicFragment graphicFragment;
 
     // Variáveis do Google Maps
     private GoogleMap mMap;
@@ -104,6 +106,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
         celFragment = new CelularFragment();
+
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("SecurityApp");
         setContentView(R.layout.activity_menu);
@@ -354,12 +357,16 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // instanciando o fragment
         celFragment = new CelularFragment();
+        graphicFragment = new GraphicFragment();
 
         // Configurar objeto para o fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         // Onde vou exibir, qual fragment será mostrado
         transaction.replace(R.id.fragmentMenu, celFragment);
         transaction.commit();
+
+
+
     }
 
     public void changeToMapaFragment() {
@@ -446,7 +453,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 CelularDAO daoC = new CelularDAO();
                 UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                //getUltimoLocal().getLatitude(), getUltimoLocal().getLongitude()
                 break;
         }
         return super.onOptionsItemSelected(item);
