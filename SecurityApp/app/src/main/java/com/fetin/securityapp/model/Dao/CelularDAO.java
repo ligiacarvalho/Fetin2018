@@ -60,8 +60,6 @@ public class CelularDAO {
                     lista_de_roubo.add(busca_usuario);
                     if (celular_roubado != null && busca_usuario != null)
                         lista_de_imei.add(busca_usuario.getCelularP().getImei1());
-
-
                 }
             }
 
@@ -94,16 +92,19 @@ public class CelularDAO {
 
         DatabaseReference referenciaCelular = referenciaDoBanco.child("Celulares Roubados");
 
-        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
-        UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
+        if(UsuarioDAO.user_cadastrado.getCelularP() == null)
+        {
+            return;
+        }
+         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(longitude);
+         UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(latitude);
 
-        Date data = Calendar.getInstance().getTime();
+         Date data = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH); //ATUALIZAR
         int year = cal.get(Calendar.YEAR);
         //dia = Calendar.getInstance().getTime().getDay();
-        Log.i("dia", "dia = "+ day);
 
         UsuarioDAO.user_cadastrado.getCelularP().setDia(day);
         UsuarioDAO.user_cadastrado.getCelularP().setMes(month);
@@ -112,27 +113,22 @@ public class CelularDAO {
         //Criando código para o contato pré-dfinido e incluido no banco de dados
         random = new Random();
         int valor = random.nextInt(60000);
-        Log.i("senha", "Código: "+valor);
         UsuarioDAO.user_cadastrado.getCelularP().setCodigo(valor);
 
         //Passando número do contato próximo para ativar a função de segurança
-        //ativarFuncionalidadesDeSeguranca(UsuarioDAO.user_cadastrado.getContatoProximo());
+        ativarFuncionalidadesDeSeguranca(UsuarioDAO.user_cadastrado.getContatoProximo());
 
 
         //comando para inserir no banco
         referenciaCelular.child(UsuarioDAO.user_cadastrado.getChave()).setValue(UsuarioDAO.user_cadastrado);
-        // Log.i("user_cadastrado",Cel_cadastrado.getImei1());
+
     }
 
     public void ativarFuncionalidadesDeSeguranca(String contato_proximo)
     {
 
-        Log.i("oi", "Contato Proximo"+contato_proximo);
         FunctionalityManager sms = new FunctionalityManager();
         sms.sendSms(contato_proximo,UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-
-
-
 
     }
 

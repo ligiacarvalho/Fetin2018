@@ -18,7 +18,7 @@ public class FunctionalityManager extends AppCompatActivity {
         String senha = Integer.toString(cod);
         Intent intenet = new Intent();
         //String msg = usuario;
-        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha  ;
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
 
 
         try {

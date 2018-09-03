@@ -15,7 +15,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
-
     </com.github.mikephil.charting.charts.PieChart>
 
     <TextView

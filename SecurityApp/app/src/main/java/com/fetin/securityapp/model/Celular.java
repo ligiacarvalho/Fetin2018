@@ -1,7 +1,5 @@
 package com.fetin.securityapp.model;
 
-import java.util.Date;
-
 public class Celular {
 
     private String modelo, chip1, chip2, imei1, imei2;

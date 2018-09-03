@@ -95,6 +95,7 @@ public class GraphicFragment extends Fragment {
         textoHoje.setText(Integer.toString(MenuActivity.contDia));
         textoSemana.setText(Integer.toString(MenuActivity.contSemana));
         textoMes.setText(Integer.toString(MenuActivity.contMes));
+
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10,5,5);
@@ -102,11 +103,6 @@ public class GraphicFragment extends Fragment {
         //O quanto desliza a roda quando deslizamos ela. Maior o valor, mais desliza
         pieChart.setDragDecelerationFrictionCoef(0.95f);
 
-       /*
-        pieChart.setCenterText("4Security");
-        pieChart.setCenterTextSize(20);
-        pieChart.setCenterTextColor(Color.BLACK);
-        /*/
 
         pieChart.setHoleColor(android.graphics.Color.WHITE);
         //preenche a roda = false/roda vazada = true
@@ -116,16 +112,6 @@ public class GraphicFragment extends Fragment {
 
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
-
-/*
-       yValues.add(new PieEntry(MenuActivity.contDia,"Neste dia"));
-
-        MenuActivity.contSemana = MenuActivity.contDia + MenuActivity.contSemana;
-        yValues.add(new PieEntry(MenuActivity.contSemana, "Nesta Semana"));
-
-        MenuActivity.contMes = MenuActivity.contSemana + MenuActivity.contMes;
-        yValues.add(new PieEntry(MenuActivity.contMes, "Neste Mês"));
-*/
 
 
         if(MenuActivity.contJaneiro!=0){ yValues.add(new PieEntry(MenuActivity.contJaneiro, "Janeiro"));}
@@ -140,6 +126,7 @@ public class GraphicFragment extends Fragment {
         if(MenuActivity.contOutubro!=0){yValues.add(new PieEntry(MenuActivity.contOutubro, "Outubro"));}
         if(MenuActivity.contNovembro!=0){yValues.add(new PieEntry(MenuActivity.contNovembro, "Novembro"));}
         if(MenuActivity.contDezembro!=0){yValues.add(new PieEntry(MenuActivity.contDezembro, "Dezembro"));}
+
 
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic);
 

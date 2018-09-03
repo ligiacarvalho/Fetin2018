@@ -73,12 +73,11 @@ public class Cadastro2Activity extends AppCompatActivity {
     public boolean verificaEntradaDeDados()
 
     {
-        /*for(int i = 0; i < CelularDAO.lista_de_imei.size(); i++){
-            if(campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i))||campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i)))
-            {
-                Toast.makeText(getApplicationContext(),"Este IMEI já esta cadastrado",Toast.LENGTH_LONG).show();
+        for(int i = 0; i < CelularDAO.lista_de_imei.size(); i++){
+            if(campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i))||campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i))) {
+                Toast.makeText(getApplicationContext(), "Este IMEI já esta cadastrado", Toast.LENGTH_LONG).show();
                 return false;
-           ]
+            }
         }
 
         if(campoModeloCelular.getText().toString().equals(""))
@@ -101,7 +100,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
             return false;
-        }*/
+        }
 
 
         return true;

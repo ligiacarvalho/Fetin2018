@@ -101,6 +101,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static ArrayList<String> lista_temporaria;
 
+
     // Abas
     private Button abaCelular, abaMapa, abaGrafico;
     public int aba;
@@ -190,6 +191,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         boolean achou = false;
 
         if (aba == 1) {
+
+            //msg("Aba celular");
             // na aba celular buscar pelo IMEI
             for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
 
@@ -204,11 +207,31 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (achou == false) {
                 msg("IMEI não encontrado");
             }
-        } else {
-            //na aba mapa buscar pela localizacao do codigo
         }
+        //na aba mapa buscar pela localizacao do codigo
+        else if (aba == 0) {
+            //msg("Aba mapa");
 
+            {
+                for(int i = 0; i<CelularDAO.lista_de_roubo.size(); i++)
+                {
+                    String cc = Integer.toString(CelularDAO.lista_de_roubo.get(i).getCelularP().getCodigo());
 
+                    if(cc.contains(textoDePesquisa)){
+                       double latitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat();
+                       double longitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong();
+                       Location localizacao_temporaria_cel = new Location("123123");
+                       setMyLocation_usuario(localizacao_temporaria_cel, latitude_temporaria, longitude_temporaria);
+                       achou = true;
+                    }
+
+                }
+                if(achou == false)
+                    msg("Código não encontrado");
+            }
+        }
+        else
+            msg("Aba grafico");
     }
 
     public void referenciaComponentes() {
@@ -248,7 +271,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
     }
-
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -413,10 +435,19 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                //playMusic();
+
+                playMusic();
+
                 CelularDAO daoC = new CelularDAO();
-                // UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+                getLastLocation();
+
+                if(mLastLocation == null)
+                    msg("Sem localizacao");
+                else
+                    daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
 
                 break;
         }
@@ -666,7 +697,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnected(@Nullable Bundle bundle) {
         //Iniciando o monitoramento do GPS
         startLocationUpdates(); // Inicia o GPS
-
     }
 
     @Override
@@ -855,5 +885,36 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewPagerTab);
         // viewPagerTab.setViewPager(viewPager);
+    }
+
+
+    //Pega a última localização e coloca marcador para o usuário
+    public void setMyLocation_usuario(Location location, double latitude, double longitude) {
+        if (location != null) {
+            // Recupera latitude e longitude da
+            // ultima localização do usuário
+            LatLng ultimaLocalizacao = new LatLng(latitude, longitude);
+           // LatLng ultimaLocalizacao = new LatLng(location.getLatitude(), location.getLongitude());
+            // Configuração da câmera
+            final CameraPosition position = new CameraPosition.Builder()
+                    .target(ultimaLocalizacao)     //  Localização
+                    .bearing(45)        //  Rotação da câmera
+                    .tilt(90)            //   ngulo em graus
+                    .zoom(17)           //  Zoom
+                    .build();
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
+            mMap.animateCamera(update);
+            // Criando um objeto do tipo MarkerOptions
+            final MarkerOptions markerOptions = new MarkerOptions();
+            // Configurando as propriedades do marker
+            markerOptions.position(ultimaLocalizacao)    // Localização
+                    .title("Minha Localização")       // Título
+                    .snippet("Latitude: , Longitude:") // Descrição
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+            mMap.clear();
+            mMap.addMarker(markerOptions);
+
+        }
     }
 }
