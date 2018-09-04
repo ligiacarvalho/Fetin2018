@@ -872,7 +872,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (newText.equals("")) {
                     lista_temporaria.clear();
-                    celFragment.atualizaLista();
+
+                    if(aba == 1)
+                        celFragment.atualizaLista();
 
                 }
 

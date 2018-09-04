@@ -133,7 +133,6 @@ public class CelularFragment extends Fragment {
                     MenuActivity.lista_temporaria
             );
             listaItens.setAdapter(adapter);
-            MenuActivity.lista_temporaria.clear();
         }
         else
         {

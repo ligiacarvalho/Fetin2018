@@ -17,7 +17,6 @@ public class FunctionalityManager extends AppCompatActivity {
         String usuario = UsuarioDAO.user_cadastrado.getNome();
         String senha = Integer.toString(cod);
         Intent intenet = new Intent();
-        //String msg = usuario;
         String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
 
 
