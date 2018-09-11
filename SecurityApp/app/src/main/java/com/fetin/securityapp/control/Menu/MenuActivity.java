@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.GraphicFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
+import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
@@ -93,7 +95,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
     private FragmentTransaction transaction;
-    private MediaPlayer somAlarm;
+    public static MediaPlayer somAlarm;
     public static Celular Cel_cadastrado;
     private Button botaoPlay;
     private Button botaoStop;
@@ -142,6 +144,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
         inicio();
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
+
 
         contAno = contMes = contSemana = contDia = 0;
 
@@ -377,7 +384,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onCreateOptionsMenu(menu);
     }
 
-    //funçao search
+    //funçao searchO
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -443,6 +450,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 getLastLocation();
 
+                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+
+                // ativa o bloqueio
+                Intent intent = new Intent(this, ArduinoService.class);
+                startService(intent);
+
                 if(mLastLocation == null)
                     msg("Sem localizacao");
                 else
@@ -454,6 +467,25 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    // método para enviar SMS
+    public void sendSms(String contato, int cod) {
+        String usuario = UsuarioDAO.user_cadastrado.getNome();
+        String senha = Integer.toString(cod);
+        Intent intenet = new Intent();
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
+
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(contato, null, msg, null, null);
+            //  Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
     public void playMusic() {
         // Referenciando o "somAlarm" com a música que está na pasta RAW
         somAlarm = MediaPlayer.create(this, R.raw.alarme_roubo);

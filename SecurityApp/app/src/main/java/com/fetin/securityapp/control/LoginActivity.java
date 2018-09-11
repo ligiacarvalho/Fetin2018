@@ -1,10 +1,12 @@
 package com.fetin.securityapp.control;
 
+import android.Manifest;
 import android.content.Intent;
 
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -18,6 +20,7 @@ import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
 import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 
@@ -79,6 +82,12 @@ public class LoginActivity extends AppCompatActivity {
         UsuarioDAO.dao.buscarUsuarios();
 
         metodoParaTeste();
+
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
+
+
 
     }
 
@@ -150,6 +159,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
+
     }
 
     public void logar(View view)
