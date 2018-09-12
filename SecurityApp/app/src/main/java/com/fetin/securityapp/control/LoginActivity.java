@@ -18,9 +18,7 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 
-import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
-import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
 import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 

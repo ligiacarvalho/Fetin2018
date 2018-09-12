@@ -2,9 +2,6 @@ package com.fetin.securityapp.control.Menu;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.media.MediaPlayer;
@@ -30,7 +27,7 @@ import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.GraphicFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
-import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
+import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
 import com.fetin.securityapp.model.Dao.CelularDAO;
@@ -57,23 +54,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItem;
-import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItems;
 
 //search
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.logging.LogRecord;
 
 
 public class MenuActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -453,7 +441,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
 
                 // ativa o bloqueio
-                Intent intent = new Intent(this, ArduinoService.class);
+                Intent intent = new Intent(this, BloqueioService.class);
                 startService(intent);
 
                 if(mLastLocation == null)

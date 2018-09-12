@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fetin.securityapp">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
@@ -64,7 +66,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".control.SegundoPlano.ArduinoService" />
+        <service android:name=".control.SegundoPlano.BloqueioService" />
 
         <activity android:name=".control.RoubadoActivity"></activity>
     </application>

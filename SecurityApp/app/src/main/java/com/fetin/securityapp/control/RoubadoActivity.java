@@ -8,9 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.fetin.securityapp.R;
-import com.fetin.securityapp.control.Cadastro.Cadastro1Activity;
 import com.fetin.securityapp.control.Menu.MenuActivity;
-import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
+import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class RoubadoActivity extends AppCompatActivity {
     {
          senha = UsuarioDAO.user_cadastrado.getSenha();
         if (campoSenha.getText().toString().equals(senha)) {
-            Intent intent2 = new Intent(this, ArduinoService.class);
+            Intent intent2 = new Intent(this, BloqueioService.class);
             stopService(intent2);
             MenuActivity.somAlarm.stop();
             Intent intent1 = new Intent(this, LoginActivity.class);

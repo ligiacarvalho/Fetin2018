@@ -14,18 +14,16 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.control.RoubadoActivity;
 
-import java.io.IOException;
 import java.util.List;
 
-public class ArduinoService extends Service {
+public class BloqueioService extends Service {
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
     private static boolean parou;
     private Context ctx;
-    private int resp;
-    private Arduino arduino;
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
@@ -36,22 +34,24 @@ public class ArduinoService extends Service {
         @Override
         public void handleMessage(Message msg) {
 
+            // lógica que será feita em segundo plano
 
-            // Conectou
-            do {
-                //faz leitura do serial
-                try {
-                    resp = Arduino.mmSocket.getInputStream().read();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            //mandarLocalizacaoProContatoEPolicial();
+            //colocaAsInfoNoSetorDeRoubados();
+            //sendSMS();
+            Log.i("Teste", "oiiiiiii");
+
+            while (parou == false) {
+
+                if (isInBackground()) {
+                        restoreApp();
                 }
 
+                //acionarMusica(); //colocar um delay dentro
 
-                Log.i("Teste","Teste Arduino");
-
-            } while (resp != 49 );
-            //49 é 1 na tabela ASCII
-
+                Log.i("Msg", "Celular Rooubado!");
+            }
+            Log.i("Msg", "oiiiiiii");
 
         }
     }
@@ -65,23 +65,11 @@ public class ArduinoService extends Service {
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
-
-        arduino = new Arduino();
-
-        iniciarFuncionalidadesDoArduino();
-
+        Log.i("Msg", "Celular Rooubado!");
         parou = false;
         // Get the HandlerThread's Looper and use it for our Handler
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(mServiceLooper);
-    }
-
-    public void iniciarFuncionalidadesDoArduino(){
-
-        arduino.buscarDispositivos();
-
-        //arduino.connectToBluetooth();
-
     }
 
     @Override
@@ -113,6 +101,20 @@ public class ArduinoService extends Service {
 
     }
 
+    //chamar de novo
+    private boolean isInBackground() {
+        ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
 
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        return (!ctx.getApplicationContext().getPackageName().equals(componentInfo.getPackageName()));
+    }
 
+    private void restoreApp() {
+
+        Intent i = new Intent(ctx, RoubadoActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(i);
+
+    }
 }
