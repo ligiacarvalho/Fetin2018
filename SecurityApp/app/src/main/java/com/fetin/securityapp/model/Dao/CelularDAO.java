@@ -58,6 +58,7 @@ public class CelularDAO {
 
                     // Armazenando os usuários encontrados no banco em uma lista
                     lista_de_roubo.add(busca_usuario);
+
                     if (celular_roubado != null && busca_usuario != null)
                         lista_de_imei.add(busca_usuario.getCelularP().getImei1());
                 }

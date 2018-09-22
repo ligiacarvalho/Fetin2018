@@ -125,20 +125,16 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         celFragment = new CelularFragment();
 
         getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("SecurityApp");
+        getSupportActionBar().setTitle("4 S.A");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
+
         inicio();
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-
-
-
-        contAno = contMes = contSemana = contDia = 0;
 
     }
 
@@ -428,7 +424,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                playMusic();
+               // playMusic();
 
                 CelularDAO daoC = new CelularDAO();
 
@@ -436,13 +432,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
                 //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
 
 
                 // ativa o bloqueio
-                Intent intent = new Intent(this, BloqueioService.class);
-                startService(intent);
+               //Intent intent = new Intent(this, BloqueioService.class);
+               // startService(intent);
 
                 if(mLastLocation == null)
                     msg("Sem localizacao");
@@ -516,8 +512,10 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
 
+        contAno = contMes = contSemana = contDia = 0;
 
         int dia, mes, ano, dia_atual = 0, mes_atual = 0, ano_atual = 0;
+
         Location localizacao_cel_roubado = new Location("123123");
 
         Calendar calendario = Calendar.getInstance();
