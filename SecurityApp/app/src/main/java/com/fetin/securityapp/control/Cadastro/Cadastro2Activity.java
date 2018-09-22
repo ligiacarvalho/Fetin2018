@@ -111,6 +111,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         boolean resp = verificaEntradaDeDados();
 
         if(resp){
+            getDadosDosCampos1();
             getDadosDosCampos2();
             finish();
             startActivity(intent);
@@ -145,14 +146,19 @@ public class Cadastro2Activity extends AppCompatActivity {
         novoCelular.setImei2(campoIMEI2.getText().toString());
 
         CelularDAO daoC = new CelularDAO();
-        daoC.inserir(novoCelular);
 
         CelularDAO.Cel_cadastrado = novoCelular;
 
         UsuarioDAO.user_cadastrado.setCelularP(novoCelular);
 
+        UsuarioDAO.dao.inserir(UsuarioDAO.user_cadastrado);
+
     }
 
+    public void getDadosDosCampos1(){
+
+
+    }
     //criando mascaras
     public void MascaraChip2()
     {
