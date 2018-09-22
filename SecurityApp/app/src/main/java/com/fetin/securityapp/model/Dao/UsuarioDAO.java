@@ -46,7 +46,7 @@ public class UsuarioDAO {
 
         // Adicionando um nó filho ao "Usuário", com chave única gerada randomicamente pelo push()
         // .E nela, colocando os dados dos novos usuários.
-         referenciaDoUsuario.push().setValue(novo_usuario);
+        referenciaDoUsuario.push().setValue(novo_usuario);
     }
 
     public void buscarUsuarios() {
@@ -88,14 +88,11 @@ public class UsuarioDAO {
 
     }
 
-    public String buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(String email)
-    {
+    public String buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(String email) {
         // percorrendo cada usuário da lista de usuários
-        for(Usuario user : lista_de_usuarios)
-        {
+        for (Usuario user : lista_de_usuarios) {
             // se o email do usuário da posição X, for igual ao email que foi passado para a função
-            if(user.getEmail().equalsIgnoreCase(email))
-            {
+            if (user.getEmail().equalsIgnoreCase(email)) {
                 // retorno a chave dele
                 return user.getChave();
             }
@@ -128,23 +125,19 @@ public class UsuarioDAO {
         // Pegando a chave do usuário a ser deletado
         String chaveDoUsuarioASerDeletado = buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(user.getEmail());
 
-        if(chaveDoUsuarioASerDeletado != null)
-        {
+        if (chaveDoUsuarioASerDeletado != null) {
             // remove o nó do Usuario, com a chave encontrada pela função acima
             referenciaDoUsuario.child(chaveDoUsuarioASerDeletado).removeValue();
 
             sucesso = true;
-        }
-        else
-        {
+        } else {
             sucesso = false;
         }
 
         return sucesso;
     }
 
-    public boolean deslogarUsuario()
-    {
+    public boolean deslogarUsuario() {
         boolean sucesso = false;
 
         // Pegando o usuário que fez o "Sign In"
@@ -159,6 +152,25 @@ public class UsuarioDAO {
 
     public void atualizar(String email) {
 
+    }
+
+    public void deletarUsuarios() {
+
+
+      /*  ListUsersPage page = FirebaseAuth.getInstance().listUsers(null);
+        while (page != null) {
+            for (ExportedUserRecord user : page.getValues()) {
+                System.out.println("User: " + user.getUid());
+            }
+            page = page.getNextPage();
+        }
+
+        page = FirebaseAuth.getInstance().listUsers(null);
+        for (ExportedUserRecord user : page.iterateAll()) {
+            System.out.println("User: " + user.getUid());
+        }
+
+        FirebaseAuth.getInstance().deleteUser(uid);*/
     }
 
 }
