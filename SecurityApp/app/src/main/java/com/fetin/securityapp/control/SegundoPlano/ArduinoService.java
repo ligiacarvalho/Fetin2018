@@ -1,23 +1,33 @@
 package com.fetin.securityapp.control.SegundoPlano;
 
-import android.app.ActivityManager;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Service;
-import android.content.ComponentName;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fetin.securityapp.control.RoubadoActivity;
+import com.fetin.securityapp.R;
+import com.fetin.securityapp.model.Dao.CelularDAO;
+import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ArduinoService extends Service {
     private Looper mServiceLooper;
@@ -26,9 +36,13 @@ public class ArduinoService extends Service {
     private Context ctx;
     private int resp;
     private Arduino arduino;
+    public static MediaPlayer somAlarm;
+    private FusedLocationProviderClient mFusedLocationClient;
+    protected Location mLastLocation;
+
 
     // Handler that receives messages from the thread
-    private final class ServiceHandler extends Handler {
+    private final class ServiceHandler extends Handler  {
         public ServiceHandler(Looper looper) {
             super(looper);
         }
@@ -47,13 +61,33 @@ public class ArduinoService extends Service {
                 }
 
 
-                Log.i("Teste","Teste Arduino");
+                Log.i("Teste", "Teste Arduino");
 
-            } while (resp != 49 );
+            } while (resp != 49);
             //49 é 1 na tabela ASCII
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            playMusic();
+
+            CelularDAO daoC = new CelularDAO();
+
+            getLastLocation();
+
+            daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+            sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(), UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+            //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
 
 
         }
+
+
+
+
     }
 
     @Override
@@ -76,17 +110,37 @@ public class ArduinoService extends Service {
         mServiceHandler = new ServiceHandler(mServiceLooper);
     }
 
-    public void iniciarFuncionalidadesDoArduino(){
+    public void iniciarFuncionalidadesDoArduino() {
 
+        // busca o bluetooth do arudino
         arduino.buscarDispositivos();
 
-        //arduino.connectToBluetooth();
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // tento armazenar as informações dele em uma variavel
+        BluetoothDevice bluetoothDoArudino = arduino.buscarOBluetoothDoArduino();
+
+        if(bluetoothDoArudino != null)
+        {
+            arduino.connectToBluetooth(bluetoothDoArudino);
+        }
+
 
     }
 
     @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "service arduino starting", Toast.LENGTH_SHORT).show();
 
         ctx = this;
 
@@ -100,19 +154,57 @@ public class ArduinoService extends Service {
         return START_STICKY;
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        // We don't provide binding, so return null
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-
-        parou = true;
+    public void playMusic() {
+        // Referenciando o "somAlarm" com a música que está na pasta RAW
+        somAlarm = MediaPlayer.create(ctx, R.raw.alarme_roubo);
+        somAlarm.start();
 
     }
 
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener((Activity) ctx, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            //obtém a última localização conhecida
+                            mLastLocation = task.getResult();
+                            // mostrando a latitude e longitude do celular atual na telinha do APP
+                            //msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
+                            // setando a localização atual do celular no MAPA, com o marcador
+                            //setMyLocation(mLastLocation);
+
+                        } else {
+
+                            //Não há localização conhecida ou houve uma excepção
+                            //A excepção pode ser obtida com task.getException()
+
+                            //msg("Erro");
+                        }
+                    }
+                });
+    }
+
+    public void sendSms(String contato, int cod) {
+        String usuario = UsuarioDAO.user_cadastrado.getNome();
+        String senha = Integer.toString(cod);
+        Intent intenet = new Intent();
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
+
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(contato, null, msg, null, null);
+            //  Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

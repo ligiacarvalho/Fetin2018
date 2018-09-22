@@ -15,7 +15,6 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.control.RoubadoActivity;
 
 import java.util.List;
