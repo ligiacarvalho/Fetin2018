@@ -206,10 +206,7 @@ public class Cadastro2Activity extends AppCompatActivity {
 
     }
 
-    public void getDadosDosCampos1(){
-
-
-    }
+  
     //criando mascaras
     public void MascaraChip2() {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
