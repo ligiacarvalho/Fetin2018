@@ -42,6 +42,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         MascaraChip1();
         MascaraChip2();
 
+        UsuarioDAO.getInstance();
+
         //deixar Edit text invisivel
         campoNumeroChip1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,12 +159,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         boolean resp = verificaEntradaDeDados();
 
-<<<<<<< HEAD
-        if (resp) {
-=======
+
         if(resp){
-            getDadosDosCampos1();
->>>>>>> c54d8958304f48c2a85766611996ebcbefc1d696
             getDadosDosCampos2();
             finish();
             startActivity(intent);
@@ -203,6 +201,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         UsuarioDAO.user_cadastrado.setCelularP(novoCelular);
 
         UsuarioDAO.dao.inserir(UsuarioDAO.user_cadastrado);
+
+
 
     }
 
