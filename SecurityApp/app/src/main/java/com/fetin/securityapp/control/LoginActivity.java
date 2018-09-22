@@ -85,8 +85,6 @@ public class LoginActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
-
-
     }
 
 
@@ -95,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
     {
 
         editTextEmail = findViewById(R.id.EditTextEmail);
-
         editTextSenha = findViewById(R.id.editTextSenha);
 
     }
@@ -109,28 +106,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public boolean verificaEntradaDeDados()
-
     {
-
         if (editTextEmail.getText().toString().equals(""))
 
         {
-
             Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
-
             return false;
-
         }
-
 
         if (editTextSenha.getText().toString().equals(""))
 
         {
-
             Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
-
             return false;
-
         }
         return true;
     }
@@ -153,13 +141,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             msg("Erro ao efetuar o login!");
-
                         }
                     }
                 });
-
-
-
     }
 
     public void logar(View view)

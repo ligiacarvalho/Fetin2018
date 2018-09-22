@@ -42,6 +42,7 @@ public class RoubadoActivity extends AppCompatActivity {
             stopService(intent2);
             MenuActivity.somAlarm.stop();
             Intent intent1 = new Intent(this, LoginActivity.class);
+            finish();
             startActivity(intent1);
         }
     }

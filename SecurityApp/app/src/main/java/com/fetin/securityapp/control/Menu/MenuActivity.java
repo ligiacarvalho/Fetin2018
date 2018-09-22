@@ -145,11 +145,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public Usuario buscarUsuarioLogado() {
         FirebaseUser usuario_logado = FirebaseAuth.getInstance().getCurrentUser();
-
         String email_user_logado = usuario_logado.getEmail();
 
         // uma busca na lista, querendo o usuario que está logado
-
         Usuario usuario_encontrado = null;
 
         for (int i = 0; i < UsuarioDAO.lista_de_usuarios.size(); i++) {
@@ -430,15 +428,17 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 playMusic();
 
                 CelularDAO daoC = new CelularDAO();
-                daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
                 getLastLocation();
 
+                daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
                 sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+
 
                 // ativa o bloqueio
                 Intent intent = new Intent(this, BloqueioService.class);

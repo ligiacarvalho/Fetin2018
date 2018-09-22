@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -44,6 +45,7 @@ public class BloqueioService extends Service {
             while (parou == false) {
 
                 if (isInBackground()) {
+
                         restoreApp();
                 }
 
@@ -114,6 +116,7 @@ public class BloqueioService extends Service {
 
         Intent i = new Intent(ctx, RoubadoActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Log.i("Travou","Chamou a função restore");
         ctx.startActivity(i);
 
     }

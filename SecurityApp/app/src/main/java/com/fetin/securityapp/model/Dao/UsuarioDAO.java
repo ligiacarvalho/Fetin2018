@@ -58,6 +58,9 @@ public class UsuarioDAO {
             // método é sempre chamando quando um dado é alterado no nó "usuários"
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // limpar a lista antes de preenche-la novamente
+                lista_de_usuarios.clear();
+
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     // pegando cada usuário nos nós da árvore, filhos do nó "Usuário", e armazenando 1 por 1
                     // na variável novo_usuario em cada iteração do for

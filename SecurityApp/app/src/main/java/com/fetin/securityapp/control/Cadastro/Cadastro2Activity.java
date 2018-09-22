@@ -61,8 +61,6 @@ public class Cadastro2Activity extends AppCompatActivity {
     public void metodoParaTeste()
     {
         campoModeloCelular.setText("123");
-        campoNumeroChip1.setText("123");
-        campoNumeroChip2.setText("123");
         numeroDoChip1.setText("123");
         numeroDoChip2.setText("123");
         campoIMEI1.setText("123123");
@@ -91,6 +89,7 @@ public class Cadastro2Activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
             return false;
         }
+
         if (campoIMEI1.getText().toString().equals(""))
         {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
@@ -101,7 +100,6 @@ public class Cadastro2Activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
             return false;
         }
-
 
         return true;
     }
@@ -150,6 +148,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         daoC.inserir(novoCelular);
 
         CelularDAO.Cel_cadastrado = novoCelular;
+
+        UsuarioDAO.user_cadastrado.setCelularP(novoCelular);
 
     }
 
