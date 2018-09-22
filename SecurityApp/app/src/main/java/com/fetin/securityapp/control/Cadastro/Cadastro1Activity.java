@@ -140,7 +140,6 @@ public class Cadastro1Activity extends AppCompatActivity {
         novoUsuario.setSenha(campoSenha.getText().toString());
 
         UsuarioDAO.getInstance();
-        UsuarioDAO.dao.inserir(novoUsuario);
         UsuarioDAO.user_cadastrado = novoUsuario;
 
         return novoUsuario;

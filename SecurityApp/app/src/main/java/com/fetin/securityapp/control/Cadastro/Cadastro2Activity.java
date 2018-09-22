@@ -157,7 +157,12 @@ public class Cadastro2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         boolean resp = verificaEntradaDeDados();
 
+<<<<<<< HEAD
         if (resp) {
+=======
+        if(resp){
+            getDadosDosCampos1();
+>>>>>>> c54d8958304f48c2a85766611996ebcbefc1d696
             getDadosDosCampos2();
             finish();
             startActivity(intent);
@@ -192,14 +197,19 @@ public class Cadastro2Activity extends AppCompatActivity {
         novoCelular.setImei2(campoIMEI2.getText().toString());
 
         CelularDAO daoC = new CelularDAO();
-        daoC.inserir(novoCelular);
 
         CelularDAO.Cel_cadastrado = novoCelular;
 
         UsuarioDAO.user_cadastrado.setCelularP(novoCelular);
 
+        UsuarioDAO.dao.inserir(UsuarioDAO.user_cadastrado);
+
     }
 
+    public void getDadosDosCampos1(){
+
+
+    }
     //criando mascaras
     public void MascaraChip2() {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
