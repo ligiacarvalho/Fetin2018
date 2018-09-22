@@ -136,6 +136,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+<<<<<<< HEAD
+=======
+
+        contAno = contMes = contSemana = contDia = 0;
+
+>>>>>>> ba755b4a81bb5e1a777f52c4374def7f26631937
     }
 
 
@@ -430,6 +436,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 getLastLocation();
 
+                if (mLastLocation==null){
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
                 //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());

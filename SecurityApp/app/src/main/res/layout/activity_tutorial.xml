@@ -29,7 +29,7 @@
         android:layout_marginBottom="13dp"
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
-        android:text="O App Security tem como objetivo proporcionar mais segurança ao sair com seu celular. Em casos de assalto, ao pressionar o botão no dispositivo de apoio até x metros do seu celular, nosso App irá travar a tela e os botões do seu celular, impossibilitando que o assaltante resete seu celuar ou desabite sua localização. Além disso, a polícia será notificada sobre o assalto e receberá informações como o IMEI do aparelho roubado, o número do chip e a localização do celular. Para facilitar a busca dos policiais, após alguns minutos após o App ser habilitado, um alarme será acionado no celular."
+        android:text="O App Security tem como objetivo proporcionar mais segurança ao sair com seu celular. Em casos de assalto, ao pressionar o botão no dispositivo de apoio até 10 metros do seu celular, nosso App irá travar a tela e os botões do seu celular, impossibilitando que o assaltante resete seu celuar ou desabite sua localização. Além disso, a polícia será notificada sobre o assalto e receberá informações como o IMEI do aparelho roubado, o número do chip e a localização do celular. Para facilitar a busca dos policiais, após alguns minutos após o App ser habilitado, um alarme será acionado no celular."
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/button4"

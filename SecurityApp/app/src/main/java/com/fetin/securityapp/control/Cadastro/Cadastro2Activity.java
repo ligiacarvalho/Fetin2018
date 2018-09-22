@@ -42,10 +42,38 @@ public class Cadastro2Activity extends AppCompatActivity {
         MascaraChip1();
         MascaraChip2();
 
+        UsuarioDAO.getInstance();
+
+        //deixar Edit text invisivel
+        campoNumeroChip1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (campoNumeroChip1.isChecked()) {
+
+                    campoIMEI2.setVisibility(View.GONE);
+                    numeroDoChip2.setVisibility(View.GONE);
+                }
+            }
+
+        });
+
+        //deixar Edit text visivel
+        campoNumeroChip2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (campoNumeroChip2.isChecked()) {
+
+                    campoIMEI2.setVisibility(View.VISIBLE);
+                    numeroDoChip2.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
 
         metodoParaTeste();
 
     }
+
     public void referenciaComponentes() {
 
         // Referenciando os componentes da interface
@@ -56,10 +84,13 @@ public class Cadastro2Activity extends AppCompatActivity {
         numeroDoChip2 = findViewById(R.id.EditTextNumChip2);
         campoIMEI1 = findViewById(R.id.campoIMEI1);
         campoIMEI2 = findViewById(R.id.campoIMEI2);
+
+        // iniciando alguns componentes invisiveis
+        campoIMEI2.setVisibility(View.GONE);
+        numeroDoChip2.setVisibility(View.GONE);
     }
 
-    public void metodoParaTeste()
-    {
+    public void metodoParaTeste() {
         campoModeloCelular.setText("123");
         numeroDoChip1.setText("123");
         numeroDoChip2.setText("123");
@@ -71,56 +102,74 @@ public class Cadastro2Activity extends AppCompatActivity {
     public boolean verificaEntradaDeDados()
 
     {
-        for(int i = 0; i < CelularDAO.lista_de_imei.size(); i++){
-            if(campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i))||campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i))) {
+        for (int i = 0; i < CelularDAO.lista_de_imei.size(); i++) {
+            if (campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i)) || campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i))) {
                 Toast.makeText(getApplicationContext(), "Este IMEI já esta cadastrado", Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
-        if(campoModeloCelular.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
+        if (campoModeloCelular.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if ((campoNumeroChip1.getText().toString().equals("") || campoNumeroChip2.getText().toString().equals("")))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
-            return false;
-        }
 
-        if (campoIMEI1.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (campoIMEI2.getText().toString().equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"Campo sem dados!",Toast.LENGTH_LONG).show();
-            return false;
+        if (campoNumeroChip1.isChecked()) {
+
+            if (numeroDoChip1.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (campoIMEI1.getText().toString().equals("") || campoIMEI1.getText().toString().length() != 15) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        } else if (campoNumeroChip2.isChecked()) {
+
+            if (numeroDoChip2.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (campoIMEI2.getText().toString().equals("") || campoIMEI2.getText().toString().length() != 15) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (numeroDoChip1.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (campoIMEI1.getText().toString().equals("") || campoIMEI1.getText().toString().length() != 15) {
+                Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
         }
 
         return true;
     }
 
     //finalizar cadastro total
-    public void finalizarCadastro(View view)
-    {
+    public void finalizarCadastro(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         boolean resp = verificaEntradaDeDados();
 
+
         if(resp){
-            getDadosDosCampos1();
             getDadosDosCampos2();
             finish();
             startActivity(intent);
         }
 
     }
+
     //voltar para cadastro pessoal
-    public void voltarCadastro(View view)
-    {
+    public void voltarCadastro(View view) {
         Intent intent = new Intent(this, Cadastro1Activity.class);
         finish();
         startActivity(intent);
@@ -153,15 +202,13 @@ public class Cadastro2Activity extends AppCompatActivity {
 
         UsuarioDAO.dao.inserir(UsuarioDAO.user_cadastrado);
 
-    }
-
-    public void getDadosDosCampos1(){
 
 
     }
+
+  
     //criando mascaras
-    public void MascaraChip2()
-    {
+    public void MascaraChip2() {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
         EditText numeroDoChipDois = findViewById(R.id.EditTextNumChip2);
 
@@ -169,17 +216,16 @@ public class Cadastro2Activity extends AppCompatActivity {
         SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
 
         // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
-        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroDoChipDois,mascaraSimplesDeTelefone);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroDoChipDois, mascaraSimplesDeTelefone);
 
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
-        numeroDoChipDois.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
+        numeroDoChipDois.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
 
 
     }
 
-    public void MascaraChip1()
-    {
+    public void MascaraChip1() {
         // Referenciando o número o campo do número do CHIP 1, para pode manipular os dados de lá
         EditText numeroDoChipUm = findViewById(R.id.EditTextNumChip1);
 
@@ -187,11 +233,11 @@ public class Cadastro2Activity extends AppCompatActivity {
         SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
 
         // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
-        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroDoChipUm,mascaraSimplesDeTelefone);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(numeroDoChipUm, mascaraSimplesDeTelefone);
 
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
-        numeroDoChipUm.addTextChangedListener( objetoQueVaiGerenciarOFormatoDoTelefone );
+        numeroDoChipUm.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
 
 
     }
