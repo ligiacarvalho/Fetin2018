@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fetin.securityapp.R;
+import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,10 +41,17 @@ public class ArduinoService extends Service {
     public static MediaPlayer somAlarm;
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location mLastLocation;
+    private String MAC_Bluetooth_Arduino = "98:D3:31:30:2C:20";
+    private String NAME_Bluetooth = "HC-05";
+    private String MAC_Bluetooth_PC = "B0:10:41:A2:AA:EE";
+    private String NAME_Bluetooth_PC = "DESKTOP-R94QAVP";
+    private int tentativas = 20;
+    public static MenuActivity ma;
+    private int tentativas_igual_a_zero;
 
 
     // Handler that receives messages from the thread
-    private final class ServiceHandler extends Handler  {
+    private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
             super(looper);
         }
@@ -50,42 +59,53 @@ public class ArduinoService extends Service {
         @Override
         public void handleMessage(Message msg) {
 
-
             // Conectou
             do {
                 //faz leitura do serial
                 try {
-                    resp = Arduino.mmSocket.getInputStream().read();
+                    if (Arduino.mmSocket != null) {
+                        resp = Arduino.mmSocket.getInputStream().read();
+                        Log.i("Teste", "Resp=" + resp);
+                    } else {
+                        stopSelf();
+                        break;
+                    }
+
+
+
+
+                    Log.i("Teste", "Resp=" + resp);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if(resp == 0)
+                    {
+                        tentativas_igual_a_zero++;
+                    }
+
+                    if(tentativas_igual_a_zero > 2)
+                    {
+                        break;
+                    }
                 }
 
 
-                Log.i("Teste", "Teste Arduino");
-
             } while (resp != 49);
-            //49 é 1 na tabela ASCII
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(tentativas_igual_a_zero > 2)
+            {
+                return;
             }
-            playMusic();
+            if(resp == 49)
+            {
+                ativarFuncionalidadesDeBloqueio();
+            }
 
-            CelularDAO daoC = new CelularDAO();
-
-            getLastLocation();
-
-            daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-
-            sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(), UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-            //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+            //49 é 1 na tabela ASCII
+            Log.i("Teste", "Teste Arduino");
+            //ativarFuncionalidadesDeBloqueio();
 
 
         }
-
-
 
 
     }
@@ -102,34 +122,51 @@ public class ArduinoService extends Service {
 
         arduino = new Arduino();
 
+        arduino.start();
+
+        ma = new MenuActivity();
+        tentativas_igual_a_zero = 0;
         iniciarFuncionalidadesDoArduino();
 
         parou = false;
         // Get the HandlerThread's Looper and use it for our Handler
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(mServiceLooper);
+
     }
 
     public void iniciarFuncionalidadesDoArduino() {
 
-        // busca o bluetooth do arudino
-        arduino.buscarDispositivos();
 
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        BluetoothDevice bluetooth_pareado = arduino.pairedDevicesList();
         // tento armazenar as informações dele em uma variavel
-        BluetoothDevice bluetoothDoArudino = arduino.buscarOBluetoothDoArduino();
 
-        if(bluetoothDoArudino != null)
-        {
+
+        if (bluetooth_pareado == null) {
+            BluetoothDevice bluetoothDoArudino = arduino.btAdapter.getRemoteDevice(MAC_Bluetooth_Arduino);
             arduino.connectToBluetooth(bluetoothDoArudino);
-        }
+        } else
+            arduino.connectToBluetooth(bluetooth_pareado);
 
+
+    }
+
+    public void ativarFuncionalidadesDeBloqueio() {
+        playMusic();
+
+        CelularDAO daoC = new CelularDAO();
+
+        //getLastLocation();
+
+        daoC.inserirRoubado(-22.15f, -30.244f);
+
+        sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(), UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+
+        // ativa o bloqueio
+        Intent intent = new Intent(this, BloqueioService.class);
+        startService(intent);
+
+        //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
 
     }
 
@@ -140,14 +177,14 @@ public class ArduinoService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service arduino starting", Toast.LENGTH_SHORT).show();
 
         ctx = this;
+
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         Message msg = mServiceHandler.obtainMessage();
-        msg.arg1 = startId;
+        msg.arg1 = 2;
         mServiceHandler.sendMessage(msg);
 
         // If we get killed, after returning from here, restart
@@ -158,13 +195,19 @@ public class ArduinoService extends Service {
         // Referenciando o "somAlarm" com a música que está na pasta RAW
         somAlarm = MediaPlayer.create(ctx, R.raw.alarme_roubo);
         somAlarm.start();
+        somAlarm.setLooping(true);
+
+        AudioManager audio = (AudioManager)
+            getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+
 
     }
 
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener((Activity) ctx, new OnCompleteListener<Location>() {
+                .addOnCompleteListener(ma, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
@@ -173,8 +216,6 @@ public class ArduinoService extends Service {
                             mLastLocation = task.getResult();
                             // mostrando a latitude e longitude do celular atual na telinha do APP
                             //msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
-                            // setando a localização atual do celular no MAPA, com o marcador
-                            //setMyLocation(mLastLocation);
 
                         } else {
 
@@ -185,13 +226,14 @@ public class ArduinoService extends Service {
                         }
                     }
                 });
+
     }
 
     public void sendSms(String contato, int cod) {
         String usuario = UsuarioDAO.user_cadastrado.getNome();
         String senha = Integer.toString(cod);
         Intent intenet = new Intent();
-        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n" + senha;
 
 
         try {
@@ -200,10 +242,22 @@ public class ArduinoService extends Service {
             //  Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+
+
+        try {
+            if (Arduino.mmSocket != null)
+                Arduino.mmSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

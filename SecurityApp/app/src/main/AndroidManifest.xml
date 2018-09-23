@@ -67,6 +67,7 @@
         </receiver>
 
         <service android:name=".control.SegundoPlano.BloqueioService" />
+        <service android:name=".control.SegundoPlano.ArduinoService" />
 
         <activity android:name=".control.RoubadoActivity"></activity>
     </application>

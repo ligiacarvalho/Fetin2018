@@ -34,12 +34,6 @@ public class BloqueioService extends Service {
         @Override
         public void handleMessage(Message msg) {
 
-            // lógica que será feita em segundo plano
-
-            //mandarLocalizacaoProContatoEPolicial();
-            //colocaAsInfoNoSetorDeRoubados();
-            //sendSMS();
-            Log.i("Teste", "oiiiiiii");
 
             while (parou == false) {
 
@@ -48,11 +42,8 @@ public class BloqueioService extends Service {
                         restoreApp();
                 }
 
-                //acionarMusica(); //colocar um delay dentro
-
-                Log.i("Msg", "Celular Rooubado!");
             }
-            Log.i("Msg", "oiiiiiii");
+
 
         }
     }
