@@ -130,12 +130,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
-
-
         inicio();
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
 /*
         try {
@@ -145,9 +142,14 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 */
 
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
         // ativa o bloqueio
         Intent intent = new Intent(this, ArduinoService.class);
         startService(intent);
+
 
     }
 
@@ -428,6 +430,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
+
            /* case R.id.menuCelRoubado:
 
                 try {
@@ -438,6 +441,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 playMusic();
 
                 CelularDAO daoC = new CelularDAO();
+
+
+                UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
                 getLastLocation();
 
