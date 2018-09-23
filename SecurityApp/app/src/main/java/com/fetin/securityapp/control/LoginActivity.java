@@ -69,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_login);
 
         referenciaComponentes();
@@ -87,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
-        
+
         LogarDireto();
     }
 
@@ -131,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseAuth fireAuth = FirebaseAuth.getInstance();
         FirebaseUser user = fireAuth.getCurrentUser();
+
 
         if(user!=null){
             Intent intent = new Intent(this, MenuActivity.class);

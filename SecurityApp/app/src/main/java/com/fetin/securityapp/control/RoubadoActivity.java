@@ -50,17 +50,16 @@ public class RoubadoActivity extends AppCompatActivity {
             Intent intent1 = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent1);
-            RetornarListaNaoRoubados();
+            ExcluiDaListaCelRoubados();
         }
 
 
     }
-
-    public void RetornarListaNaoRoubados(){
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    //Exclui celular roubado da lista de "Celulares Roubados" banco de dados quando o celular é desbloqueado
+    public void ExcluiDaListaCelRoubados(){
 
         referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         for (int i = 0; i < CelularDAO.lista_de_roubo.size();i++){
 
@@ -69,6 +68,8 @@ public class RoubadoActivity extends AppCompatActivity {
 
                 String chaveDoUsuarioASerDeletado = UsuarioDAO.buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(user.getEmail());
 
+                AdicionaNaListaCelularesRecuperados(chaveDoUsuarioASerDeletado);
+
                 referenciaDoUsuario = referenciaDoBanco.child("Celulares Roubados");
                 referenciaDoUsuario.child(chaveDoUsuarioASerDeletado).removeValue();
 
@@ -76,6 +77,18 @@ public class RoubadoActivity extends AppCompatActivity {
 
         }
 
+    }
+    //Adiciona o celular recuperado na lista de "Celulares Recuperados" do banco de dados quando o celular é desbloqueado
+    public void AdicionaNaListaCelularesRecuperados(String chave){
+
+        for (int i = 0; i < UsuarioDAO.lista_de_usuarios.size();i++){
+            Usuario usuario = UsuarioDAO.lista_de_usuarios.get(i);
+
+            if(usuario.getChave()==chave) {
+                referenciaDoUsuario = referenciaDoBanco.child("Celulares Recuperados");
+                referenciaDoUsuario.child(chave).setValue(usuario);
+            }
+        }
     }
 
     //Desabilitar botão de voltar

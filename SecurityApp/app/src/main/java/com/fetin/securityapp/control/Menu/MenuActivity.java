@@ -129,14 +129,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        inicio();
+
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
 
-        inicio();
-
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-
 
 
     }
@@ -430,6 +428,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 playMusic();
 
                 CelularDAO daoC = new CelularDAO();
+
+
+                UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
                 getLastLocation();
 
