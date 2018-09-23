@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 
@@ -68,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.activity_login);
 
         referenciaComponentes();
@@ -84,7 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
-
+        
+        LogarDireto();
     }
 
 
@@ -121,6 +125,18 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public void LogarDireto(){
+
+        FirebaseAuth fireAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = fireAuth.getCurrentUser();
+
+        if(user!=null){
+            Intent intent = new Intent(this, MenuActivity.class);
+            finish();
+            startActivity(intent);
+        }
     }
 
     //

@@ -150,10 +150,6 @@ public class UsuarioDAO {
 
     }
 
-    public void atualizar(String email) {
-
-    }
-
     public void deletarUsuarios() {
 
 
