@@ -102,7 +102,7 @@ public class CelularDAO {
          Date data = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH); //ATUALIZAR
+        int month = cal.get(Calendar.MONTH) + 1; //ATUALIZAR
         int year = cal.get(Calendar.YEAR);
         //dia = Calendar.getInstance().getTime().getDay();
 

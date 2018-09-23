@@ -29,8 +29,9 @@ public class Cadastro2Activity extends AppCompatActivity {
     RadioButton campoNumeroChip2;
     EditText numeroDoChip1;
     EditText numeroDoChip2;
-    EditText campoIMEI1;
-    EditText campoIMEI2;
+    EditText IMEI1;
+    EditText IMEI2;
+
 
     public static Celular cel_cadastrado;
 
@@ -41,6 +42,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         referenciaComponentes();
         MascaraChip1();
         MascaraChip2();
+        MascaraIMEI();
 
         UsuarioDAO.getInstance();
 
@@ -50,7 +52,7 @@ public class Cadastro2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 if (campoNumeroChip1.isChecked()) {
 
-                    campoIMEI2.setVisibility(View.GONE);
+                    IMEI2.setVisibility(View.GONE);
                     numeroDoChip2.setVisibility(View.GONE);
                 }
             }
@@ -63,7 +65,7 @@ public class Cadastro2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 if (campoNumeroChip2.isChecked()) {
 
-                    campoIMEI2.setVisibility(View.VISIBLE);
+                    IMEI2.setVisibility(View.VISIBLE);
                     numeroDoChip2.setVisibility(View.VISIBLE);
                 }
             }
@@ -82,11 +84,11 @@ public class Cadastro2Activity extends AppCompatActivity {
         campoNumeroChip2 = findViewById(R.id.radioButtonNumChip2);
         numeroDoChip1 = findViewById(R.id.EditTextNumChip1);
         numeroDoChip2 = findViewById(R.id.EditTextNumChip2);
-        campoIMEI1 = findViewById(R.id.campoIMEI1);
-        campoIMEI2 = findViewById(R.id.campoIMEI2);
+        IMEI1 = findViewById(R.id.campoIMEI1);
+        IMEI2 = findViewById(R.id.campoIMEI2);
 
         // iniciando alguns componentes invisiveis
-        campoIMEI2.setVisibility(View.GONE);
+        IMEI2.setVisibility(View.GONE);
         numeroDoChip2.setVisibility(View.GONE);
     }
 
@@ -94,8 +96,8 @@ public class Cadastro2Activity extends AppCompatActivity {
         campoModeloCelular.setText("123");
         numeroDoChip1.setText("123");
         numeroDoChip2.setText("123");
-        campoIMEI1.setText("123123");
-        campoIMEI2.setText("123123");
+        IMEI1.setText("123123");
+        IMEI2.setText("123123");
 
     }
 
@@ -103,7 +105,7 @@ public class Cadastro2Activity extends AppCompatActivity {
 
     {
         for (int i = 0; i < CelularDAO.lista_de_imei.size(); i++) {
-            if (campoIMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i)) || campoIMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i))) {
+            if (IMEI1.getText().toString().equals(CelularDAO.lista_de_imei.get(i)) || IMEI2.getText().toString().equals(CelularDAO.lista_de_imei.get(i))) {
                 Toast.makeText(getApplicationContext(), "Este IMEI já esta cadastrado", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -122,8 +124,8 @@ public class Cadastro2Activity extends AppCompatActivity {
                 return false;
             }
 
-            if (campoIMEI1.getText().toString().equals("") || campoIMEI1.getText().toString().length() != 15) {
-                Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
+            if (IMEI1.getText().toString().equals("") || IMEI1.getText().toString().length() != 15) {
+                Toast.makeText(getApplicationContext(), "O campo IMEI deve conter 15 caracteres!", Toast.LENGTH_LONG).show();
                 return false;
             }
 
@@ -134,8 +136,8 @@ public class Cadastro2Activity extends AppCompatActivity {
                 return false;
             }
 
-            if (campoIMEI2.getText().toString().equals("") || campoIMEI2.getText().toString().length() != 15) {
-                Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
+            if (IMEI2.getText().toString().equals("") || IMEI2.getText().toString().length() != 15) {
+                Toast.makeText(getApplicationContext(), "O campo IMEI deve conter 15 caracteres!", Toast.LENGTH_LONG).show();
                 return false;
             }
 
@@ -144,7 +146,7 @@ public class Cadastro2Activity extends AppCompatActivity {
                 return false;
             }
 
-            if (campoIMEI1.getText().toString().equals("") || campoIMEI1.getText().toString().length() != 15) {
+            if (IMEI1.getText().toString().equals("") || IMEI1.getText().toString().length() != 15) {
                 Toast.makeText(getApplicationContext(), "Campo sem dados ou dados insuficientes!", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -164,6 +166,7 @@ public class Cadastro2Activity extends AppCompatActivity {
             getDadosDosCampos2();
             finish();
             startActivity(intent);
+            Toast.makeText(getApplicationContext(),"Cadastro feito com sucesso!",Toast.LENGTH_LONG).show();
         }
 
     }
@@ -238,7 +241,20 @@ public class Cadastro2Activity extends AppCompatActivity {
         // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
         // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
         numeroDoChipUm.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
+    }
 
+    public void MascaraIMEI() {
 
+        // Passando qual é o padrão de telefone que eu vou querer que o usuário digite
+        SimpleMaskFormatter mascaraSimplesDeTelefone = new SimpleMaskFormatter("NNNNNNNNNNNNNNN");
+
+        // Passando para o objeto que vai gerenciar o formato do telefone, qual é o editText e qual é o formato que queremos
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone = new MaskTextWatcher(IMEI1, mascaraSimplesDeTelefone);
+        MaskTextWatcher objetoQueVaiGerenciarOFormatoDoTelefone2 = new MaskTextWatcher(IMEI2, mascaraSimplesDeTelefone);
+
+        // Qualquer alteração de texto no EditText do número do Chip1, o método abaixo vai usar botar
+        // o "objetoQueVaiGerenciarOFormatoDoTelefone" para trabalhar.
+        IMEI1.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone);
+        IMEI2.addTextChangedListener(objetoQueVaiGerenciarOFormatoDoTelefone2);
     }
 }
