@@ -95,7 +95,7 @@ public class GraphicFragment extends Fragment {
 
         int dia = MenuActivity.contDia;
         int semana = MenuActivity.contSemana + MenuActivity.contDia;
-        int mes = MenuActivity.contMes + MenuActivity.contSemana;
+        int mes = MenuActivity.contMes + semana;
 
         textoHoje.setText(Integer.toString(dia));
         textoSemana.setText(Integer.toString(semana));
@@ -115,6 +115,7 @@ public class GraphicFragment extends Fragment {
         pieChart.setHoleRadius(70f);
         pieChart.setTransparentCircleRadius(60f);
 
+       // String agosto = Integer.toString(MenuActivity.contAgosto);
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 

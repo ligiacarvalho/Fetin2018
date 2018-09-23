@@ -10,7 +10,13 @@ import android.widget.EditText;
 import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
+import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.fetin.securityapp.model.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +28,7 @@ public class RoubadoActivity extends AppCompatActivity {
     EditText campoSenha;
     //Desabilitar volume
     private final List blockedKeys = new ArrayList(Arrays.asList(KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP));
-    private int Abriu;
+    public static DatabaseReference referenciaDoBanco, referenciaDoUsuario;
 
 
     @Override
@@ -44,7 +50,32 @@ public class RoubadoActivity extends AppCompatActivity {
             Intent intent1 = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent1);
+            RetornarListaNaoRoubados();
         }
+
+
+    }
+
+    public void RetornarListaNaoRoubados(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        referenciaDoBanco = FirebaseDatabase.getInstance().getReference();
+
+        for (int i = 0; i < CelularDAO.lista_de_roubo.size();i++){
+
+            if(user.getEmail().equals(CelularDAO.lista_de_roubo.get(i).getEmail())){
+
+
+                String chaveDoUsuarioASerDeletado = UsuarioDAO.buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(user.getEmail());
+
+                referenciaDoUsuario = referenciaDoBanco.child("Celulares Roubados");
+                referenciaDoUsuario.child(chaveDoUsuarioASerDeletado).removeValue();
+
+            }
+
+        }
+
     }
 
     //Desabilitar botão de voltar

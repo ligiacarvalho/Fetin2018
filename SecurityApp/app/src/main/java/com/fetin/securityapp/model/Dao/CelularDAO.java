@@ -45,6 +45,8 @@ public class CelularDAO {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                lista_de_roubo.clear();
+
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
 
                     Usuario busca_usuario = (Usuario) d.getValue(Usuario.class);

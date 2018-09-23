@@ -136,12 +136,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-<<<<<<< HEAD
-=======
 
         contAno = contMes = contSemana = contDia = 0;
 
->>>>>>> ba755b4a81bb5e1a777f52c4374def7f26631937
     }
 
 
@@ -430,7 +427,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-               // playMusic();
+                playMusic();
 
                 CelularDAO daoC = new CelularDAO();
 
@@ -445,13 +442,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
 
 
                 // ativa o bloqueio
-               //Intent intent = new Intent(this, BloqueioService.class);
-               // startService(intent);
+               Intent intent = new Intent(this, BloqueioService.class);
+               startService(intent);
 
                 if(mLastLocation == null)
                     msg("Sem localizacao");
@@ -619,6 +616,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void verificaMes(int mes, int ano, int anoatual)
     {
+
+        contJaneiro = contAbril = contAgosto = contFevereiro = contMarco = contMaio = contJunho = contJulho = contSetembro = contOutubro = contNovembro = contDezembro = 0;
         if(ano == anoatual) {
             switch (mes) {
                 case 1:
