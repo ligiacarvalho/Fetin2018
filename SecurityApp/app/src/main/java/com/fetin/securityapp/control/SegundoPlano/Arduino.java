@@ -94,11 +94,11 @@ public class Arduino extends AppCompatActivity {
                 //pede a senha e tenta conectar
                 mmSocket.connect();
 
-                try {
+                /*try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 sucesso_conexão = true;
 

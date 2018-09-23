@@ -126,11 +126,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         celFragment = new CelularFragment();
 
         getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("SecurityApp");
+        getSupportActionBar().setTitle("4 S.A");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+
 
         inicio();
 
@@ -147,8 +148,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // ativa o bloqueio
         Intent intent = new Intent(this, ArduinoService.class);
         startService(intent);
-
-        contAno = contMes = contSemana = contDia = 0;
 
     }
 
@@ -429,7 +428,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.menuCelRoubado:
+           /* case R.id.menuCelRoubado:
 
                 try {
                     Thread.sleep(2000);
@@ -442,15 +441,24 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 getLastLocation();
 
+                if (mLastLocation==null){
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(), UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+
+                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
                 //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
 
 
+
                 // ativa o bloqueio
-                Intent intent = new Intent(this, BloqueioService.class);
-                startService(intent);
+               Intent intent = new Intent(this, BloqueioService.class);
+               startService(intent);
 
                 if (mLastLocation == null)
                     msg("Sem localizacao");
@@ -458,7 +466,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                     daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
 
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -529,14 +537,17 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
 
+        contAno = contMes = contSemana = contDia = 0;
 
         int dia, mes, ano, dia_atual = 0, mes_atual = 0, ano_atual = 0;
+
         Location localizacao_cel_roubado = new Location("123123");
 
         Calendar calendario = Calendar.getInstance();
         dia_atual = calendario.get(Calendar.DATE);
         mes_atual = calendario.get(Calendar.MONTH);
         ano_atual = calendario.get(Calendar.YEAR);
+        mes_atual = mes_atual + 1;
 
         for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
             dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
@@ -545,25 +556,23 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
             localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
 
-            verificaMes(mes, ano, ano_atual);
+
+            verificaMes(mes,mes_atual, ano, ano_atual, dia, dia_atual);
 
             if (ano == ano_atual) {
                 if (mes == mes_atual) {
                     if (dia == dia_atual) {
                         setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                        contDia++;
 
                     } else if (dia_atual - dia <= 7) {
                         setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         contSemana++;
                     } else {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     }
                 } else if (mes_atual - mes == 1) {
                     if (dia_atual == dia) {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     } else if (dia == 31) {
                         dia = dia_atual;
                         if (dia <= 7) {
@@ -571,7 +580,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                            contDia++;
+                            //contDia++;
                         }
                     } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
 
@@ -585,7 +594,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                            contDia++;
+                            //contDia++;
                         }
                     } else if (mes == 2) {
                         if (dia == 28 || dia == 29) {
@@ -598,7 +607,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                            contMes++;
                         }
                     } else if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) {
                         dia = dia_atual + 1;
@@ -607,7 +615,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     }
 
 
@@ -619,8 +626,21 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public void verificaMes(int mes, int ano, int anoatual) {
-        if (ano == anoatual) {
+
+    public void verificaMes(int mes, int mesatual, int ano, int anoatual, int dia, int diaatual)
+    {
+
+        contJaneiro = contAbril = contAgosto = contFevereiro = contMarco = contMaio = contJunho = contJulho = contSetembro = contOutubro = contNovembro = contDezembro = 0;
+        if(ano == anoatual) {
+
+            contAno ++;
+
+            if (mes == mesatual) {
+                contMes++;
+                if (dia == diaatual)
+                    contDia++;
+            }
+
             switch (mes) {
                 case 1:
                     contJaneiro++;

@@ -90,7 +90,7 @@ public class UsuarioDAO {
 
     }
 
-    public String buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(String email) {
+    public static String buscaUmUsuarioEspecificoERetornaASuaChaveDoFireBase(String email) {
         // percorrendo cada usuário da lista de usuários
         for (Usuario user : lista_de_usuarios) {
             // se o email do usuário da posição X, for igual ao email que foi passado para a função
@@ -152,10 +152,9 @@ public class UsuarioDAO {
 
     }
 
-    public void atualizar(String email) {
 
-    }
 /*
+
     public void deletarUsuarios() {
 
 

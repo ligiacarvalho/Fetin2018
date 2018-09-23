@@ -45,6 +45,8 @@ public class CelularDAO {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                lista_de_roubo.clear();
+
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
 
                     Usuario busca_usuario = (Usuario) d.getValue(Usuario.class);
@@ -58,6 +60,7 @@ public class CelularDAO {
 
                     // Armazenando os usuários encontrados no banco em uma lista
                     lista_de_roubo.add(busca_usuario);
+
                     if (celular_roubado != null && busca_usuario != null)
                         lista_de_imei.add(busca_usuario.getCelularP().getImei1());
                 }
@@ -102,7 +105,7 @@ public class CelularDAO {
          Date data = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH); //ATUALIZAR
+        int month = cal.get(Calendar.MONTH) + 1; //ATUALIZAR
         int year = cal.get(Calendar.YEAR);
         //dia = Calendar.getInstance().getTime().getDay();
 

@@ -92,9 +92,14 @@ public class GraphicFragment extends Fragment {
         TextView textoSemana = v.findViewById(R.id.textView_ValorSemana);
         TextView textoMes = v.findViewById(R.id.textView_ValorMes);
 
-        textoHoje.setText(Integer.toString(MenuActivity.contDia));
-        textoSemana.setText(Integer.toString(MenuActivity.contSemana));
-        textoMes.setText(Integer.toString(MenuActivity.contMes));
+
+        int dia = MenuActivity.contDia;
+        int semana = MenuActivity.contSemana + dia;
+        int mes = MenuActivity.contMes;
+
+        textoHoje.setText(Integer.toString(dia));
+        textoSemana.setText(Integer.toString(semana));
+        textoMes.setText(Integer.toString(mes));
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
@@ -110,6 +115,7 @@ public class GraphicFragment extends Fragment {
         pieChart.setHoleRadius(70f);
         pieChart.setTransparentCircleRadius(60f);
 
+       // String agosto = Integer.toString(MenuActivity.contAgosto);
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
