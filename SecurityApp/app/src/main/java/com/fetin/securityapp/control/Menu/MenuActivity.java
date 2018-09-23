@@ -137,7 +137,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
-        contAno = contMes = contSemana = contDia = 0;
+
 
     }
 
@@ -532,6 +532,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         dia_atual = calendario.get(Calendar.DATE);
         mes_atual = calendario.get(Calendar.MONTH);
         ano_atual = calendario.get(Calendar.YEAR);
+        mes_atual = mes_atual + 1;
 
         for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
             dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
@@ -540,25 +541,22 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
             localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
 
-            verificaMes(mes,ano, ano_atual);
+            verificaMes(mes,mes_atual, ano, ano_atual, dia, dia_atual);
 
             if (ano == ano_atual) {
                 if (mes == mes_atual) {
                     if (dia == dia_atual) {
                         setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                        contDia++;
 
                     } else if (dia_atual - dia <= 7) {
                         setMyLocationWithColor(localizacao_cel_roubado, "roxo");
                         contSemana++;
                     } else {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     }
                 } else if (mes_atual - mes == 1) {
                     if (dia_atual == dia) {
                         setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     } else if (dia == 31) {
                         dia = dia_atual;
                         if (dia <= 7) {
@@ -566,7 +564,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                            contDia++;
+                            //contDia++;
                         }
                     } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
 
@@ -580,7 +578,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "vermelho");
-                            contDia++;
+                            //contDia++;
                         }
                     } else if (mes == 2) {
                         if (dia == 28 || dia == 29) {
@@ -593,7 +591,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else {
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                            contMes++;
                         }
                     } else if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) {
                         dia = dia_atual + 1;
@@ -602,7 +599,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             contSemana++;
                         } else
                             setMyLocationWithColor(localizacao_cel_roubado, "azul");
-                        contMes++;
                     }
 
 
@@ -614,11 +610,20 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public void verificaMes(int mes, int ano, int anoatual)
+    public void verificaMes(int mes, int mesatual, int ano, int anoatual, int dia, int diaatual)
     {
 
         contJaneiro = contAbril = contAgosto = contFevereiro = contMarco = contMaio = contJunho = contJulho = contSetembro = contOutubro = contNovembro = contDezembro = 0;
         if(ano == anoatual) {
+
+            contAno ++;
+
+            if (mes == mesatual) {
+                contMes++;
+                if (dia == diaatual)
+                    contDia++;
+            }
+
             switch (mes) {
                 case 1:
                     contJaneiro++;

@@ -49,7 +49,6 @@ public class Tutorial2Activity extends AppCompatActivity {
                 Intent intent = new Intent(this, Cadastro1Activity.class);
                 finish();
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(),"Cadastro feito com sucesso!",Toast.LENGTH_LONG).show();
 
             }
             else{

@@ -92,10 +92,17 @@ public class GraphicFragment extends Fragment {
         TextView textoSemana = v.findViewById(R.id.textView_ValorSemana);
         TextView textoMes = v.findViewById(R.id.textView_ValorMes);
 
+<<<<<<< HEAD
 
         int dia = MenuActivity.contDia;
         int semana = MenuActivity.contSemana + MenuActivity.contDia;
         int mes = MenuActivity.contMes + semana;
+=======
+        int dia = MenuActivity.contDia;
+        int semana = MenuActivity.contDia + MenuActivity.contSemana;
+        int mes = MenuActivity.contMes;
+
+>>>>>>> a9fc165d02d3b48bd110f517e449869391731108
 
         textoHoje.setText(Integer.toString(dia));
         textoSemana.setText(Integer.toString(semana));
