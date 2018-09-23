@@ -59,6 +59,8 @@ public class ArduinoService extends Service {
         @Override
         public void handleMessage(Message msg) {
 
+
+
             // Conectou
             do {
                 //faz leitura do serial
@@ -72,12 +74,10 @@ public class ArduinoService extends Service {
                     }
 
 
-
-
                     Log.i("Teste", "Resp=" + resp);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if(resp == 0)
+                   /* if(resp == 0)
                     {
                         tentativas_igual_a_zero++;
                     }
@@ -85,16 +85,17 @@ public class ArduinoService extends Service {
                     if(tentativas_igual_a_zero > 2)
                     {
                         break;
-                    }
+                    }*/
                 }
 
 
             } while (resp != 49);
 
-            if(tentativas_igual_a_zero > 2)
+            /*if(tentativas_igual_a_zero > 2)
             {
                 return;
             }
+            */
             if(resp == 49)
             {
                 ativarFuncionalidadesDeBloqueio();

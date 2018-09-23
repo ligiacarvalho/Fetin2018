@@ -55,7 +55,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
+//import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 //search
 import android.app.SearchManager;
@@ -70,7 +70,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseAuth autenticacao;
     private ViewPager viewPager;
-    private SmartTabLayout smartTabLayout;
+    //private SmartTabLayout smartTabLayout;
     private CelularFragment celFragment;
     private MapaFragment mapaFragment;
     private FirebaseAuth usuarioAuth;
