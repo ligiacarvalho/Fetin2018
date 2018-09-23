@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.fetin.securityapp.R;
 
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
+import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
 import com.fetin.securityapp.control.Tutorial.Tutorial2Activity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 
@@ -102,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void metodoParaTeste()
     {
-        editTextEmail.setText("@inatel.br");
+        editTextEmail.setText("ensley@inatel.br");
         editTextSenha.setText("0123456789");
     }
 

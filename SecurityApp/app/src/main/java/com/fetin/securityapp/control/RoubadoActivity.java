@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.SegundoPlano.Arduino;
+import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
 import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
@@ -37,6 +40,8 @@ public class RoubadoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_roubado);
         campoSenha  = findViewById(R.id.editTextSenha);
 
+        campoSenha.setText("0123456789");
+
     }
 
 
@@ -44,15 +49,22 @@ public class RoubadoActivity extends AppCompatActivity {
     {
          senha = UsuarioDAO.user_cadastrado.getSenha();
         if (campoSenha.getText().toString().equals(senha)) {
-            Intent intent2 = new Intent(this, BloqueioService.class);
-            stopService(intent2);
-            MenuActivity.somAlarm.stop();
+            Intent intent_bloqueio = new Intent(this, BloqueioService.class);
+            stopService(intent_bloqueio);
+            // ativa o bloqueio
+            Intent intent_arudino = new Intent(this, ArduinoService.class);
+            stopService(intent_arudino);
+            ArduinoService.somAlarm.stop();
             Intent intent1 = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent1);
-            ExcluiDaListaCelRoubados();
-        }
 
+            ExcluiDaListaCelRoubados();
+
+
+            Toast.makeText(getApplicationContext(), "Modo bloqueio desativado!", Toast.LENGTH_LONG).show();
+
+        }
 
     }
     //Exclui celular roubado da lista de "Celulares Roubados" banco de dados quando o celular é desbloqueado

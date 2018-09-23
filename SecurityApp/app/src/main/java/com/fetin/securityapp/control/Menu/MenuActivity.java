@@ -2,6 +2,7 @@ package com.fetin.securityapp.control.Menu;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.media.MediaPlayer;
@@ -27,6 +28,7 @@ import com.fetin.securityapp.control.LoginActivity;
 import com.fetin.securityapp.control.Menu.Fragment.CelularFragment;
 import com.fetin.securityapp.control.Menu.Fragment.GraphicFragment;
 import com.fetin.securityapp.control.Menu.Fragment.MapaFragment;
+import com.fetin.securityapp.control.SegundoPlano.ArduinoService;
 import com.fetin.securityapp.control.SegundoPlano.BloqueioService;
 import com.fetin.securityapp.control.Tutorial.TutorialActivity;
 import com.fetin.securityapp.model.Celular;
@@ -99,8 +101,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     //contadores para criar o grafico
     public static int contDia;
     public static int contSemana;
-    public static int contMes ;
-    public static int contAno ;
+    public static int contMes;
+    public static int contAno;
 
     //contadores dos meses grafico
     public static int contJaneiro;
@@ -115,7 +117,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static int contOutubro;
     public static int contNovembro;
     public static int contDezembro;
-
 
 
     @Override
@@ -133,8 +134,21 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
+/*
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+*/
+
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
+        // ativa o bloqueio
+        Intent intent = new Intent(this, ArduinoService.class);
+        startService(intent);
 
 
     }
@@ -203,24 +217,22 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             //msg("Aba mapa");
 
             {
-                for(int i = 0; i<CelularDAO.lista_de_roubo.size(); i++)
-                {
+                for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
                     String cc = Integer.toString(CelularDAO.lista_de_roubo.get(i).getCelularP().getCodigo());
 
-                    if(cc.contains(textoDePesquisa)){
-                       double latitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat();
-                       double longitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong();
-                       Location localizacao_temporaria_cel = new Location("123123");
-                       setMyLocation_usuario(localizacao_temporaria_cel, latitude_temporaria, longitude_temporaria);
-                       achou = true;
+                    if (cc.contains(textoDePesquisa)) {
+                        double latitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat();
+                        double longitude_temporaria = CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong();
+                        Location localizacao_temporaria_cel = new Location("123123");
+                        setMyLocation_usuario(localizacao_temporaria_cel, latitude_temporaria, longitude_temporaria);
+                        achou = true;
                     }
 
                 }
-                if(achou == false)
+                if (achou == false)
                     msg("Código não encontrado");
             }
-        }
-        else
+        } else
             msg("Aba grafico");
     }
 
@@ -418,7 +430,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.menuCelRoubado:
+
+           /* case R.id.menuCelRoubado:
 
                 try {
                     Thread.sleep(2000);
@@ -443,21 +456,23 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
+
                 sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-                sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+
 
 
                 // ativa o bloqueio
                Intent intent = new Intent(this, BloqueioService.class);
                startService(intent);
 
-                if(mLastLocation == null)
+                if (mLastLocation == null)
                     msg("Sem localizacao");
                 else
                     daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
 
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -467,7 +482,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         String usuario = UsuarioDAO.user_cadastrado.getNome();
         String senha = Integer.toString(cod);
         Intent intenet = new Intent();
-        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n"+ senha;
+        String msg = "S.O.S!\n" + usuario + " foi roubado(a)!\n" + "Código para localização: \n" + senha;
 
 
         try {
@@ -476,11 +491,12 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             //  Toast.makeText(getApplicationContext(), "SMS enviado!.", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Falha ao enviar! Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
     }
+
     public void playMusic() {
         // Referenciando o "somAlarm" com a música que está na pasta RAW
         somAlarm = MediaPlayer.create(this, R.raw.alarme_roubo);
@@ -488,7 +504,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    public void deslogarUsuario() {
+    public void deslogarUsuario()
+    {
+        // parando o serviço de bloueio do arduino
+        Intent intent_arduino = new Intent(this, ArduinoService.class);
+        stopService(intent_arduino);
 
         boolean sucesso = false;
 
@@ -541,6 +561,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             ano = CelularDAO.lista_de_roubo.get(i).getCelularP().getAno();
             localizacao_cel_roubado.setLongitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLong());
             localizacao_cel_roubado.setLatitude(CelularDAO.lista_de_roubo.get(i).getCelularP().getCoordenadaLat());
+
 
             verificaMes(mes,mes_atual, ano, ano_atual, dia, dia_atual);
 
@@ -610,6 +631,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.i("Ano", "Ano Diferente!");
         }
     }
+
 
     public void verificaMes(int mes, int mesatual, int ano, int anoatual, int dia, int diaatual)
     {
@@ -909,7 +931,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (newText.equals("")) {
                     lista_temporaria.clear();
 
-                    if(aba == 1)
+                    if (aba == 1)
                         celFragment.atualizaLista();
 
                 }
@@ -932,7 +954,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Recupera latitude e longitude da
             // ultima localização do usuário
             LatLng ultimaLocalizacao = new LatLng(latitude, longitude);
-           // LatLng ultimaLocalizacao = new LatLng(location.getLatitude(), location.getLongitude());
+            // LatLng ultimaLocalizacao = new LatLng(location.getLatitude(), location.getLongitude());
             // Configuração da câmera
             final CameraPosition position = new CameraPosition.Builder()
                     .target(ultimaLocalizacao)     //  Localização

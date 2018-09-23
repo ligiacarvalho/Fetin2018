@@ -29,17 +29,13 @@ public class Arduino extends AppCompatActivity {
     private int UM = 49;
     private Button btnPaired;
     private ListView devicelist;
-    private BluetoothAdapter btAdapter;
+    public BluetoothAdapter btAdapter;
     private Set<BluetoothDevice> pairedDevices;
     private BroadcastReceiver mReceiver;
     private ArrayList listDispPareados, listDispEncontrados;
     private ArrayAdapter adapter;
     private final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     static ArrayList<BluetoothDevice> lista_de_disp;
-    private String MAC_Bluetooth_Arduino = "98:D3:31:30:2C:20";
-    private String NAME_Bluetooth = "HC-05";
-    private String MAC_Bluetooth_PC = "B0:10:41:A2:AA:EE";
-    private String NAME_Bluetooth_PC = "DESKTOP-R94QAVP";
     private int flag = 0;
     private BluetoothSocket bs = null;
 
@@ -47,10 +43,10 @@ public class Arduino extends AppCompatActivity {
 
     public void start() {
         //pede permissão para parear com o celular
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.BLUETOOTH}, 1);
+     /*   ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.BLUETOOTH}, 1);*/
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, 1);
+       // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, 1);
 
         //verifica se o bluetooth do cel esta funcionando
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -98,10 +94,16 @@ public class Arduino extends AppCompatActivity {
                 //pede a senha e tenta conectar
                 mmSocket.connect();
 
+                /*try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
                 sucesso_conexão = true;
 
             } catch (IOException e) {
-                msgLog("Erro = " + e.getMessage());
+                //msgLog("Erro = " + e.getMessage());
 
                 try {
                     mmSocket.close();
@@ -114,11 +116,11 @@ public class Arduino extends AppCompatActivity {
 
             tentativa++;
 
-        } while (sucesso_conexão == false && tentativa < 20);
+        } while (sucesso_conexão == false && tentativa < 5);
 
 
         if (sucesso_conexão == false || tentativa >= 20) {
-            Toast.makeText(getApplicationContext(), "Não conseguiu conectar!", Toast.LENGTH_LONG).show();
+            //T//oast.makeText(getApplicationContext(), "Não conseguiu conectar!", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -149,11 +151,6 @@ public class Arduino extends AppCompatActivity {
             listDispEncontrados = new ArrayList();
         }
 
-        if (deuCerto) {
-            mostrarMensagemCurta("Descobrindo os dispositivos...");
-        } else {
-            mostrarMensagemCurta("Falha ao descobrir dispositivos!");
-        }
 
         if (lista_de_disp == null)
             lista_de_disp = new ArrayList<>();
@@ -169,7 +166,6 @@ public class Arduino extends AppCompatActivity {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     //add a var device na lista para pegar os atributos dela
                     lista_de_disp.add(device);
-
 
                     dadosBluetooth[0] = "Nome: " + device.getName() + "\nMAC: " + device.getAddress();
 
@@ -196,14 +192,6 @@ public class Arduino extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //mostra a lista dos bluetooths na tela
-        if (adapter == null) {
-            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listDispEncontrados);
-            devicelist.setAdapter(adapter);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
-
     }
 
     public void msgLog(String s) {
@@ -219,20 +207,23 @@ public class Arduino extends AppCompatActivity {
     }
 
     // funçao pega todos os dispositivos pareados
-    private boolean pairedDevicesList() {
+    public BluetoothDevice pairedDevicesList() {
         // pegando dispositivos que estão pareados na rede
         pairedDevices = btAdapter.getBondedDevices();
 
+        BluetoothDevice bluetooth = null;
 
         if (pairedDevices.size() > 0) {
-            mostrarMensagemCurta("Disp pareado! = " + pairedDevices.size());
+
             for (BluetoothDevice bt : pairedDevices) {
-                listDispPareados.add(bt); //Get the device's name and the address
+                bluetooth = bt; //Get the device's name and the address
             }
-            return true;
+
+            return bluetooth;
+
         } else {
-            mostrarMensagem("Nao há dispositivos pareados!");
-            return false;
+
+            return bluetooth;
         }
 
     }

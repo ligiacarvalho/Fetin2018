@@ -15,7 +15,6 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fetin.securityapp.control.Menu.MenuActivity;
 import com.fetin.securityapp.control.RoubadoActivity;
 
 import java.util.List;
@@ -35,12 +34,6 @@ public class BloqueioService extends Service {
         @Override
         public void handleMessage(Message msg) {
 
-            // lógica que será feita em segundo plano
-
-            //mandarLocalizacaoProContatoEPolicial();
-            //colocaAsInfoNoSetorDeRoubados();
-            //sendSMS();
-            Log.i("Teste", "oiiiiiii");
 
             while (parou == false) {
 
@@ -49,11 +42,8 @@ public class BloqueioService extends Service {
                         restoreApp();
                 }
 
-                //acionarMusica(); //colocar um delay dentro
-
-                Log.i("Msg", "Celular Rooubado!");
             }
-            Log.i("Msg", "oiiiiiii");
+
 
         }
     }
