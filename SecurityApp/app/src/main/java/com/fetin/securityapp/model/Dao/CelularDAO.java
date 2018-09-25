@@ -46,6 +46,7 @@ public class CelularDAO {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 lista_de_roubo.clear();
+                lista_de_imei.clear();
 
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
 

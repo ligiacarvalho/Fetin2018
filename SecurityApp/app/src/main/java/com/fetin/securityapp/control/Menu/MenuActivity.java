@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,7 +67,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class MenuActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MenuActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private FirebaseAuth autenticacao;
     private ViewPager viewPager;
@@ -118,6 +119,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static int contNovembro;
     public static int contDezembro;
 
+    public static int esta_logado = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,12 +148,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+        if(esta_logado == 0) {
+            // ativa o bloqueio
+            Intent intent = new Intent(this, ArduinoService.class);
+            startService(intent);
+            esta_logado = 1;
 
-        // ativa o bloqueio
-        Intent intent = new Intent(this, ArduinoService.class);
-        startService(intent);
-
-
+        }
     }
 
 
@@ -192,6 +196,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // lógica do if
         //estaNoMapa();
         //estaNoCel();
+
+        lista_temporaria.clear();
+
         boolean achou = false;
 
         if (aba == 1) {
@@ -509,6 +516,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         // parando o serviço de bloueio do arduino
         Intent intent_arduino = new Intent(this, ArduinoService.class);
         stopService(intent_arduino);
+
+
+        MenuActivity.esta_logado = 0;
 
         boolean sucesso = false;
 
@@ -976,5 +986,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(markerOptions);
 
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        setMyLocation_usuario(location, location.getLatitude(), location.getLongitude());
+        msg("mudou localizacao");
     }
 }

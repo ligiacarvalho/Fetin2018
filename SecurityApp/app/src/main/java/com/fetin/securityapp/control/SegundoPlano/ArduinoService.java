@@ -23,11 +23,16 @@ import android.widget.Toast;
 
 import com.fetin.securityapp.R;
 import com.fetin.securityapp.control.Menu.MenuActivity;
+import com.fetin.securityapp.control.RoubadoActivity;
 import com.fetin.securityapp.model.Dao.CelularDAO;
 import com.fetin.securityapp.model.Dao.UsuarioDAO;
+import com.fetin.securityapp.model.Usuario;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 
@@ -60,7 +65,6 @@ public class ArduinoService extends Service {
         public void handleMessage(Message msg) {
 
 
-
             // Conectou
             do {
                 //faz leitura do serial
@@ -77,7 +81,7 @@ public class ArduinoService extends Service {
                     Log.i("Teste", "Resp=" + resp);
                 } catch (IOException e) {
                     e.printStackTrace();
-                   /* if(resp == 0)
+                    if(resp == 0)
                     {
                         tentativas_igual_a_zero++;
                     }
@@ -85,17 +89,17 @@ public class ArduinoService extends Service {
                     if(tentativas_igual_a_zero > 2)
                     {
                         break;
-                    }*/
+                    }
                 }
 
 
             } while (resp != 49);
 
-            /*if(tentativas_igual_a_zero > 2)
+            if(tentativas_igual_a_zero > 2)
             {
                 return;
             }
-            */
+
             if(resp == 49)
             {
                 ativarFuncionalidadesDeBloqueio();
@@ -103,7 +107,7 @@ public class ArduinoService extends Service {
 
             //49 é 1 na tabela ASCII
             Log.i("Teste", "Teste Arduino");
-            //ativarFuncionalidadesDeBloqueio();
+            //ativarFuncionalidadesDeBloqueio();*/
 
 
         }
@@ -156,18 +160,35 @@ public class ArduinoService extends Service {
         playMusic();
 
         CelularDAO daoC = new CelularDAO();
+        RoubadoActivity ra = new RoubadoActivity();
 
-        //getLastLocation();
+        // pega os serviços para uso da localização na API da Google
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        daoC.inserirRoubado(-22.15f, -30.244f);
+        getLastLocation();
+
+        UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
         sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(), UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
+
+        ra.ExcluiDaListaCelRoubados();
 
         // ativa o bloqueio
         Intent intent = new Intent(this, BloqueioService.class);
         startService(intent);
 
-        //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
+      /*
+        // ativa o bloqueio
+        Intent intent_roubado = new Intent(this, RoubadoActivity.class);
+        startActivity(intent);
+*/
+
 
     }
 
@@ -261,5 +282,26 @@ public class ArduinoService extends Service {
         }
     }
 
+    public Usuario buscarUsuarioLogado() {
+        FirebaseUser usuario_logado = FirebaseAuth.getInstance().getCurrentUser();
+        String email_user_logado = usuario_logado.getEmail();
 
+        // uma busca na lista, querendo o usuario que está logado
+        Usuario usuario_encontrado = null;
+
+        for (int i = 0; i < UsuarioDAO.lista_de_usuarios.size(); i++) {
+
+            if (UsuarioDAO.lista_de_usuarios.get(i).getEmail().equals(email_user_logado)) {
+
+                usuario_encontrado = UsuarioDAO.lista_de_usuarios.get(i);
+
+                usuario_encontrado.setCelularP(UsuarioDAO.lista_de_usuarios.get(i).getCelularP());
+
+                return usuario_encontrado;
+
+            }
+        }
+
+        return usuario_encontrado;
+    }
 }

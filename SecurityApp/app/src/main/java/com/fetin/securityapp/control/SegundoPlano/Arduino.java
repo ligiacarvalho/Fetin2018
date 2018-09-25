@@ -85,6 +85,13 @@ public class Arduino extends AppCompatActivity {
                 if (mmSocket != null)
                     mmSocket.close();
 
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
                 //device esta com os dados do módulo e ele tenta criar uma conexão com o celular
                 mmSocket = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);//create a RFCOMM (SPP) connection
 
@@ -94,11 +101,11 @@ public class Arduino extends AppCompatActivity {
                 //pede a senha e tenta conectar
                 mmSocket.connect();
 
-                /*try {
+                try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }*/
+                }
 
                 sucesso_conexão = true;
 
@@ -116,10 +123,10 @@ public class Arduino extends AppCompatActivity {
 
             tentativa++;
 
-        } while (sucesso_conexão == false && tentativa < 5);
+        } while (sucesso_conexão == false && tentativa < 2);
 
 
-        if (sucesso_conexão == false || tentativa >= 20) {
+        if (sucesso_conexão == false || tentativa >=2) {
             //T//oast.makeText(getApplicationContext(), "Não conseguiu conectar!", Toast.LENGTH_LONG).show();
             return false;
         }

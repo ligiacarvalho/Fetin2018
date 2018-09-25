@@ -56,11 +56,10 @@ public class RoubadoActivity extends AppCompatActivity {
             stopService(intent_arudino);
             ArduinoService.somAlarm.stop();
             Intent intent1 = new Intent(this, LoginActivity.class);
-            finish();
+            //finish();
             startActivity(intent1);
 
             ExcluiDaListaCelRoubados();
-
 
             Toast.makeText(getApplicationContext(), "Modo bloqueio desativado!", Toast.LENGTH_LONG).show();
 
