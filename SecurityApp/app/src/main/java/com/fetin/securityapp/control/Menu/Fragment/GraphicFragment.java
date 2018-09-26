@@ -125,7 +125,7 @@ public class GraphicFragment extends Fragment {
         if(MenuActivity.contMarco!=0){  yValues.add(new PieEntry(MenuActivity.contMarco, "Março"));}
         if(MenuActivity.contAbril!=0){yValues.add(new PieEntry(MenuActivity.contAbril, "Abril"));}
         if(MenuActivity.contMaio!=0){yValues.add(new PieEntry(MenuActivity.contMaio, "Maio"));}
-        if(MenuActivity.contJunho!=0){ yValues.add(new PieEntry(MenuActivity.contJunho, "Julho"));}
+        if(MenuActivity.contJunho!=0){ yValues.add(new PieEntry(MenuActivity.contJunho, "Junho"));}
         if(MenuActivity.contJulho!=0){ yValues.add(new PieEntry(MenuActivity.contJulho, "Julho")); }
         if(MenuActivity.contAgosto!=0){ yValues.add(new PieEntry(MenuActivity.contAgosto, "Agosto"));}
         if(MenuActivity.contSetembro!=0){ yValues.add(new PieEntry(MenuActivity.contSetembro, "Setembro"));}

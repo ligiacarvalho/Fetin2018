@@ -561,6 +561,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
         ano_atual = calendario.get(Calendar.YEAR);
         mes_atual = mes_atual + 1;
 
+        contJaneiro = contAbril = contAgosto = contFevereiro = contMarco = contMaio = contJunho = contJulho = contSetembro = contOutubro = contNovembro = contDezembro = 0;
+
         for (int i = 0; i < CelularDAO.lista_de_roubo.size(); i++) {
             dia = CelularDAO.lista_de_roubo.get(i).getCelularP().getDia();
             mes = CelularDAO.lista_de_roubo.get(i).getCelularP().getMes();
@@ -642,7 +644,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void verificaMes(int mes, int mesatual, int ano, int anoatual, int dia, int diaatual)
     {
 
-        contJaneiro = contAbril = contAgosto = contFevereiro = contMarco = contMaio = contJunho = contJulho = contSetembro = contOutubro = contNovembro = contDezembro = 0;
+
         if(ano == anoatual) {
 
             contAno ++;
