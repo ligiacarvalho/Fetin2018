@@ -24,12 +24,11 @@
         android:icon="@drawable/ic_white_24dp"
         />
 
-   <!-- <item android:id="@+id/menuCelRoubado"
+  <item android:id="@+id/menuCelRoubado"
         android:title= "Celular roubado"
         app:showAsAction="never"
         android:icon="@drawable/ic_white_24dp"
-        />-->
-
+        />
 
     <item
         android:id="@+id/menu_search"

@@ -147,13 +147,13 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 */
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        if(esta_logado == 0) {
+       /* if(esta_logado == 0) {
             // ativa o bloqueio
             Intent intent = new Intent(this, ArduinoService.class);
             startService(intent);
             esta_logado = 1;
 
-        }
+        }*/
     }
 
 
@@ -436,14 +436,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
-/*
+
             case R.id.menuCelRoubado:
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 playMusic();
 
                 CelularDAO daoC = new CelularDAO();
@@ -453,6 +448,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 getLastLocation();
 
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (mLastLocation==null){
                     try {
                         Thread.sleep(2000);
@@ -460,8 +460,11 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                         e.printStackTrace();
                     }
                 }
-                daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
+                if (mLastLocation == null)
+                    msg("Sem localizacao");
+                else
+                    daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
                 sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
 
@@ -469,13 +472,9 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                Intent intent = new Intent(this, BloqueioService.class);
                startService(intent);
 
-                if (mLastLocation == null)
-                    msg("Sem localizacao");
-                else
-                    daoC.inserirRoubado(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
 
-                break;*/
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

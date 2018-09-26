@@ -52,9 +52,9 @@ public class RoubadoActivity extends AppCompatActivity {
             Intent intent_bloqueio = new Intent(this, BloqueioService.class);
             stopService(intent_bloqueio);
             // ativa o bloqueio
-            Intent intent_arudino = new Intent(this, ArduinoService.class);
-            stopService(intent_arudino);
-            ArduinoService.somAlarm.stop();
+            //Intent intent_arudino = new Intent(this, ArduinoService.class);
+            //stopService(intent_arudino);
+            MenuActivity.somAlarm.stop();
             Intent intent1 = new Intent(this, LoginActivity.class);
             //finish();
             startActivity(intent1);
