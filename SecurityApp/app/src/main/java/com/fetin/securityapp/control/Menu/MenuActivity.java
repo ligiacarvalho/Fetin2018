@@ -56,6 +56,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 //import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 //search
@@ -81,7 +82,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
-    protected Location mLastLocation;
+    public static Location mLastLocation;
     private LocationRequest locationRequest;
     private SupportMapFragment mapFragment;
     private SearchView.OnQueryTextListener searchQueryListener;
@@ -144,8 +145,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
 */
-
-
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         if(esta_logado == 0) {
@@ -437,8 +436,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent2 = new Intent(this, TutorialActivity.class);
                 startActivity(intent2);
                 break;
-
-           /* case R.id.menuCelRoubado:
+/*
+            case R.id.menuCelRoubado:
 
                 try {
                     Thread.sleep(2000);
@@ -465,9 +464,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                 sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),UsuarioDAO.user_cadastrado.getCelularP().getCodigo());
-                //sendSms(UsuarioDAO.user_cadastrado.getContatoProximo(),123);
-
-
 
                 // ativa o bloqueio
                Intent intent = new Intent(this, BloqueioService.class);
@@ -745,7 +741,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //obtém a última localização conhecida
                             mLastLocation = task.getResult();
                             // mostrando a latitude e longitude do celular atual na telinha do APP
-                            //msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
+                            msg("Latitude: " + mLastLocation.getLatitude() + " Longitude: " + mLastLocation.getLongitude());
                             // setando a localização atual do celular no MAPA, com o marcador
                             //setMyLocation(mLastLocation);
 
@@ -790,11 +786,28 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         for (Location location : locationResult.getLocations()) {
+                            if(ArduinoService.verificando_roubo == 1) {
+                                mLastLocation = location;
 
-                            mLastLocation = location;
+                                UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
 
-                            //msg("Longitude: "+location.getLongitude() + "Latitude: "+ location.getLatitude());
-                            //setMyLocation(location);
+                                UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLat(location.getLatitude());
+                                UsuarioDAO.user_cadastrado.getCelularP().setCoordenadaLong(location.getLongitude());
+
+                                UsuarioDAO.getInstance();
+
+                                UsuarioDAO.referenciaDoUsuario.child(UsuarioDAO.user_cadastrado.getChave()).setValue(UsuarioDAO.user_cadastrado);
+
+                                msg("Longitude: " + location.getLongitude() + " Latitude: " + location.getLatitude());
+
+                                DatabaseReference banco = UsuarioDAO.referenciaDoBanco.child("Celulares Roubados");
+
+                                banco.child(UsuarioDAO.user_cadastrado.getChave()).setValue(UsuarioDAO.user_cadastrado);
+                                //setMyLocation_usuario();
+
+
+                                //setMyLocation(location);
+                            }
                         }
                     }
                 }
@@ -958,7 +971,7 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    //Pega a última localização e coloca marcador para o usuário
+    //Pega a última localização e coloca marcador para o usuário que teve o celular roubado
     public void setMyLocation_usuario(Location location, double latitude, double longitude) {
         if (location != null) {
             // Recupera latitude e longitude da
@@ -981,7 +994,6 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .title("Minha Localização")       // Título
                     .snippet("Latitude: , Longitude:") // Descrição
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
             mMap.clear();
             mMap.addMarker(markerOptions);
 
@@ -990,7 +1002,8 @@ public class MenuActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        setMyLocation_usuario(location, location.getLatitude(), location.getLongitude());
+        //setMyLocation_usuario(location);
         msg("mudou localizacao");
     }
+
 }

@@ -62,6 +62,7 @@ public class RoubadoActivity extends AppCompatActivity {
             ExcluiDaListaCelRoubados();
 
             Toast.makeText(getApplicationContext(), "Modo bloqueio desativado!", Toast.LENGTH_LONG).show();
+            ArduinoService.verificando_roubo = 0;
 
         }
 

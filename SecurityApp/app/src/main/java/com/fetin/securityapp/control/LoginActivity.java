@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void metodoParaTeste()
     {
-        editTextEmail.setText("ensley@inatel.br");
+        editTextEmail.setText("thais@inatel.br");
         editTextSenha.setText("0123456789");
     }
 

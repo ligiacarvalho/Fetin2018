@@ -58,6 +58,12 @@ public class BloqueioService extends Service {
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         Log.i("Msg", "Celular Rooubado!");
+
+        Intent i = new Intent(this, RoubadoActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(i);
+
         parou = false;
         // Get the HandlerThread's Looper and use it for our Handler
         mServiceLooper = thread.getLooper();

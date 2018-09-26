@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.IOException;
 
@@ -53,6 +54,7 @@ public class ArduinoService extends Service {
     private int tentativas = 20;
     public static MenuActivity ma;
     private int tentativas_igual_a_zero;
+    public static int verificando_roubo=0;
 
 
     // Handler that receives messages from the thread
@@ -103,6 +105,7 @@ public class ArduinoService extends Service {
             if(resp == 49)
             {
                 ativarFuncionalidadesDeBloqueio();
+                verificando_roubo =1;
             }
 
             //49 é 1 na tabela ASCII
@@ -111,8 +114,6 @@ public class ArduinoService extends Service {
 
 
         }
-
-
     }
 
     @Override
@@ -167,7 +168,11 @@ public class ArduinoService extends Service {
 
         getLastLocation();
 
+
         UsuarioDAO.user_cadastrado = buscarUsuarioLogado();
+        UsuarioDAO.getInstance();
+
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -182,13 +187,6 @@ public class ArduinoService extends Service {
         // ativa o bloqueio
         Intent intent = new Intent(this, BloqueioService.class);
         startService(intent);
-
-      /*
-        // ativa o bloqueio
-        Intent intent_roubado = new Intent(this, RoubadoActivity.class);
-        startActivity(intent);
-*/
-
 
     }
 

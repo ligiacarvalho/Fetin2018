@@ -48,10 +48,10 @@ public class Cadastro1Activity extends AppCompatActivity {
         MascaraCPF();
         MascaraContatoProximo();
 
-        metodoParaTeste();
+        //metodoParaTeste();
     }
 
-    public void metodoParaTeste() {
+   /* public void metodoParaTeste() {
         campoNomeCompleto.setText("Nome Teste");
         campoEmail.setText("@inatel.br");
         campoTelefone.setText("35999999999");
@@ -59,7 +59,7 @@ public class Cadastro1Activity extends AppCompatActivity {
         campoContatoProximo.setText("123");
         campoCidade.setText("123");
         campoSenha.setText("0123456789");
-    }
+    }*/
 
     public void referenciaComponentes() {
 

@@ -72,7 +72,7 @@ public class Cadastro2Activity extends AppCompatActivity {
 
         });
 
-        metodoParaTeste();
+        //metodoParaTeste();
 
     }
 
@@ -92,7 +92,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         numeroDoChip2.setVisibility(View.GONE);
     }
 
-    public void metodoParaTeste() {
+  /*  public void metodoParaTeste() {
         campoModeloCelular.setText("123");
         numeroDoChip1.setText("123");
         numeroDoChip2.setText("123");
@@ -100,7 +100,7 @@ public class Cadastro2Activity extends AppCompatActivity {
         IMEI2.setText("123123");
 
     }
-
+*/
     public boolean verificaEntradaDeDados()
 
     {
